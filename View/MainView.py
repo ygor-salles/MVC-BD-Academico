@@ -1,10 +1,9 @@
 import tkinter as tk
-from tkinter import messagebox
 
 class LimitePrincipal():
-    def __init__(self, controle):
-        self.root = tk.Tk()
-        self.root.configure(bg='#76cb69')
+    def __init__(self, root, controle):
+        self.controle = controle
+        self.root = root
 
         #deixar a janela centralizada
         window_height = 450
@@ -31,67 +30,44 @@ class LimitePrincipal():
         self.salvaMenu = tk.Menu(self.menubar)
         self.sairMenu = tk.Menu(self.menubar) 
              
-        self.alunoMenu.add_command(label="Insere", command=controle.insereAlunos)
-        self.alunoMenu.add_command(label="Mostra", command=controle.mostraAlunos)
-        self.alunoMenu.add_command(label="Consulta", command=controle.consultaAlunos)
-        self.alunoMenu.add_command(label="Exclui", command=controle.excluiAlunos)
-        self.alunoMenu.add_command(label="Atualiza", command=controle.atualizaAlunos)
+        self.alunoMenu.add_command(label="Insere", command=self.controle.insereAlunos)
+        self.alunoMenu.add_command(label="Mostra", command=self.controle.mostraAlunos)
+        self.alunoMenu.add_command(label="Consulta", command=self.controle.consultaAlunos)
+        self.alunoMenu.add_command(label="Exclui", command=self.controle.excluiAlunos)
+        self.alunoMenu.add_command(label="Atualiza", command=self.controle.atualizaAlunos)
         self.menubar.add_cascade(label="Aluno", menu=self.alunoMenu)
 
-        # self.discipMenu.add_command(label="Insere", command=controle.insereDisciplinas)
-        # self.discipMenu.add_command(label="Mostra", command=controle.mostraDisciplinas)
-        # self.discipMenu.add_command(label="Consulta", command=controle.consultaDisciplinas)        
-        # self.discipMenu.add_command(label="Exclui", command=controle.excluiDisciplinas)        
-        # self.discipMenu.add_command(label="Atualiza", command=controle.atualizaDisciplinas)        
+        # self.discipMenu.add_command(label="Insere", command=self.controle.insereDisciplinas)
+        # self.discipMenu.add_command(label="Mostra", command=self.controle.mostraDisciplinas)
+        # self.discipMenu.add_command(label="Consulta", command=self.controle.consultaDisciplinas)        
+        # self.discipMenu.add_command(label="Exclui", command=self.controle.excluiDisciplinas)        
+        # self.discipMenu.add_command(label="Atualiza", command=self.controle.atualizaDisciplinas)        
         # self.menubar.add_cascade(label="Disciplina", menu=self.discipMenu)
 
-        # self.gradeMenu.add_command(label="Insere", command=controle.insereGrade)
-        # self.gradeMenu.add_command(label="Mostra", command=controle.mostraGrade)
-        # self.gradeMenu.add_command(label="Consulta", command=controle.consultaGrade)        
-        # self.gradeMenu.add_command(label="Exclui", command=controle.excluiGrade)        
-        # self.gradeMenu.add_command(label="Atualiza", command=controle.atualizaGrade)        
+        # self.gradeMenu.add_command(label="Insere", command=self.controle.insereGrade)
+        # self.gradeMenu.add_command(label="Mostra", command=self.controle.mostraGrade)
+        # self.gradeMenu.add_command(label="Consulta", command=self.controle.consultaGrade)        
+        # self.gradeMenu.add_command(label="Exclui", command=self.controle.excluiGrade)        
+        # self.gradeMenu.add_command(label="Atualiza", command=self.controle.atualizaGrade)        
         # self.menubar.add_cascade(label="Grade", menu=self.gradeMenu)
 
-        # self.cursoMenu.add_command(label="Insere", command=controle.insereCursos)
-        # self.cursoMenu.add_command(label="Mostra", command=controle.mostraCursos)
-        # self.cursoMenu.add_command(label="Consulta", command=controle.consultaCursos)        
-        # self.cursoMenu.add_command(label="Exclui", command=controle.excluiCursos)        
-        # self.cursoMenu.add_command(label="Atualiza", command=controle.atualizaCursos)        
+        # self.cursoMenu.add_command(label="Insere", command=self.controle.insereCursos)
+        # self.cursoMenu.add_command(label="Mostra", command=self.controle.mostraCursos)
+        # self.cursoMenu.add_command(label="Consulta", command=self.controle.consultaCursos)        
+        # self.cursoMenu.add_command(label="Exclui", command=self.controle.excluiCursos)        
+        # self.cursoMenu.add_command(label="Atualiza", command=self.controle.atualizaCursos)        
         # self.menubar.add_cascade(label="Curso", menu=self.cursoMenu)
 
-        # self.historicoMenu.add_command(label="Insere", command=controle.insereHistoricos)
-        # self.historicoMenu.add_command(label="Mostra", command=controle.mostraHistoricos)
-        # self.historicoMenu.add_command(label="Consulta", command=controle.consultaHistoricos)        
-        # self.historicoMenu.add_command(label="Exclui", command=controle.excluiHistoricos)        
+        # self.historicoMenu.add_command(label="Insere", command=self.controle.insereHistoricos)
+        # self.historicoMenu.add_command(label="Mostra", command=self.controle.mostraHistoricos)
+        # self.historicoMenu.add_command(label="Consulta", command=self.controle.consultaHistoricos)        
+        # self.historicoMenu.add_command(label="Exclui", command=self.controle.excluiHistoricos)        
         # self.menubar.add_cascade(label="Histórico", menu=self.historicoMenu)
 
-        # self.salvaMenu.add_command(label="Salvar os Dados", command=controle.salvaDados)
+        # self.salvaMenu.add_command(label="Salvar os Dados", command=self.controle.salvaDados)
         # self.menubar.add_cascade(label="Salvar", menu=self.salvaMenu)
 
-        # self.sairMenu.add_command(label="Sair do Programa", command=self.sair)
+        # self.sairMenu.add_command(label="Sair do Programa", command=self.controle.sair)
         # self.menubar.add_cascade(label="Sair", menu=self.sairMenu)
 
         self.root.config(menu=self.menubar)
-
-        self.root.title("Sistema Acadêmico YS")
-        self.frameTela = tk.Frame(self.root)
-        self.frameTela.pack()
-        self.root.mainloop()
-
-    def newFrame(self):
-        self.frameTela.destroy()
-        self.frameTela = tk.Frame(self.root)
-        self.frameTela.pack()
-        self.frameTela.configure(bg='#76cb69')
-        return self.frameTela
-
-    def mostraMessagebox(self, titulo, msg, erro):
-        if erro == False:
-            messagebox.showinfo(titulo, msg)
-        else:
-            messagebox.showerror(titulo, msg)
-        
-    def sair(self):
-        self.root.destroy()
-
-    

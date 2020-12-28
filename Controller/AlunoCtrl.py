@@ -1,5 +1,5 @@
 from View.AlunoView import *
-from Model.AlunoModel import Aluno
+from Model.AlunoModel import Aluno, manipulaBanco
 
 class AlunoDuplicado(Exception):
     pass
@@ -11,6 +11,7 @@ class CamposNaoPreenchidos(Exception):
     pass 
 
 class CtrlAluno():
+            
     #Funções que serão chamadas na Main --- Instaciadores ---------------------------
 
     def insereAlunos(self, root):
@@ -56,21 +57,21 @@ class CtrlAluno():
     def enterHandler(self, event):
         nroMatric = self.limiteIns.inputNro.get()
         nome = self.limiteIns.inputNome.get()
-        aluno = self.getAluno(nroMatric)
-        try:
-            if aluno != None:
-                raise AlunoDuplicado()
-            if len(nroMatric)==0 or len(nome)==0:
-                raise CamposNaoPreenchidos()
-        except AlunoDuplicado:
-            self.limiteIns.mostraMessagebox('Alerta', 'A matrícula desse aluno já existe', True)
-        except CamposNaoPreenchidos:
-            self.limiteIns.mostraMessagebox('Atenção', 'Todos os campos devem ser preenchidos', True)
-        else:
-            aluno = Aluno(nroMatric, nome)
-            self.listaAlunos.append(aluno)
-            self.limiteIns.mostraMessagebox('Sucesso', 'Aluno cadastrado com sucesso', False)
-            self.limiteIns.clearHandler(event)
+        # aluno = self.getAluno(nroMatric)
+        # try:
+        #     if aluno != None:
+        #         raise AlunoDuplicado()
+        #     if len(nroMatric)==0 or len(nome)==0:
+        #         raise CamposNaoPreenchidos()
+        # except AlunoDuplicado:
+        #     self.limiteIns.mostraMessagebox('Alerta', 'A matrícula desse aluno já existe', True)
+        # except CamposNaoPreenchidos:
+        #     self.limiteIns.mostraMessagebox('Atenção', 'Todos os campos devem ser preenchidos', True)
+        # else:
+        aluno = Aluno(nromatric=nroMatric, nome=nome)
+        manipulaBanco.cadastraAluno(aluno)
+        self.limiteIns.mostraMessagebox('Sucesso', 'Aluno cadastrado com sucesso', False)
+        self.limiteIns.clearHandler(event)
 
     def consultaAluno(self, event):
         nroMatric = self.limiteConsulta.inputTextMatricula.get()
