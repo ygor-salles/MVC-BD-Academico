@@ -1,5 +1,5 @@
 from View.AlunoView import *
-from Model.AlunoModel import Aluno, manipulaBanco
+from Model.AlunoModel import Aluno, ManipulaBanco
 
 class AlunoDuplicado(Exception):
     pass
@@ -69,7 +69,8 @@ class CtrlAluno():
         #     self.limiteIns.mostraMessagebox('Atenção', 'Todos os campos devem ser preenchidos', True)
         # else:
         aluno = Aluno(nromatric=nroMatric, nome=nome)
-        manipulaBanco.cadastraAluno(aluno)
+        status = ManipulaBanco.cadastraAluno(aluno)
+        print(status)
         self.limiteIns.mostraMessagebox('Sucesso', 'Aluno cadastrado com sucesso', False)
         self.limiteIns.clearHandler(event)
 

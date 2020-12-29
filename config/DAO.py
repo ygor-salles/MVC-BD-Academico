@@ -1,11 +1,9 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
-Base = declarative_base()
 
 class DAOCrud():
-    def getSession():
+    def getSession(Base):
         engine = create_engine('postgresql+psycopg2://postgres:123456@localhost:5432/academico', echo=True)
         Session = sessionmaker(bind=engine)
         session = Session()

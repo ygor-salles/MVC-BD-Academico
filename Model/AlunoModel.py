@@ -1,8 +1,8 @@
 from config.DAO import DAOCrud
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
-from sqlalchemy.orm.exc import StaleDataError
+from sqlalchemy.orm import relationship, sessionmaker
+
 Base = declarative_base()
 
 class Aluno(Base):
@@ -13,19 +13,19 @@ class Aluno(Base):
     #curso_id = Column(ForeignKey('public.cursos.nome'))
     #curso = relationship('Curso')
 
-    def getNroMatric(self):
-        return self.__nroMatric
+    # def getNroMatric(self):
+    #     return self.__nroMatric
     
-    def getNome(self):
-        return self.__nome
+    # def getNome(self):
+    #     return self.__nome
 
-    def setNome(self, nome):
-        self.__nome = nome
+    # def setNome(self, nome):
+    #     self.__nome = nome
 
-class manipulaBanco():
+class ManipulaBanco():
     def cadastraAluno(aluno):
         try:
-            sessao = DAOCrud.getSession()
+            sessao = DAOCrud.getSession(Base)
             DAOCrud.insere(sessao, aluno)
             sessao.commit()
             sessao.close()
