@@ -46,8 +46,11 @@ class LimiteInsereAluno():
         self.janela.destroy()
 
 class LimiteMostraAlunos():
-    def __init__(self, string):
-        messagebox.showinfo('Lista de alunos', string)
+    def __init__(self, titulo, msg, erro):
+        if erro:
+            messagebox.showerror(titulo, msg)
+        else:
+            messagebox.showinfo(titulo, msg)
 
 class LimiteConsultaAluno():
     def __init__(self, controle, root):
