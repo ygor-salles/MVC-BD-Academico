@@ -42,13 +42,13 @@ class ManipulaBanco():
         except :
             return False
 
-    # def atualizaAluno(id):
-    #     try:
-    #         sessao = DAOCrud.getSession()
-    #         aluno = DAOCrud.consultaAluno(sessao, id)
-    #         aluno.unitsinstock = aluno.unitsinstock - 10
-    #         sessao.commit()
-    #         sessao.close()
-    #         return True
-    #     except StaleDataError as error:
-    #         return False
+    def atualizaAluno(id, nomeAluno):
+        try:
+            sessao = DAOCrud.getSession()
+            aluno = DAOCrud.consultaAluno(sessao, id)
+            DAOCrud.atualizaAluno(aluno, nomeAluno)
+            sessao.commit()
+            sessao.close()
+            return True
+        except :
+            return False

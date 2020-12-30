@@ -1,4 +1,3 @@
-from sqlalchemy.sql.base import Executable
 from View.AlunoView import *
 from config.Mapeamento import Aluno
 from Model.AlunoModel import ManipulaBanco
@@ -19,7 +18,7 @@ class CtrlAluno():
     def getListaAlunos(self):
         return ManipulaBanco.listaAlunos() 
             
-    #Funções que serão chamadas na Main --- Instaciadores ---------------------------
+    #Funções que serão chamadas na Main --- Instaciadores (MENU BAR) ---------------------------
 
     def insereAlunos(self, root):
         self.limiteIns = LimiteInsereAluno(self, root) 
@@ -48,19 +47,11 @@ class CtrlAluno():
 
     #Funções auxiliares e de amarrações da classe ---------------------------------------------
     
-    def getAluno(self, nroMatric):
-        return ManipulaBanco.consultaAluno(nroMatric)
-    
     def getListaNroMatric(self):
         listNroMatric = []
-        for matric in self.listaAlunos:
+        for matric in self.getListaAlunos():
             listNroMatric.append(matric.getNroMatric())
         return listNroMatric
-    
-    def getAtualizaAluno(self, nroMatric, nome):
-        for aluno in self.listaAlunos:
-            if nroMatric == aluno.getNroMatric():
-                aluno.setNome(nome)
 
     #Funções de CRUD dos Buttons ----------------------------------------------------
 
@@ -88,7 +79,7 @@ class CtrlAluno():
         
     def consultaAluno(self, event):
         nroMatric = self.limiteConsulta.inputTextMatricula.get()
-        aluno = self.getAluno(nroMatric)
+        aluno = ManipulaBanco.consultaAluno(nroMatric)
         print(aluno)
         try:
             if len(nroMatric)==0:
@@ -131,17 +122,19 @@ class CtrlAluno():
     def atualizarAluno(self, event):
         nroMatric = self.limiteAtualiza.inputMatric.get()
         nome = self.limiteAtualiza.inputNome.get()
-        aluno = self.getAluno(nroMatric)
         try:
             if len(nroMatric) == 0 or len(nome) == 0:
                 raise CamposNaoPreenchidos()
-            elif aluno == None:
-                raise AlunoNaoCadastrado()
         except CamposNaoPreenchidos:
             self.limiteAtualiza.mostraMessagebox('ATENÇÃO', 'Todos os campos devem ser preenchidos', True)
-        except AlunoNaoCadastrado:
-            self.limiteAtualiza.mostraMessagebox('ALERTA', 'Aluno não cadastrado', True)
-        else: 
-            self.getAtualizaAluno(nroMatric, nome)
-            self.limiteAtualiza.mostraMessagebox('ATUALIZAÇÃO', 'Nome de aluno atualizado com sucesso', False)
-            self.limiteAtualiza.atualizarClearAluno(event)
+        else:
+            status = ManipulaBanco.atualizaAluno(nroMatric, nome)
+            try:
+                if status == False:
+                    raise AlunoNaoCadastrado()
+            except AlunoNaoCadastrado:
+                self.limiteAtualiza.mostraMessagebox('ALERTA', 'Aluno não cadastrado ou falha de conexão com o Banco de Dados', True)
+            else: 
+                self.limiteAtualiza.mostraMessagebox('SUCESSO', 'Nome de aluno atualizado com sucesso', False)
+            finally:
+                self.limiteAtualiza.atualizarClearAluno(event)

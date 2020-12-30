@@ -23,5 +23,8 @@ class DAOCrud():
     
     def listaAluno(sessao):
         return sessao.query(Aluno).all()
+
+    def atualizaAluno(aluno, nomeAluno):
+        aluno.nome = nomeAluno
         
     
