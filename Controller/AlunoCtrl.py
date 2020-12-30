@@ -26,12 +26,10 @@ class CtrlAluno():
         self.limiteIns = LimiteInsereAluno(self, root) 
 
     def mostraAlunos(self):
-        #str = 'Nro Matric. -- Nome\n'
-        pprint(self.getListaAlunos())
-        # for aluno in self.getListaAlunos():
-            
-        #     str += aluno.getNroMatric() + ' -- ' + aluno.getNome() +'\n'       
-        # self.limiteLista = LimiteMostraAlunos(str)
+        string = 'Nro Matric. -- Nome\n'
+        for aluno in self.getListaAlunos():
+            string += aluno.nromatric + ' -- ' + aluno.nome +'\n'       
+        self.limiteLista = LimiteMostraAlunos(string)
     
     def consultaAlunos(self, root):
         self.limiteConsulta = LimiteConsultaAluno(self, root)
@@ -45,11 +43,6 @@ class CtrlAluno():
     #Funções auxiliares e de amarrações da classe ---------------------------------------------
     
     def getAluno(self, nroMatric):
-        # alunoRet = None
-        # for aluno in self.listaAlunos:
-        #     if aluno.getNroMatric() == nroMatric:
-        #         alunoRet = aluno
-        # return alunoRet
         return ManipulaBanco.consultaAluno(nroMatric)
     
     def getListaNroMatric(self):
@@ -68,33 +61,40 @@ class CtrlAluno():
     def enterHandler(self, event):
         nroMatric = self.limiteIns.inputNro.get()
         nome = self.limiteIns.inputNome.get()
-        aluno = Aluno(nromatric=nroMatric, nome=nome)
-        status = ManipulaBanco.cadastraAluno(aluno)
         try:
             if len(nroMatric)==0 or len(nome)==0:
                 raise CamposNaoPreenchidos()
-            if status == False:
-                raise AlunoDuplicado()
         except CamposNaoPreenchidos:
             self.limiteIns.mostraMessagebox('Atenção', 'Todos os campos devem ser preenchidos', True)
-        except AlunoDuplicado:
-            self.limiteIns.mostraMessagebox('Alerta', 'A matrícula desse aluno já existe ou falha de conexão', True)
-            self.limiteIns.clearHandler(event)
         else:
-            self.limiteIns.mostraMessagebox('Sucesso', 'Aluno cadastrado com sucesso', False)
-            self.limiteIns.clearHandler(event)
-            
-
+            aluno = Aluno(nromatric=nroMatric, nome=nome)
+            status = ManipulaBanco.cadastraAluno(aluno)
+            print(status)
+            try:
+                if status == False:
+                    raise AlunoDuplicado()
+            except AlunoDuplicado:
+                self.limiteIns.mostraMessagebox('Alerta', 'A matrícula desse aluno já existe ou falha de conexão', True)
+            else:
+                self.limiteIns.mostraMessagebox('Sucesso', 'Aluno cadastrado com sucesso', False)
+            finally:
+                self.limiteIns.clearHandler(event)
+        
     def consultaAluno(self, event):
         nroMatric = self.limiteConsulta.inputTextMatricula.get()
         aluno = self.getAluno(nroMatric)
+        print(aluno)
         try:
             if len(nroMatric)==0:
                 raise CamposNaoPreenchidos()
             if aluno == False:
+                raise ConexaoBD()
+            if aluno == None:
                 raise AlunoNaoCadastrado()
         except CamposNaoPreenchidos:
             self.limiteConsulta.mostraMessagebox('Atenção', 'Todos os campos devem ser preenchidos', True)
+        except ConexaoBD:
+            self.limiteConsulta.mostraMessagebox('Error', 'Falha de conexão com o Banco', True)
         except AlunoNaoCadastrado:
             self.limiteConsulta.mostraMessagebox('Alerta', 'Aluno não cadastrado', True)
         else:
@@ -105,20 +105,22 @@ class CtrlAluno():
 
     def alunoDelete(self, event):
         nroMatric = self.limiteExclui.inputMatric.get()
-        status = ManipulaBanco.deletaAluno(nroMatric)
         try:
             if len(nroMatric)==0:
                 raise CamposNaoPreenchidos()
-            if status == False:
-                raise AlunoNaoCadastrado()
         except CamposNaoPreenchidos:
             self.limiteExclui.mostraMessagebox('Atenção', 'Todos os campos devem ser preenchidos', True)
-        except AlunoNaoCadastrado:
-            self.limiteExclui.mostraMessagebox('Alerta', 'Aluno não cadastrado ou falha de conexão', True)
-            self.limiteExclui.clearAlunoDelete(event)
         else:
-            self.limiteExclui.mostraMessagebox('Sucesso', 'Aluno deletado com sucesso', False)
-            self.limiteExclui.clearAlunoDelete(event)
+            status = ManipulaBanco.deletaAluno(nroMatric)
+            try:
+                if status == False:
+                    raise AlunoNaoCadastrado()
+            except AlunoNaoCadastrado:
+                self.limiteExclui.mostraMessagebox('Alerta', 'Aluno não cadastrado ou falha de conexão', True)
+            else:
+                self.limiteExclui.mostraMessagebox('Sucesso', 'Aluno deletado com sucesso', False)
+            finally:
+                self.limiteExclui.clearAlunoDelete(event)
 
     def atualizarAluno(self, event):
         nroMatric = self.limiteAtualiza.inputMatric.get()

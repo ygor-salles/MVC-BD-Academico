@@ -22,5 +22,6 @@ class DAOCrud():
         return aluno
     
     def listaAluno(sessao):
-        return sessao.query(Aluno).all()
+        alunos = sessao.query(Aluno).all()
+        return alunos
     
