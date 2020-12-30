@@ -28,7 +28,7 @@ class CtrlAluno():
     def mostraAlunos(self):
         string = 'Nro Matric. -- Nome\n'
         for aluno in self.getListaAlunos():
-            string += aluno.nromatric + ' -- ' + aluno.nome +'\n'       
+            string += str(aluno.nromatric) + ' -- ' + aluno.nome +'\n'       
         self.limiteLista = LimiteMostraAlunos(string)
     
     def consultaAlunos(self, root):
