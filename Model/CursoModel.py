@@ -1,51 +1,51 @@
 from config.DAO import DAOCrud
 
 class ManipulaBanco():
-    def cadastraAluno(aluno):
+    def cadastraCurso(curso):
         try:
             sessao = DAOCrud.getSession()
-            DAOCrud.insere(sessao, aluno)
+            DAOCrud.insere(sessao, curso)
             sessao.commit()
             sessao.close()
             return True
         except:
             return False
 
-    def deletaAluno(id):
+    def deletaCurso(id):
         try:
             sessao = DAOCrud.getSession()
-            aluno = DAOCrud.consultaAluno(sessao, id)
-            DAOCrud.deleta(sessao, aluno)
+            curso = DAOCrud.consultaCurso(sessao, id)
+            DAOCrud.deleta(sessao, curso)
             sessao.commit()
             sessao.close()
             return True
         except:
             return False
     
-    def listaAlunos():
+    def listaCursos():
         try:
             sessao = DAOCrud.getSession()
-            alunos = DAOCrud.listaAluno(sessao)
-            return alunos
+            cursos = DAOCrud.listaCurso(sessao)
+            return cursos
         except :
             return False
 
-    def consultaAluno(id):
+    def consultaCurso(id):
         try:
             sessao = DAOCrud.getSession()
             sessao.expire_on_commit = False
-            aluno = DAOCrud.consultaAluno(sessao, id)
+            curso = DAOCrud.consultaCurso(sessao, id)
             sessao.commit()
             sessao.close()
-            return aluno
+            return curso
         except :
             return False
 
-    def atualizaAluno(id, nomeAluno):
+    def atualizaCurso(id, nomeCurso):
         try:
             sessao = DAOCrud.getSession()
-            aluno = DAOCrud.consultaAluno(sessao, id)
-            DAOCrud.atualizaAluno(aluno, nomeAluno)
+            curso = DAOCrud.consultaCurso(sessao, id)
+            DAOCrud.atualizaCurso(curso, nomeCurso)
             sessao.commit()
             sessao.close()
             return True
