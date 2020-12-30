@@ -1,37 +1,16 @@
+from sqlalchemy.orm.exc import StaleDataError
 from config.DAO import DAOCrud
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship, sessionmaker
-
-Base = declarative_base()
-
-class Aluno(Base):
-    __tablename__ = 'alunos'
-
-    nromatric = Column(Integer, primary_key=True)
-    nome = Column(String(50))
-    #curso_id = Column(ForeignKey('public.cursos.nome'))
-    #curso = relationship('Curso')
-
-    # def getNroMatric(self):
-    #     return self.__nroMatric
-    
-    # def getNome(self):
-    #     return self.__nome
-
-    # def setNome(self, nome):
-    #     self.__nome = nome
 
 class ManipulaBanco():
     def cadastraAluno(aluno):
         try:
-            sessao = DAOCrud.getSession(Base)
+            sessao = DAOCrud.getSession()
             DAOCrud.insere(sessao, aluno)
             sessao.commit()
             sessao.close()
-            return 1
+            return True
         except:
-            return -1
+            return False
 
     def deletaAluno(id):
         try:
@@ -40,9 +19,19 @@ class ManipulaBanco():
             DAOCrud.deleta(sessao, aluno)
             sessao.commit()
             sessao.close()
-            return 1
+            return True
         except:
-            return -1
+            return False
+    
+    def listaAlunos():
+        try:
+            sessao = DAOCrud.getSession()
+            alunos = DAOCrud.listaAluno(sessao)
+            sessao.commit()
+            sessao.close()
+            return alunos
+        except :
+            return False
 
     def consultaAluno(id):
         try:
@@ -53,4 +42,15 @@ class ManipulaBanco():
             sessao.close()
             return aluno
         except :
-            return -1
+            return False
+
+    # def atualizaAluno(id):
+    #     try:
+    #         sessao = DAOCrud.getSession()
+    #         aluno = DAOCrud.consultaAluno(sessao, id)
+    #         aluno.unitsinstock = aluno.unitsinstock - 10
+    #         sessao.commit()
+    #         sessao.close()
+    #         return True
+    #     except StaleDataError as error:
+    #         return False
