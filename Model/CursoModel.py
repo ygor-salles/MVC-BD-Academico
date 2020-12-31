@@ -25,7 +25,7 @@ class ManipulaBanco():
     def listaCursos():
         try:
             sessao = DAOCrud.getSession()
-            cursos = DAOCrud.listaCurso(sessao)
+            cursos = DAOCrud.listaCursos(sessao)
             return cursos
         except :
             return False

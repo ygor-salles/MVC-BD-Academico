@@ -2,17 +2,13 @@ from View.AlunoView import *
 from config.Mapeamento import Aluno
 from Model.AlunoModel import ManipulaBanco
 
-class AlunoDuplicado(Exception):
-    pass
+class AlunoDuplicado(Exception): pass
 
-class AlunoNaoCadastrado(Exception):
-    pass
+class AlunoNaoCadastrado(Exception): pass
 
-class CamposNaoPreenchidos(Exception):
-    pass 
+class CamposNaoPreenchidos(Exception): pass 
 
-class ConexaoBD(Exception):
-    pass
+class ConexaoBD(Exception): pass
 
 class CtrlAluno():
     def getListaAlunos(self):
@@ -47,11 +43,7 @@ class CtrlAluno():
 
     #Funções auxiliares e de amarrações da classe ---------------------------------------------
     
-    def getListaNroMatric(self):
-        listNroMatric = []
-        for matric in self.getListaAlunos():
-            listNroMatric.append(matric.getNroMatric())
-        return listNroMatric
+
 
     #Funções de CRUD dos Buttons ----------------------------------------------------
 
@@ -79,27 +71,29 @@ class CtrlAluno():
         
     def consultaAluno(self, event):
         nroMatric = self.limiteConsulta.inputTextMatricula.get()
-        aluno = ManipulaBanco.consultaAluno(nroMatric)
-        print(aluno)
         try:
             if len(nroMatric)==0:
                 raise CamposNaoPreenchidos()
-            if aluno == False:
-                raise ConexaoBD()
-            if aluno == None:
-                raise AlunoNaoCadastrado()
         except CamposNaoPreenchidos:
             self.limiteConsulta.mostraMessagebox('ATENÇÃO', 'Todos os campos devem ser preenchidos', True)
-        except ConexaoBD:
-            self.limiteConsulta.mostraMessagebox('ERROR', 'Falha de conexão com o Banco', True)
-        except AlunoNaoCadastrado:
-            self.limiteConsulta.mostraMessagebox('ALERTA', 'Aluno não cadastrado', True)
         else:
-            string = 'MATRÍCULA -- NOME\n'+str(aluno.nromatric)+' -- '+aluno.nome
-            LimiteMostraAlunos('CONSULTA ALUNO', string, False)
-        finally:
-            self.limiteConsulta.clearAluno(event)
-
+            aluno = ManipulaBanco.consultaAluno(nroMatric)
+            print(aluno)
+            try:
+                if aluno == False:
+                    raise ConexaoBD()
+                if aluno == None:
+                    raise AlunoNaoCadastrado()
+            except ConexaoBD:
+                self.limiteConsulta.mostraMessagebox('ERROR', 'Falha de conexão com o Banco', True)
+            except AlunoNaoCadastrado:
+                self.limiteConsulta.mostraMessagebox('ALERTA', 'Aluno não cadastrado', True)
+            else:
+                string = 'MATRÍCULA -- NOME\n'+str(aluno.nromatric)+' -- '+aluno.nome
+                LimiteMostraAlunos('CONSULTA ALUNO', string, False)
+            finally:
+                self.limiteConsulta.clearAluno(event)
+            
     def alunoDelete(self, event):
         nroMatric = self.limiteExclui.inputMatric.get()
         try:
@@ -113,7 +107,7 @@ class CtrlAluno():
                 if status == False:
                     raise AlunoNaoCadastrado()
             except AlunoNaoCadastrado:
-                self.limiteExclui.mostraMessagebox('ALERTA', 'Aluno não cadastrado ou falha de conexão', True)
+                self.limiteExclui.mostraMessagebox('ALERTA', 'Aluno não cadastrado ou falha de conexão com Banco de Dados', True)
             else:
                 self.limiteExclui.mostraMessagebox('SUCESSO', 'Aluno deletado com sucesso', False)
             finally:
