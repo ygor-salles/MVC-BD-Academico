@@ -70,22 +70,19 @@ class CtrlAluno():
                 self.limiteIns.clearHandler(event)
         
     def consultaAluno(self, event):
-        nroMatric = self.limiteConsulta.inputTextMatricula.get()
+        nroMatric = str(self.limiteConsulta.inputTextMatricula.get())
         try:
-            if len(nroMatric)==0:
+            if len(nroMatric) == 0:
                 raise CamposNaoPreenchidos()
         except CamposNaoPreenchidos:
             self.limiteConsulta.mostraMessagebox('ATENÇÃO', 'Todos os campos devem ser preenchidos', True)
         else:
             aluno = ManipulaBanco.consultaAluno(nroMatric)
-            print(aluno)
             try:
-                if aluno == False:
-                    raise ConexaoBD()
-                if aluno == None:
-                    raise AlunoNaoCadastrado()
+                if aluno == False: raise ConexaoBD()
+                if aluno == None: raise AlunoNaoCadastrado()
             except ConexaoBD:
-                self.limiteConsulta.mostraMessagebox('ERROR', 'Falha de conexão com o Banco', True)
+                self.limiteConsulta.mostraMessagebox('ERROR', 'Falha de conexão com o Banco de Dados', True)
             except AlunoNaoCadastrado:
                 self.limiteConsulta.mostraMessagebox('ALERTA', 'Aluno não cadastrado', True)
             else:
