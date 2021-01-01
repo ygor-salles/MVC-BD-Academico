@@ -44,12 +44,12 @@ class LimitePrincipal():
         # self.discipMenu.add_command(label="Atualiza", command=self.controle.atualizaDisciplinas)        
         # self.menubar.add_cascade(label="Disciplina", menu=self.discipMenu)
 
-        # self.gradeMenu.add_command(label="Insere", command=self.controle.insereGrade)
-        # self.gradeMenu.add_command(label="Mostra", command=self.controle.mostraGrade)
-        # self.gradeMenu.add_command(label="Consulta", command=self.controle.consultaGrade)        
-        # self.gradeMenu.add_command(label="Exclui", command=self.controle.excluiGrade)        
-        # self.gradeMenu.add_command(label="Atualiza", command=self.controle.atualizaGrade)        
-        # self.menubar.add_cascade(label="Grade", menu=self.gradeMenu)
+        self.gradeMenu.add_command(label="Insere", command=self.controle.insereGrade)
+        self.gradeMenu.add_command(label="Mostra", command=self.controle.mostraGrade)
+        self.gradeMenu.add_command(label="Consulta", command=self.controle.consultaGrade)        
+        self.gradeMenu.add_command(label="Exclui", command=self.controle.excluiGrade)        
+        self.gradeMenu.add_command(label="Atualiza", command=self.controle.atualizaGrade)        
+        self.menubar.add_cascade(label="Grade", menu=self.gradeMenu)
 
         self.cursoMenu.add_command(label="Insere", command=self.controle.insereCursos)
         self.cursoMenu.add_command(label="Mostra", command=self.controle.mostraCursos)

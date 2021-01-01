@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker
-from config.Mapeamento import Aluno, Base, Curso
+from config.Mapeamento import Base, Aluno, Curso, Grade
 
 class DAOCrud():
     # MÉTODOS GERAIS ------------------------------
@@ -36,3 +36,11 @@ class DAOCrud():
 
     def listaCursos(sessao):
         return sessao.query(Curso).all()
+
+    # MÉTODOS GRADE ----------------------------------
+    def consultaGrade(sessao, id):
+        grade = sessao.query(Grade).filter(Grade.anocurso == id).first()
+        return grade
+
+    def listaGrades(sessao):
+        return sessao.query(Grade).all() 

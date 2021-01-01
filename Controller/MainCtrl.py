@@ -3,7 +3,7 @@ from tkinter import messagebox
 from View.MainView import *
 import Controller.AlunoCtrl as al
 # import Controller.DisciplinaCtrl as dic
-# import Controller.GradeCtrl as gr
+import Controller.GradeCtrl as gr
 import Controller.CursoCtrl as cr
 # import Controller.HistoricoCtrl as hist
 
@@ -14,7 +14,7 @@ class ControlePrincipal():
 
         self.ctrlAluno = al.CtrlAluno()
         # self.ctrlDisciplina = dic.CtrlDisciplina()
-        # self.ctrlGrade = gr.CtrlGrade(self)
+        self.ctrlGrade = gr.CtrlGrade(self)
         self.ctrlCurso = cr.CtrlCurso(self)
         # self.ctrlHistorico = hist.CtrlHistorico(self)
     
@@ -66,19 +66,19 @@ class ControlePrincipal():
 
     ###############################################
     def insereGrade(self):
-        self.ctrlGrade.insereGrade(self.newFrame())
+        self.ctrlGrade.insereGrades(self.newFrame())
 
     def mostraGrade(self):
-        self.ctrlGrade.mostraGrade()
+        self.ctrlGrade.mostraGrades()
     
     def consultaGrade(self):
-        self.ctrlGrade.consultaGrade(self.newFrame())
+        self.ctrlGrade.consultaGrades(self.newFrame())
 
     def excluiGrade(self):
-        self.ctrlGrade.excluiGrade(self.newFrame())
+        self.ctrlGrade.excluiGrades(self.newFrame())
 
     def atualizaGrade(self):
-        self.ctrlGrade.atualizaGrade(self.newFrame())
+        self.ctrlGrade.atualizaGrades(self.newFrame())
 
     ###############################################
     def insereCursos(self):
