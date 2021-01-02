@@ -25,8 +25,10 @@ class ManipulaBanco():
     def listaCursos():
         try:
             sessao = DAOCrud.getSession()
+            sessao.expire_on_commit = False
             cursos = DAOCrud.listaCursos(sessao)
             sessao.commit()
+            # sessao.close()
             return cursos
         except :
             return False
@@ -37,7 +39,7 @@ class ManipulaBanco():
             sessao.expire_on_commit = False
             curso = DAOCrud.consultaCurso(sessao, id)
             sessao.commit()
-            sessao.close()
+            # sessao.close()
             return curso
         except :
             return False

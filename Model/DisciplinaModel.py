@@ -25,7 +25,10 @@ class ManipulaBanco():
     def listaDisciplinas():
         try:
             sessao = DAOCrud.getSession()
+            sessao.expire_on_commit = False
             disciplinas = DAOCrud.listaDisciplinas(sessao)
+            sessao.commit()
+            sessao.close()
             return disciplinas
         except :
             return False

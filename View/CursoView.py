@@ -58,7 +58,7 @@ class LimiteConsultaCursos():
         self.labelTitulo = tk.Label(self.frameTitulo, text='CONSULTAR CURSO', font=('Heveltica Bold', 14), bg='#76cb69').pack()
     
         self.labelNome = tk.Label(self.frameBody, text='Curso: ', bg='#76cb69')
-        self.inputTextNome = tk.Entry(self.frameBody, width=20)
+        self.inputTextNome = tk.Entry(self.frameBody, width=30)
 
         self.buttonConsultar = tk.Button(self.frameBody, text='Realizar Consulta')
         self.buttonConsultar.bind('<Button>', controle.consultaHandler)

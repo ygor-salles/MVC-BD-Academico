@@ -1,3 +1,4 @@
+from pprint import pprint
 from Model.CursoModel import ManipulaBanco
 from View.CursoView import *
 from config.Mapeamento import Curso
@@ -41,7 +42,7 @@ class CtrlCurso():
         self.limiteIns = LimiteInsereCurso(self, root)
 
     def mostraCursos(self):
-        string = 'CURSOS:\n\n'
+        string = ''
         cursos = self.getListaCursos()
         try:
             if cursos == False:
@@ -51,6 +52,10 @@ class CtrlCurso():
         else:
             for curso in cursos:
                 string += curso.nome+'\n'
+                string += '\nALUNOS MATRICULADOS: \n'
+                for aluno in curso.alunos:
+                    string += str(aluno.nromatric)+' -- '+aluno.nome+'\n'
+                string += '---------------------------\n'
             self.limiteMostra = LimiteMostraCursos('LISTA DE CURSOS', string, False)
     
     def consultaCursos(self, root):
@@ -97,6 +102,7 @@ class CtrlCurso():
             self.limiteConsulta.mostraMessagebox('ATENÇÃO', 'Todos os campos devem ser preenchidos', True)
         else:
             curso = ManipulaBanco.consultaCurso(nome)
+            pprint(curso)
             try:
                 if curso == False: raise ConexaoBD()
                 if curso == None: raise CursoNaoCadastrado()
@@ -105,7 +111,10 @@ class CtrlCurso():
             except CursoNaoCadastrado:
                 self.limiteConsulta.mostraMessagebox('ALERTA', 'Curso não cadastrado', True)
             else:
-                string = 'CURSO\n'+curso.nome
+                string = curso.nome+'\n'
+                for aluno in curso.alunos:
+                    string += str(aluno.nromatric)+' -- '+aluno.nome+'\n'
+                string += '---------------------------\n'
                 LimiteMostraCursos('CONSULTA CURSO', string, False)
             finally:
                 self.limiteConsulta.clearConsulta(event)

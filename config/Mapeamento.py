@@ -31,7 +31,7 @@ class Curso(Base):
     # grade = relationship(Grade, backref='cursos')
     
     def __repr__(self):
-        return f'Curso(nome={self.nome})'
+        return f'Curso(nome={self.nome}, alunos={self.alunos})'
 
 class Disciplina(Base):
     __tablename__ = 'disciplinas'
