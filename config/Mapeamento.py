@@ -8,8 +8,8 @@ class Aluno(Base):
     __tablename__ = 'alunos'
     nromatric = Column(Integer, primary_key=True)
     nome = Column(String(50))
-    #curso_id = Column(ForeignKey('public.cursos.nome'))
-    #curso = relationship('Curso')
+    curso_id = Column(ForeignKey('cursos.nome'))
+    curso = relationship('Curso')
 
     def __repr__(self):
         return f'Aluno(nromatric={self.nromatric}, nome={self.nome})'
@@ -17,7 +17,7 @@ class Aluno(Base):
 class Grade(Base):
     __tablename__ = 'grades'
     anocurso = Column(String(10), primary_key=True)
-    # curso = Column(ForeignKey('public.cursos.nome'), unique=True)
+    # curso = Column(ForeignKey('cursos.nome'), unique=True)
     # curso = relationship('Curso')
     # disciplina = relationship('Disciplina') 
     
@@ -27,8 +27,8 @@ class Grade(Base):
 class Curso(Base):
     __tablename__ = 'cursos'
     nome = Column(String(30), primary_key=True)
+    alunos = relationship(Aluno, backref='cursos')
     # grade = relationship(Grade, backref='cursos')
-    # alunos = relationship(Aluno, backref='cursos')
     
     def __repr__(self):
         return f'Curso(nome={self.nome})'
@@ -38,8 +38,8 @@ class Disciplina(Base):
     codigo = Column(String(10), primary_key=True)
     nome = Column(String(50))
     cargahoraria = Column(Integer)
-    # grade_id = Column(ForeignKey('public.grades.anocurso'))
-    # historico_id = Column(ForeignKey('public.historicos.aluno'))
+    # grade_id = Column(ForeignKey('grades.anocurso'))
+    # historico_id = Column(ForeignKey('historicos.aluno'))
     # grade = relationship('Grade')
     # historico = relationship('Historico')
 

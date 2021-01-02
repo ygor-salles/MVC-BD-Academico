@@ -12,7 +12,7 @@ class ControlePrincipal():
         self.root = tk.Tk()
         self.root.configure(bg='#76cb69')
 
-        self.ctrlAluno = al.CtrlAluno()
+        self.ctrlAluno = al.CtrlAluno(self)
         self.ctrlDisciplina = dic.CtrlDisciplina(self)
         self.ctrlGrade = gr.CtrlGrade(self)
         self.ctrlCurso = cr.CtrlCurso(self)

@@ -26,6 +26,7 @@ class ManipulaBanco():
         try:
             sessao = DAOCrud.getSession()
             alunos = DAOCrud.listaAluno(sessao)
+            sessao.commit()
             return alunos
         except :
             return False

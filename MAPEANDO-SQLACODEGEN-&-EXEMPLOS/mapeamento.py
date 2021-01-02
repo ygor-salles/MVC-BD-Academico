@@ -33,6 +33,14 @@ class Historico(Aluno):
     semestre = Column(Integer)
     ano = Column(Integer)
 
+t_notadisc = Table(
+    'notadisc', metadata,
+    Column('disciplina', String(10)),
+    Column('nota', Float(53)),
+    Column('historico', ForeignKey('public.historicos.aluno')),
+    schema='public'
+)
+
 
 class Grade(Base):
     __tablename__ = 'grades'
@@ -56,12 +64,3 @@ class Disciplina(Base):
 
     grade1 = relationship('Grade')
     historico1 = relationship('Historico')
-
-
-t_notadisc = Table(
-    'notadisc', metadata,
-    Column('disciplina', String(10)),
-    Column('nota', Float(53)),
-    Column('historico', ForeignKey('public.historicos.aluno')),
-    schema='public'
-)

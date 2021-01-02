@@ -11,16 +11,20 @@ class CamposNaoPreenchidos(Exception): pass
 class ConexaoBD(Exception): pass
 
 class CtrlAluno():
+    def __init__(self, controlePrincipal):
+        self.ctrlPrincipal = controlePrincipal
+
     def getListaAlunos(self):
         return ManipulaBanco.listaAlunos() 
             
     #Funções que serão chamadas na Main --- Instaciadores (MENU BAR) ---------------------------
 
     def insereAlunos(self, root):
-        self.limiteIns = LimiteInsereAluno(self, root) 
+        listaCursos = self.ctrlPrincipal.ctrlCurso.getListaNomeCursos()
+        self.limiteIns = LimiteInsereAluno(self, root, listaCursos) 
 
     def mostraAlunos(self):
-        string = 'MATRÍCULA -- NOME\n'
+        string = 'MATRÍCULA -- NOME -- CURSO\n'
         alunos = self.getListaAlunos()
         try:
             if alunos == False:
@@ -29,7 +33,7 @@ class CtrlAluno():
             LimiteMostraAlunos('ERROR', 'Falha de conexão com o banco', True)
         else:
             for aluno in alunos:
-                string += str(aluno.nromatric) + ' -- ' + aluno.nome +'\n'       
+                string += str(aluno.nromatric) + ' -- ' + aluno.nome + ' -- '+aluno.curso.nome+'\n'       
             self.limiteLista = LimiteMostraAlunos('LISTA DE ALUNOS', string, False)
     
     def consultaAlunos(self, root):
@@ -50,13 +54,15 @@ class CtrlAluno():
     def enterHandler(self, event):
         nroMatric = self.limiteIns.inputNro.get()
         nome = self.limiteIns.inputNome.get()
+        curso = self.limiteIns.escolhaCombo.get()
+        print(curso)
         try:
             if len(nroMatric)==0 or len(nome)==0:
                 raise CamposNaoPreenchidos()
         except CamposNaoPreenchidos:
             self.limiteIns.mostraMessagebox('ATENÇÃO', 'Todos os campos devem ser preenchidos', True)
         else:
-            aluno = Aluno(nromatric=nroMatric, nome=nome)
+            aluno = Aluno(nromatric=nroMatric, nome=nome, curso_id=curso)
             status = ManipulaBanco.cadastraAluno(aluno)
             print(status)
             try:
@@ -86,7 +92,7 @@ class CtrlAluno():
             except AlunoNaoCadastrado:
                 self.limiteConsulta.mostraMessagebox('ALERTA', 'Aluno não cadastrado', True)
             else:
-                string = 'MATRÍCULA -- NOME\n'+str(aluno.nromatric)+' -- '+aluno.nome
+                string = 'MATRÍCULA -- NOME -- CURSO\n'+str(aluno.nromatric)+' -- '+aluno.nome+' -- '+aluno.curso.nome
                 LimiteMostraAlunos('CONSULTA ALUNO', string, False)
             finally:
                 self.limiteConsulta.clearAluno(event)

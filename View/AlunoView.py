@@ -1,8 +1,9 @@
 import tkinter as tk
+from tkinter import ttk
 from tkinter import messagebox
 
 class LimiteInsereAluno():
-    def __init__(self, controle, root):
+    def __init__(self, controle, root, listaCursos):
         self.janela = root
         self.frameTitulo = tk.Frame(self.janela)
         self.frameTitulo.pack()
@@ -13,9 +14,13 @@ class LimiteInsereAluno():
 
         self.labelNro = tk.Label(self.frameBody, text="Matrícula: ", bg='#76cb69')
         self.labelNome = tk.Label(self.frameBody, text="Nome: ", bg='#76cb69')
+        self.labelCurso = tk.Label(self.frameBody, text='Curso: ', bg='#76cb69')
 
         self.inputNro = tk.Entry(self.frameBody, width=20)
-        self.inputNome = tk.Entry(self.frameBody, width=35)             
+        self.inputNome = tk.Entry(self.frameBody, width=35)
+        self.escolhaCombo = tk.StringVar()
+        self.combobox = ttk.Combobox(self.frameBody, width=30, textvariable=self.escolhaCombo)
+        self.combobox['values'] = listaCursos             
       
         self.buttonEnter = tk.Button(self.frameBody, text="Enter")      
         self.buttonEnter.bind("<Button>", controle.enterHandler)
@@ -28,9 +33,11 @@ class LimiteInsereAluno():
         self.inputNro.grid(row=0, column=1, sticky='W', pady=20)
         self.labelNome.grid(row=1, column=0, sticky='W', pady=20)
         self.inputNome.grid(row=1, column=1, sticky='W', pady=20)
-        self.buttonEnter.grid(row=2, column=2, sticky='W', pady=20)
-        self.buttonClear.grid(row=2, column=3, sticky='W', pady=20)
-        self.buttonFecha.grid(row=2, column=4, sticky='W', pady=20)
+        self.labelCurso.grid(row=2, column=0, sticky='W', pady=20)
+        self.combobox.grid(row=2, column=1, sticky='W', pady=20)
+        self.buttonEnter.grid(row=3, column=2, sticky='W', pady=20)
+        self.buttonClear.grid(row=3, column=3, sticky='W', pady=20)
+        self.buttonFecha.grid(row=3, column=4, sticky='W', pady=20)
 
     def mostraMessagebox(self, titulo, msg, erro):
         if erro == False:

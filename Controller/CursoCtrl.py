@@ -21,7 +21,19 @@ class CtrlCurso():
 
     # Funções Auxiliares ----------------------------------------------------------
     
-    
+    def getListaNomeCursos(self):
+        listaNomeCursos = []
+        cursos = self.getListaCursos()
+        try:
+            if self.getListaCursos() == False:
+                raise ConexaoBD()
+        except ConexaoBD:
+            print('Error')
+            # self.ctrlPrincipal.ctrlAluno.limiteIns.mostraMessagebox('ERROR', 'Falha de conexão com o Banco de Dados', True)
+        else:
+            for curso in cursos:
+                listaNomeCursos.append(curso.nome)
+            return listaNomeCursos
 
     # Funções instancioadores, recebe da main ---------------------------
 
