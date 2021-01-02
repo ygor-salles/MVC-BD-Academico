@@ -26,8 +26,9 @@ class DAOCrud():
     def listaAluno(sessao):
         return sessao.query(Aluno).all()
 
-    def atualizaAluno(aluno: Aluno, nomeAluno):
+    def atualizaAluno(aluno: Aluno, nomeAluno, curso):
         aluno.nome = nomeAluno
+        aluno.curso_id = curso
         
     # MÉTODOS CURSOS ------------------------------
     def consultaCurso(sessao, id):

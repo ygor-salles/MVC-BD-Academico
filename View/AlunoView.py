@@ -48,6 +48,7 @@ class LimiteInsereAluno():
     def clearHandler(self, event):
         self.inputNro.delete(0, len(self.inputNro.get()))
         self.inputNome.delete(0, len(self.inputNome.get()))
+        self.combobox.delete(0, 'end')
 
     def fechaHandler(self, event):
         self.janela.destroy()
@@ -136,7 +137,7 @@ class LimiteExcluiAluno():
         self.janela.destroy()
 
 class LimiteAtualizaAluno():
-    def __init__(self, controle, root):
+    def __init__(self, controle, root, listaCursos):
         self.janela=root
         self.frameTitulo = tk.Frame(self.janela)
         self.frameTitulo.pack()
@@ -151,6 +152,11 @@ class LimiteAtualizaAluno():
         self.inputMatric = tk.Entry(self.frameBody, width=20)
         self.inputNome = tk.Entry(self.frameBody, width=35)
         
+        self.labelCurso = tk.Label(self.frameBody, text='Atualizar curso do aluno: ', bg='#76cb69')
+        self.escolhaCurso = tk.StringVar()
+        self.combobox = ttk.Combobox(self.frameBody, width=30, textvariable=self.escolhaCurso)
+        self.combobox['values'] = listaCursos
+
         self.buttonAtualizar = tk.Button(self.frameBody, text='Atualizar Aluno')
         self.buttonAtualizar.bind('<Button>', controle.atualizarAluno)
         self.buttonClear = tk.Button(self.frameBody, text='Clear')
@@ -161,10 +167,12 @@ class LimiteAtualizaAluno():
         self.labelMatric.grid(row=0, column=0, sticky='W', pady=20)        
         self.inputMatric.grid(row=0, column=1, sticky='W', pady=20)        
         self.labelNome.grid(row=1, column=0, sticky='W', pady=20)        
-        self.inputNome.grid(row=1, column=1, sticky='W', pady=20)        
-        self.buttonAtualizar.grid(row=2, column=3, sticky='W', pady=20)             
-        self.buttonClear.grid(row=2, column=4, sticky='W', pady=20)             
-        self.buttonFechar.grid(row=2, column=5, sticky='W', pady=20)             
+        self.inputNome.grid(row=1, column=1, sticky='W', pady=20)
+        self.labelCurso.grid(row=2, column=0, sticky='W', pady=20)        
+        self.combobox.grid(row=2, column=1, sticky='W', pady=20)
+        self.buttonAtualizar.grid(row=3, column=2, sticky='W', pady=20)             
+        self.buttonClear.grid(row=3, column=3, sticky='W', pady=20)             
+        self.buttonFechar.grid(row=3, column=4, sticky='W', pady=20)             
 
     def mostraMessagebox(self, titulo, msg, erro):
         if erro == False:
@@ -174,7 +182,8 @@ class LimiteAtualizaAluno():
     
     def atualizarClearAluno(self, event):
         self.inputMatric.delete(0, len(self.inputMatric.get()))
-        self.inputNome.delete(0, len(self.inputNome.get()))
+        self.inputNome.delete(0, 'end')
+        self.combobox.delete(0, 'end')
     
     def atualizarFecharAluno(self, event):
         self.janela.destroy()

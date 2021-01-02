@@ -1,6 +1,7 @@
 from View.AlunoView import *
 from config.Mapeamento import Aluno
 from Model.AlunoModel import ManipulaBanco
+from pprint import pprint
 
 class AlunoDuplicado(Exception): pass
 
@@ -21,7 +22,10 @@ class CtrlAluno():
 
     def insereAlunos(self, root):
         listaCursos = self.ctrlPrincipal.ctrlCurso.getListaNomeCursos()
-        self.limiteIns = LimiteInsereAluno(self, root, listaCursos) 
+        if listaCursos == None:
+            LimiteMostraAlunos('ERROR', 'Falha de conexão com o Banco de Dados', True)
+        else:
+            self.limiteIns = LimiteInsereAluno(self, root, listaCursos) 
 
     def mostraAlunos(self):
         string = 'MATRÍCULA -- NOME -- CURSO\n'
@@ -33,7 +37,7 @@ class CtrlAluno():
             LimiteMostraAlunos('ERROR', 'Falha de conexão com o banco', True)
         else:
             for aluno in alunos:
-                string += str(aluno.nromatric) + ' -- ' + aluno.nome + ' -- '+aluno.curso.nome+'\n'       
+                string += str(aluno.nromatric) + ' -- ' + aluno.nome + ' -- '+aluno.curso_id+'\n'       
             self.limiteLista = LimiteMostraAlunos('LISTA DE ALUNOS', string, False)
     
     def consultaAlunos(self, root):
@@ -43,7 +47,11 @@ class CtrlAluno():
         self.limiteExclui = LimiteExcluiAluno(self, root)
     
     def atualizaAlunos(self, root):
-        self.limiteAtualiza = LimiteAtualizaAluno(self, root)
+        listaCursos = self.ctrlPrincipal.ctrlCurso.getListaNomeCursos()
+        if listaCursos == None:
+            LimiteMostraAlunos('ERROR', 'Falha de conexão com o Banco de Dados', True)
+        else:
+            self.limiteAtualiza = LimiteAtualizaAluno(self, root, listaCursos)
 
     #Funções auxiliares e de amarrações da classe ---------------------------------------------
     
@@ -57,7 +65,7 @@ class CtrlAluno():
         curso = self.limiteIns.escolhaCombo.get()
         print(curso)
         try:
-            if len(nroMatric)==0 or len(nome)==0:
+            if len(nroMatric)==0 or len(nome)==0 or len(curso)==0:
                 raise CamposNaoPreenchidos()
         except CamposNaoPreenchidos:
             self.limiteIns.mostraMessagebox('ATENÇÃO', 'Todos os campos devem ser preenchidos', True)
@@ -84,6 +92,7 @@ class CtrlAluno():
             self.limiteConsulta.mostraMessagebox('ATENÇÃO', 'Todos os campos devem ser preenchidos', True)
         else:
             aluno = ManipulaBanco.consultaAluno(nroMatric)
+            pprint(aluno)
             try:
                 if aluno == False: raise ConexaoBD()
                 if aluno == None: raise AlunoNaoCadastrado()
@@ -92,7 +101,7 @@ class CtrlAluno():
             except AlunoNaoCadastrado:
                 self.limiteConsulta.mostraMessagebox('ALERTA', 'Aluno não cadastrado', True)
             else:
-                string = 'MATRÍCULA -- NOME -- CURSO\n'+str(aluno.nromatric)+' -- '+aluno.nome+' -- '+aluno.curso.nome
+                string = 'MATRÍCULA -- NOME -- CURSO\n'+str(aluno.nromatric) + ' -- ' + aluno.nome + ' -- '+aluno.curso_id+'\n'
                 LimiteMostraAlunos('CONSULTA ALUNO', string, False)
             finally:
                 self.limiteConsulta.clearAluno(event)
@@ -119,19 +128,20 @@ class CtrlAluno():
     def atualizarAluno(self, event):
         nroMatric = self.limiteAtualiza.inputMatric.get()
         nome = self.limiteAtualiza.inputNome.get()
+        curso = self.limiteAtualiza.escolhaCurso.get()
         try:
-            if len(nroMatric) == 0 or len(nome) == 0:
+            if len(nroMatric) == 0 or len(nome) == 0 or len(curso) == 0:
                 raise CamposNaoPreenchidos()
         except CamposNaoPreenchidos:
             self.limiteAtualiza.mostraMessagebox('ATENÇÃO', 'Todos os campos devem ser preenchidos', True)
         else:
-            status = ManipulaBanco.atualizaAluno(nroMatric, nome)
+            status = ManipulaBanco.atualizaAluno(nroMatric, nome, curso)
             try:
                 if status == False:
                     raise AlunoNaoCadastrado()
             except AlunoNaoCadastrado:
                 self.limiteAtualiza.mostraMessagebox('ALERTA', 'Aluno não cadastrado ou falha de conexão com o Banco de Dados', True)
             else: 
-                self.limiteAtualiza.mostraMessagebox('SUCESSO', 'Nome de aluno atualizado com sucesso', False)
+                self.limiteAtualiza.mostraMessagebox('SUCESSO', 'Nome de aluno e curso atualizado com sucesso', False)
             finally:
                 self.limiteAtualiza.atualizarClearAluno(event)

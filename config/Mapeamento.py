@@ -12,7 +12,7 @@ class Aluno(Base):
     curso = relationship('Curso')
 
     def __repr__(self):
-        return f'Aluno(nromatric={self.nromatric}, nome={self.nome})'
+        return f'Aluno(nromatric={self.nromatric}, nome={self.nome}, curso_id={self.curso_id})'
 
 class Grade(Base):
     __tablename__ = 'grades'

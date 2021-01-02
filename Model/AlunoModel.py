@@ -42,11 +42,11 @@ class ManipulaBanco():
         except :
             return False
 
-    def atualizaAluno(id, nomeAluno):
+    def atualizaAluno(id, nomeAluno, curso):
         try:
             sessao = DAOCrud.getSession()
             aluno = DAOCrud.consultaAluno(sessao, id)
-            DAOCrud.atualizaAluno(aluno, nomeAluno)
+            DAOCrud.atualizaAluno(aluno, nomeAluno, curso)
             sessao.commit()
             sessao.close()
             return True

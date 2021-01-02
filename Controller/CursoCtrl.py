@@ -29,7 +29,7 @@ class CtrlCurso():
                 raise ConexaoBD()
         except ConexaoBD:
             print('Error')
-            # self.ctrlPrincipal.ctrlAluno.limiteIns.mostraMessagebox('ERROR', 'Falha de conexão com o Banco de Dados', True)
+            return None
         else:
             for curso in cursos:
                 listaNomeCursos.append(curso.nome)
