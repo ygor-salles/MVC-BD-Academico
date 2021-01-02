@@ -19,6 +19,7 @@ class Grade(Base):
     anocurso = Column(String(10), primary_key=True)
     # curso = Column(ForeignKey('public.cursos.nome'), unique=True)
     # curso = relationship('Curso')
+    # disciplina = relationship('Disciplina') 
     
     def __repr__(self):
         return f'Curso(anocurso={self.anocurso})'
@@ -32,3 +33,15 @@ class Curso(Base):
     def __repr__(self):
         return f'Curso(nome={self.nome})'
 
+class Disciplina(Base):
+    __tablename__ = 'disciplinas'
+    codigo = Column(String(10), primary_key=True)
+    nome = Column(String(50))
+    cargahoraria = Column(Integer)
+    # grade_id = Column(ForeignKey('public.grades.anocurso'))
+    # historico_id = Column(ForeignKey('public.historicos.aluno'))
+    # grade = relationship('Grade')
+    # historico = relationship('Historico')
+
+    def __repr__(self):
+        return f'Disciplina(codigo={self.codigo}, nome={self.nome}, cargahoraria={self.cargahoraria})'

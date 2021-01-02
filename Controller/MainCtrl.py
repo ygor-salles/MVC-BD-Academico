@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from View.MainView import *
 import Controller.AlunoCtrl as al
-# import Controller.DisciplinaCtrl as dic
+import Controller.DisciplinaCtrl as dic
 import Controller.GradeCtrl as gr
 import Controller.CursoCtrl as cr
 # import Controller.HistoricoCtrl as hist
@@ -13,7 +13,7 @@ class ControlePrincipal():
         self.root.configure(bg='#76cb69')
 
         self.ctrlAluno = al.CtrlAluno()
-        # self.ctrlDisciplina = dic.CtrlDisciplina()
+        self.ctrlDisciplina = dic.CtrlDisciplina(self)
         self.ctrlGrade = gr.CtrlGrade(self)
         self.ctrlCurso = cr.CtrlCurso(self)
         # self.ctrlHistorico = hist.CtrlHistorico(self)
