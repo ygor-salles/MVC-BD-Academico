@@ -46,6 +46,9 @@ class DAOCrud():
     def listaGrades(sessao):
         return sessao.query(Grade).all()
 
+    def atualizaGrade(grade: Grade, curso):
+        grade.curso_id = curso
+
     # MÉTODOS DISCIPLINA ----------------------------------
     def consultaDisciplina(sessao, id):
         disciplina = sessao.query(Disciplina).filter(Disciplina.codigo == id).first()

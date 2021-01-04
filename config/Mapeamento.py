@@ -17,21 +17,21 @@ class Aluno(Base):
 class Grade(Base):
     __tablename__ = 'grades'
     anocurso = Column(String(10), primary_key=True)
-    # curso = Column(ForeignKey('cursos.nome'), unique=True)
-    # curso = relationship('Curso')
+    curso_id = Column(ForeignKey('cursos.nome'), unique=True)
+    curso = relationship('Curso')
     # disciplina = relationship('Disciplina') 
     
     def __repr__(self):
-        return f'Curso(anocurso={self.anocurso})'
+        return f'Grade(anocurso={self.anocurso}, curso_id={self.curso_id})'
 
 class Curso(Base):
     __tablename__ = 'cursos'
     nome = Column(String(30), primary_key=True)
     alunos = relationship(Aluno, backref='cursos')
-    # grade = relationship(Grade, backref='cursos')
+    grade = relationship(Grade, backref='cursos')
     
     def __repr__(self):
-        return f'Curso(nome={self.nome}, alunos={self.alunos})'
+        return f'Curso(nome={self.nome}, alunos={self.alunos}, grade={self.grade})'
 
 class Disciplina(Base):
     __tablename__ = 'disciplinas'

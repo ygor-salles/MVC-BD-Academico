@@ -26,6 +26,7 @@ class ManipulaBanco():
         try:
             sessao = DAOCrud.getSession()
             grades = DAOCrud.listaGrades(sessao)
+            sessao.commit()
             return grades
         except :
             return False
@@ -41,11 +42,11 @@ class ManipulaBanco():
         except :
             return False
 
-    def atualizaGrade(id, nomeGrade):
+    def atualizaGrade(id, curso):
         try:
             sessao = DAOCrud.getSession()
             grade = DAOCrud.consultaGrade(sessao, id)
-            DAOCrud.atualizaGrade(grade, nomeGrade)
+            DAOCrud.atualizaGrade(grade, curso)
             sessao.commit()
             sessao.close()
             return True

@@ -20,10 +20,14 @@ class CtrlGrade():
     #Funções que serão chamadas na Main --- Instaciadores (MENU BAR) ---------------------------
 
     def insereGrades(self, root):
-        self.limiteIns = LimiteInsereGrade(self, root) 
+        listaCursos = self.ctrlPrincipal.ctrlCurso.getListaNomeCursos()
+        if listaCursos == None:
+            LimiteMostraGrades('ERROR', 'Falha de conexão com Banco de Dados', True)
+        else:
+            self.limiteIns = LimiteInsereGrade(self, root, listaCursos) 
 
     def mostraGrades(self):
-        string = 'ANO-CURSO\n'
+        string = 'ANO-CURSO -- NOME CURSO\n'
         grades = self.getListaGrades()
         try:
             if grades == False:
@@ -32,7 +36,7 @@ class CtrlGrade():
             LimiteMostraGrades('ERROR', 'Falha de conexão com o banco', True)
         else:
             for grade in grades:
-                string += grade.anocurso+'\n'       
+                string += grade.anocurso+' -- '+grade.curso_id+'\n'       
             self.limiteLista = LimiteMostraGrades('LISTA DE GRADES', string, False)
     
     def consultaGrades(self, root):
@@ -42,23 +46,42 @@ class CtrlGrade():
         self.limiteExclui = LimiteExcluiGrade(self, root)
     
     def atualizaGrades(self, root):
-        self.limiteAtualiza = LimiteAtualizaGrade(self, root)
+        listaCursos = self.ctrlPrincipal.ctrlCurso.getListaNomeCursos()
+        listaGrades = self.getListaAnoCurso()
+        if listaCursos == None or listaGrades == None:
+            LimiteMostraGrades('ERROR', 'Falha de conexão com Banco de Dados', True)
+        else:
+            self.limiteAtualiza = LimiteAtualizaGrade(self, root, listaGrades, listaCursos)
 
     #Funções auxiliares e de amarrações da classe ---------------------------------------------
     
+    def getListaAnoCurso(self):
+        listaAnoCurso = []
+        grades = self.getListaGrades()
+        try:
+            if grades == False:
+                raise ConexaoBD()
+        except ConexaoBD:
+            print('Error')
+            return None
+        else:
+            for grade in grades:
+                listaAnoCurso.append(grade.anocurso)
+            return listaAnoCurso
 
 
     #Funções de CRUD dos Buttons ----------------------------------------------------
 
     def enterHandler(self, event):
         anoCurso = self.limiteIns.inputAnoCurso.get()
+        curso = self.limiteIns.escolhaCurso.get()
         try:
-            if len(anoCurso)==0:
+            if len(anoCurso)==0 or len(curso)==0:
                 raise CamposNaoPreenchidos()
         except CamposNaoPreenchidos:
             self.limiteIns.mostraMessagebox('ATENÇÃO', 'Todos os campos devem ser preenchidos', True)
         else:
-            grade = Grade(anocurso=anoCurso)
+            grade = Grade(anocurso=anoCurso, curso_id=curso)
             status = ManipulaBanco.cadastraGrade(grade)
             print(status)
             try:
@@ -88,7 +111,7 @@ class CtrlGrade():
             except GradeNaoCadastrada:
                 self.limiteConsulta.mostraMessagebox('ALERTA', 'Grade não cadastrada', True)
             else:
-                string = 'ANO-CURSO\n'+grade.anocurso
+                string = grade.anocurso+' -- '+grade.curso_id
                 LimiteMostraGrades('CONSULTA GRADE', string, False)
             finally:
                 self.limiteConsulta.clearConsulta(event)
@@ -113,15 +136,15 @@ class CtrlGrade():
                 self.limiteExclui.clearExclusao(event)
 
     def atualizarGrade(self, event):
-        anoCurso = self.limiteAtualiza.get()
-        nome = self.limiteAtualiza.inputNome.get()
+        anoCurso = self.limiteAtualiza.escolhaCurso.get()
+        curso = self.limiteAtualiza.escolhaGrade.get()
         try:
-            if len(anoCurso) == 0 or len(nome) == 0:
+            if len(anoCurso) == 0 or len(curso) == 0:
                 raise CamposNaoPreenchidos()
         except CamposNaoPreenchidos:
             self.limiteAtualiza.mostraMessagebox('ATENÇÃO', 'Todos os campos devem ser preenchidos', True)
         else:
-            status = ManipulaBanco.atualizaGrade(anoCurso, nome)
+            status = ManipulaBanco.atualizaGrade(anoCurso, curso)
             try:
                 if status == False:
                     raise GradeNaoCadastrada()
@@ -130,4 +153,4 @@ class CtrlGrade():
             else: 
                 self.limiteAtualiza.mostraMessagebox('SUCESSO', 'Nome de grade atualizado com sucesso', False)
             finally:
-                self.limiteAtualiza.atualizarClearGrade(event)
+                self.limiteAtualiza.clearAtualizar(event)

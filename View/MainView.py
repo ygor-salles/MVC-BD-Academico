@@ -34,8 +34,15 @@ class LimitePrincipal():
         self.cursoMenu.add_command(label="Mostra", command=self.controle.mostraCursos)
         self.cursoMenu.add_command(label="Consulta", command=self.controle.consultaCursos)        
         self.cursoMenu.add_command(label="Exclui", command=self.controle.excluiCursos)        
-        # self.cursoMenu.add_command(label="Atualiza", command=self.controle.atualizaCursos)        
+        self.cursoMenu.add_command(label="Atualiza", command=self.controle.atualizaCursos)        
         self.menubar.add_cascade(label="Curso", menu=self.cursoMenu)
+
+        self.gradeMenu.add_command(label="Insere", command=self.controle.insereGrade)
+        self.gradeMenu.add_command(label="Mostra", command=self.controle.mostraGrade)
+        self.gradeMenu.add_command(label="Consulta", command=self.controle.consultaGrade)        
+        self.gradeMenu.add_command(label="Exclui", command=self.controle.excluiGrade)        
+        self.gradeMenu.add_command(label="Atualiza", command=self.controle.atualizaGrade)        
+        self.menubar.add_cascade(label="Grade", menu=self.gradeMenu)
 
         self.alunoMenu.add_command(label="Insere", command=self.controle.insereAlunos)
         self.alunoMenu.add_command(label="Mostra", command=self.controle.mostraAlunos)
@@ -50,13 +57,6 @@ class LimitePrincipal():
         self.discipMenu.add_command(label="Exclui", command=self.controle.excluiDisciplinas)        
         self.discipMenu.add_command(label="Atualiza", command=self.controle.atualizaDisciplinas)        
         self.menubar.add_cascade(label="Disciplina", menu=self.discipMenu)
-
-        self.gradeMenu.add_command(label="Insere", command=self.controle.insereGrade)
-        self.gradeMenu.add_command(label="Mostra", command=self.controle.mostraGrade)
-        self.gradeMenu.add_command(label="Consulta", command=self.controle.consultaGrade)        
-        self.gradeMenu.add_command(label="Exclui", command=self.controle.excluiGrade)        
-        # self.gradeMenu.add_command(label="Atualiza", command=self.controle.atualizaGrade)        
-        self.menubar.add_cascade(label="Grade", menu=self.gradeMenu)
 
         # self.historicoMenu.add_command(label="Insere", command=self.controle.insereHistoricos)
         # self.historicoMenu.add_command(label="Mostra", command=self.controle.mostraHistoricos)
