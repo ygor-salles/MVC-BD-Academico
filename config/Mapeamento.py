@@ -17,7 +17,7 @@ class Grade(Base):
     __tablename__ = 'grades'
     anocurso = Column(String(10), primary_key=True)
     curso_id = Column(ForeignKey('cursos.nome'), unique=True)
-    disciplinas = relationship('Grade', secondary='grade_disciplina') 
+    disciplinas = relationship('Disciplina', secondary='grade_disciplina') 
     
     def __repr__(self):
         return f'Grade(anocurso={self.anocurso}, curso_id={self.curso_id}, disciplinas={self.disciplinas})'

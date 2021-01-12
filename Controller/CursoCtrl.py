@@ -51,11 +51,8 @@ class CtrlCurso():
             LimiteMostraCursos('ERROR', 'Falha de conexão com o Banco de Dados', True)
         else:
             for curso in cursos:
-                string += curso.nome+'\n'
-                string += '\nALUNOS MATRICULADOS: \n'
-                for aluno in curso.alunos:
-                    string += str(aluno.nromatric)+' -- '+aluno.nome+'\n'
-                string += '---------------------------\n'
+                string += '* '+curso.nome+'\n'
+                # string += 'Grade: '+curso.grade+'\n'
             self.limiteMostra = LimiteMostraCursos('LISTA DE CURSOS', string, False)
     
     def consultaCursos(self, root):
@@ -63,11 +60,6 @@ class CtrlCurso():
 
     def excluiCursos(self, root):
         self.limiteExclui = LimiteExcluiCursos(self, root)
-    
-    def atualizaCursos(self, root):
-        listaCursos = self.getListaNomeCurso()
-        listaGradeAnoCurso = self.ctrlPrincipal.ctrlGrade.getListaGradeAnoCurso()
-        self.limiteAtualiza = LimiteAtualizaCursos(self, root, listaCursos, listaGradeAnoCurso)
 
     #Funções de CRUD dos Buttons ----------------------------------------------------
 
@@ -112,6 +104,8 @@ class CtrlCurso():
                 self.limiteConsulta.mostraMessagebox('ALERTA', 'Curso não cadastrado', True)
             else:
                 string = curso.nome+'\n'
+                # string += curso.grade+'\n'
+                string += '\nALUNOS MATRICULADOS: \n'
                 for aluno in curso.alunos:
                     string += str(aluno.nromatric)+' -- '+aluno.nome+'\n'
                 string += '---------------------------\n'
@@ -138,46 +132,3 @@ class CtrlCurso():
                 self.limiteExclui.mostraMessagebox('SUCESSO', 'Curso deletado com sucesso', False)
             finally:
                 self.limiteExclui.clearExclusao(event)            
-
-    #Atualização --------------------------------------------
-    def exibir(self, event):
-        comboCurso = self.limiteAtualiza.comboboxCurso.get()
-        self.listaAlunosCurso = self.getAlunosCurso(comboCurso)
-        listaMatricExclusiva = []
-        indice = self.getIndiceAnoGrade(comboCurso)
-        for matric in self.ctrlPrincipal.ctrlAluno.getListaNroMatric():
-            listaMatricExclusiva.append(self.verificaAluno(matric))
-        if self.testePopula == False:
-            self.testePopula = self.limiteAtualiza.isPopularListboxMatriculado(self.listaAlunosCurso)
-            self.limiteAtualiza.isPopularListboxSemMatricula(listaMatricExclusiva)
-            self.limiteAtualiza.comboboxAnoGrade.current(indice)
-        else:
-            self.limiteAtualiza.limparListbox()
-            self.limiteAtualiza.isPopularListboxMatriculado(self.listaAlunosCurso)
-            self.limiteAtualiza.isPopularListboxSemMatricula(listaMatricExclusiva)
-            self.limiteAtualiza.comboboxAnoGrade.current(indice)
-
-    def remove(self, event):
-        nomeCurso = self.limiteAtualiza.escolhaCurso.get()
-        alunoSelecionado = self.limiteAtualiza.listboxMatriculado.get(tk.ACTIVE)
-        aluno = self.getAlunoCurso(alunoSelecionado, nomeCurso)
-        self.listaAlunosCurso.remove(aluno)
-        self.limiteAtualiza.mostraMessagebox('Atualização', 'Aluno removido com sucesso', False)
-        self.exibir(event)
-    
-    def adiciona(self, event):
-        alunoSelecionado = self.limiteAtualiza.listboxSemMatricula.get(tk.ACTIVE)
-        aluno = self.ctrlPrincipal.ctrlAluno.getAluno(alunoSelecionado)
-        self.listaAlunosCurso.append(aluno)
-        self.limiteAtualiza.mostraMessagebox('Atualização', 'Aluno inserido com sucesso', False)
-        self.exibir(event)
-
-    def alteraGrade(self, event):
-        nomeCurso = self.limiteAtualiza.escolhaCurso.get()
-        anoCurso = self.limiteAtualiza.escolhaAnoGrade.get()
-        grade = self.ctrlPrincipal.ctrlGrade.getGrade(anoCurso)
-        for curs in self.getListaCursos():
-            if nomeCurso == curs.getNome():
-                curs.setGrade(grade)
-        self.limiteAtualiza.mostraMessagebox('Sucesso', 'Grade alterada com sucesso', False)
-        self.exibir(event)

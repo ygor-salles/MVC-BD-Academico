@@ -93,9 +93,6 @@ class ControlePrincipal():
     def excluiCursos(self):
         self.ctrlCurso.excluiCursos(self.newFrame())
     
-    def atualizaCursos(self):
-        self.ctrlCurso.atualizaCursos(self.newFrame())
-    
     ###############################################
     def insereHistoricos(self):
         self.ctrlHistorico.insereHistoricos(self.newFrame())

@@ -47,7 +47,7 @@ class ManipulaBanco():
             sessao.expire_on_commit = False
             grade = DAOCrud.consultaGrade(sessao, id)
             sessao.commit()
-            sessao.close()
+            #sessao.close()
             return grade
         except :
             return False

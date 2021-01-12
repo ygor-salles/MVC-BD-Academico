@@ -43,14 +43,3 @@ class ManipulaBanco():
             return curso
         except :
             return False
-
-    def atualizaCurso(id, nomeCurso):
-        try:
-            sessao = DAOCrud.getSession()
-            curso = DAOCrud.consultaCurso(sessao, id)
-            DAOCrud.atualizaCurso(curso, nomeCurso)
-            sessao.commit()
-            sessao.close()
-            return True
-        except :
-            return False

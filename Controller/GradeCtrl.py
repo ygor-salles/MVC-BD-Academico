@@ -1,6 +1,7 @@
 from View.GradeView import *
 from config.Mapeamento import Grade, GradeDisciplina
 from Model.GradeModel import ManipulaBanco
+from pprint import pprint
 
 class GradeDuplicada(Exception): pass
 
@@ -30,7 +31,7 @@ class CtrlGrade():
             self.limiteIns = LimiteInsereGrade(self, root, listaCursos, listaDisciplinas) 
 
     def mostraGrades(self):
-        string = 'ANO-CURSO -- NOME CURSO\n'
+        string = 'ANO-CURSO -- NOME CURSO\n\n'
         grades = self.getListaGrades()
         try:
             if grades == False:
@@ -39,7 +40,7 @@ class CtrlGrade():
             LimiteMostraGrades('ERROR', 'Falha de conexão com o banco', True)
         else:
             for grade in grades:
-                string += grade.anocurso+' -- '+grade.curso_id+'\n'       
+                string += '* '+grade.anocurso+' -- '+grade.curso_id+'\n'       
             self.limiteLista = LimiteMostraGrades('LISTA DE GRADES', string, False)
     
     def consultaGrades(self, root):
@@ -117,6 +118,7 @@ class CtrlGrade():
             self.limiteConsulta.mostraMessagebox('ATENÇÃO', 'Todos os campos devem ser preenchidos', True)
         else:
             grade = ManipulaBanco.consultaGrade(anoCurso)
+            pprint(grade)
             try:
                 if grade == False: raise ConexaoBD()
                 if grade == None: raise GradeNaoCadastrada()
@@ -125,7 +127,11 @@ class CtrlGrade():
             except GradeNaoCadastrada:
                 self.limiteConsulta.mostraMessagebox('ALERTA', 'Grade não cadastrada', True)
             else:
-                string = grade.anocurso+' -- '+grade.curso_id
+                string = 'Grade: '+grade.anocurso+'\n'
+                string += 'Curso: '+grade.curso_id+'\n'
+                string += '\nDisciplinas da grade: '
+                for disc in grade.disciplinas:
+                    string += '\n'+disc.codigo+' -- '+disc.nome+' -- '+str(disc.cargahoraria)
                 LimiteMostraGrades('CONSULTA GRADE', string, False)
             finally:
                 self.limiteConsulta.clearConsulta(event)

@@ -40,8 +40,7 @@ class LimitePrincipal():
         self.cursoMenu.add_command(label="Insere", command=self.controle.insereCursos)
         self.cursoMenu.add_command(label="Mostra", command=self.controle.mostraCursos)
         self.cursoMenu.add_command(label="Consulta", command=self.controle.consultaCursos)        
-        self.cursoMenu.add_command(label="Exclui", command=self.controle.excluiCursos)        
-        self.cursoMenu.add_command(label="Atualiza", command=self.controle.atualizaCursos)        
+        self.cursoMenu.add_command(label="Exclui", command=self.controle.excluiCursos)                
         self.menubar.add_cascade(label="Curso", menu=self.cursoMenu)
 
         self.gradeMenu.add_command(label="Insere", command=self.controle.insereGrade)
