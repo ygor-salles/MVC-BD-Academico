@@ -30,6 +30,13 @@ class LimitePrincipal():
         self.salvaMenu = tk.Menu(self.menubar)
         self.sairMenu = tk.Menu(self.menubar) 
              
+        self.discipMenu.add_command(label="Insere", command=self.controle.insereDisciplinas)
+        self.discipMenu.add_command(label="Mostra", command=self.controle.mostraDisciplinas)
+        self.discipMenu.add_command(label="Consulta", command=self.controle.consultaDisciplinas)        
+        self.discipMenu.add_command(label="Exclui", command=self.controle.excluiDisciplinas)        
+        self.discipMenu.add_command(label="Atualiza", command=self.controle.atualizaDisciplinas)        
+        self.menubar.add_cascade(label="Disciplina", menu=self.discipMenu)
+
         self.cursoMenu.add_command(label="Insere", command=self.controle.insereCursos)
         self.cursoMenu.add_command(label="Mostra", command=self.controle.mostraCursos)
         self.cursoMenu.add_command(label="Consulta", command=self.controle.consultaCursos)        
@@ -50,13 +57,6 @@ class LimitePrincipal():
         self.alunoMenu.add_command(label="Exclui", command=self.controle.excluiAlunos)
         self.alunoMenu.add_command(label="Atualiza", command=self.controle.atualizaAlunos)
         self.menubar.add_cascade(label="Aluno", menu=self.alunoMenu)
-
-        self.discipMenu.add_command(label="Insere", command=self.controle.insereDisciplinas)
-        self.discipMenu.add_command(label="Mostra", command=self.controle.mostraDisciplinas)
-        self.discipMenu.add_command(label="Consulta", command=self.controle.consultaDisciplinas)        
-        self.discipMenu.add_command(label="Exclui", command=self.controle.excluiDisciplinas)        
-        self.discipMenu.add_command(label="Atualiza", command=self.controle.atualizaDisciplinas)        
-        self.menubar.add_cascade(label="Disciplina", menu=self.discipMenu)
 
         # self.historicoMenu.add_command(label="Insere", command=self.controle.insereHistoricos)
         # self.historicoMenu.add_command(label="Mostra", command=self.controle.mostraHistoricos)

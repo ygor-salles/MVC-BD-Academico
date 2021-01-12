@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import ttk
 
 class LimiteInsereGrade():
-    def __init__(self, controle, root, listaCursos):
+    def __init__(self, controle, root, listaCursos, listaDisc):
         self.janela = root
         self.frameTitulo = tk.Frame(self.janela)
         self.frameTitulo.pack()
@@ -20,33 +20,30 @@ class LimiteInsereGrade():
         self.combobox = ttk.Combobox(self.frameBody, width=30, textvariable=self.escolhaCurso)
         self.combobox['values'] = listaCursos
 
-        self.buttonEnter = tk.Button(self.frameBody, text='Enter')
-        self.buttonEnter.bind('<Button>', controle.enterHandler)
-        self.buttonClear = tk.Button(self.frameBody, text='Clear')
-        self.buttonClear.bind('<Button>', self.clearHandler)
-        self.buttonFecha = tk.Button(self.frameBody, text='Fechar')
-        self.buttonFecha.bind('<Button>', self.fechaHandler)
+        self.labelDisciplina = tk.Label(self.frameBody, text='Escolha disciplinas: ', bg='#76cb69')
+        self.listbox = tk.Listbox(self.frameBody)
+        for disc in listaDisc:
+            self.listbox.insert(tk.END, disc.codigo)
 
+        self.buttonInsere = tk.Button(self.frameBody, text='Insere disciplina')
+        self.buttonInsere.bind('<Button>', controle.insereDisciplina)
+        self.buttonCria = tk.Button(self.frameBody, text='Cria Grade')
+        self.buttonCria.bind('<Button>', controle.criaGrade)
+        
         self.labelAnoCurso.grid(row=0, column=0, sticky='W', pady=20)
         self.inputAnoCurso.grid(row=0, column=1, sticky='W', pady=20)
         self.labelCurso.grid(row=1, column=0, sticky='W', pady=20)
         self.combobox.grid(row=1, column=1, sticky='W', pady=20)
-        self.buttonEnter.grid(row=2, column=2, sticky='W', pady=20)
-        self.buttonClear.grid(row=2, column=3, sticky='W', pady=20)
-        self.buttonFecha.grid(row=2, column=4, sticky='W', pady=20)
+        self.labelDisciplina.grid(row=2, column=0, sticky='W', pady=20)
+        self.listbox.grid(row=2, column=1, sticky='W', pady=20)
+        self.buttonInsere.grid(row=3, column=2, sticky='W', pady=20)
+        self.buttonCria.grid(row=3, column=3, sticky='W', pady=20)
     
     def mostraMessagebox(self, titulo, msg, erro):
         if erro == False:
             messagebox.showinfo(titulo, msg)
         else:
             messagebox.showerror(titulo, msg)
-
-    def clearHandler(self, event):
-        self.inputAnoCurso.delete(0, 'end')
-        self.combobox.delete(0, 'end')
-    
-    def fechaHandler(self, event):
-        self.janela.destroy()
 
 class LimiteMostraGrades():
     def __init__(self, titulo, msg, erro):

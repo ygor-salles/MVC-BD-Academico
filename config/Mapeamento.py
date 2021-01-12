@@ -9,7 +9,6 @@ class Aluno(Base):
     nromatric = Column(Integer, primary_key=True)
     nome = Column(String(50))
     curso_id = Column(ForeignKey('cursos.nome'))
-    curso = relationship('Curso')
 
     def __repr__(self):
         return f'Aluno(nromatric={self.nromatric}, nome={self.nome}, curso_id={self.curso_id})'
@@ -18,17 +17,16 @@ class Grade(Base):
     __tablename__ = 'grades'
     anocurso = Column(String(10), primary_key=True)
     curso_id = Column(ForeignKey('cursos.nome'), unique=True)
-    curso = relationship('Curso')
-    # disciplina = relationship('Disciplina') 
+    disciplinas = relationship('Grade', secondary='grade_disciplina') 
     
     def __repr__(self):
-        return f'Grade(anocurso={self.anocurso}, curso_id={self.curso_id})'
+        return f'Grade(anocurso={self.anocurso}, curso_id={self.curso_id}, disciplinas={self.disciplinas})'
 
 class Curso(Base):
     __tablename__ = 'cursos'
     nome = Column(String(30), primary_key=True)
-    alunos = relationship(Aluno, backref='cursos')
-    grade = relationship(Grade, backref='cursos')
+    alunos = relationship('Aluno')
+    grade = relationship('Grade')
     
     def __repr__(self):
         return f'Curso(nome={self.nome}, alunos={self.alunos}, grade={self.grade})'
@@ -38,10 +36,14 @@ class Disciplina(Base):
     codigo = Column(String(10), primary_key=True)
     nome = Column(String(50))
     cargahoraria = Column(Integer)
-    # grade_id = Column(ForeignKey('grades.anocurso'))
-    # historico_id = Column(ForeignKey('historicos.aluno'))
-    # grade = relationship('Grade')
-    # historico = relationship('Historico')
 
     def __repr__(self):
         return f'Disciplina(codigo={self.codigo}, nome={self.nome}, cargahoraria={self.cargahoraria})'
+
+class GradeDisciplina(Base):
+    __tablename__ = 'grade_disciplina'
+    grade_id = Column(String(10), ForeignKey('grades.anocurso'), primary_key=True)
+    disciplina_id = Column(String(10), ForeignKey('disciplinas.codigo'), primary_key=True)
+
+    def __repr__(self):
+        return f'GradeDisciplina(grade_id={self.grade_id}, disciplina_id={self.disciplina_id})'

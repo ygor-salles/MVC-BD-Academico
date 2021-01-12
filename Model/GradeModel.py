@@ -11,6 +11,16 @@ class ManipulaBanco():
         except:
             return False
 
+    def cadastraGradeDisciplina(listaRelacionamento):
+        try:
+            sessao = DAOCrud.getSession()
+            DAOCrud.insereLista(sessao, listaRelacionamento)
+            sessao.commit()
+            sessao.close()
+            return True
+        except:
+            return False
+
     def deletaGrade(id):
         try:
             sessao = DAOCrud.getSession()

@@ -1,5 +1,5 @@
 from View.GradeView import *
-from config.Mapeamento import Grade
+from config.Mapeamento import Grade, GradeDisciplina
 from Model.GradeModel import ManipulaBanco
 
 class GradeDuplicada(Exception): pass
@@ -13,6 +13,7 @@ class ConexaoBD(Exception): pass
 class CtrlGrade():
     def __init__(self, controlePrincipal):
         self.ctrlPrincipal = controlePrincipal
+        self.listaDiscGrade = []
 
     def getListaGrades(self):
         return ManipulaBanco.listaGrades() 
@@ -20,11 +21,13 @@ class CtrlGrade():
     #Funções que serão chamadas na Main --- Instaciadores (MENU BAR) ---------------------------
 
     def insereGrades(self, root):
+        self.listaDiscGrade = []
         listaCursos = self.ctrlPrincipal.ctrlCurso.getListaNomeCursos()
+        listaDisciplinas = self.ctrlPrincipal.ctrlDisciplina.getListaDisciplinas()
         if listaCursos == None:
             LimiteMostraGrades('ERROR', 'Falha de conexão com Banco de Dados', True)
         else:
-            self.limiteIns = LimiteInsereGrade(self, root, listaCursos) 
+            self.limiteIns = LimiteInsereGrade(self, root, listaCursos, listaDisciplinas) 
 
     def mostraGrades(self):
         string = 'ANO-CURSO -- NOME CURSO\n'
@@ -72,27 +75,38 @@ class CtrlGrade():
 
     #Funções de CRUD dos Buttons ----------------------------------------------------
 
-    def enterHandler(self, event):
+    def insereDisciplina(self, event):
         anoCurso = self.limiteIns.inputAnoCurso.get()
-        curso = self.limiteIns.escolhaCurso.get()
+        cursoSelecionado = self.limiteIns.escolhaCurso.get()
+        discSelecionada = self.limiteIns.listbox.get(tk.ACTIVE)
         try:
-            if len(anoCurso)==0 or len(curso)==0:
+            if len(anoCurso)==0 or len(cursoSelecionado)==0 or len(discSelecionada)==0:
                 raise CamposNaoPreenchidos()
         except CamposNaoPreenchidos:
             self.limiteIns.mostraMessagebox('ATENÇÃO', 'Todos os campos devem ser preenchidos', True)
         else:
-            grade = Grade(anocurso=anoCurso, curso_id=curso)
-            status = ManipulaBanco.cadastraGrade(grade)
-            print(status)
-            try:
-                if status == False:
-                    raise GradeDuplicada()
-            except GradeDuplicada:
-                self.limiteIns.mostraMessagebox('ALERTA', 'Essa grade já existe ou falha de conexão', True)
-            else:
-                self.limiteIns.mostraMessagebox('SUCESSO', 'Grade cadastrada com sucesso', False)
-            finally:
-                self.limiteIns.clearHandler(event)
+            self.listaDiscGrade.append(discSelecionada)
+            self.limiteIns.mostraMessagebox('SUCESSO', 'Disciplina inserida na lista', False)
+            self.limiteIns.listbox.delete(tk.ACTIVE)
+
+    def criaGrade(self, event):
+        anoCurso = self.limiteIns.inputAnoCurso.get()
+        cursoSelecionado = self.limiteIns.escolhaCurso.get()
+        try:
+            if len(anoCurso)==0 or len(cursoSelecionado)==0:
+                raise CamposNaoPreenchidos()
+        except CamposNaoPreenchidos:
+            self.limiteIns.mostraMessagebox('ATENÇÃO', 'Todos os campos devem ser preenchidos', True)
+        else:
+            relacionamento = []
+            grade = Grade(anocurso=anoCurso, curso_id=cursoSelecionado)
+            ManipulaBanco.cadastraGrade(grade)
+            for i in self.listaDiscGrade:
+                grade_disc = GradeDisciplina(grade_id=anoCurso, disciplina_id=i)
+                relacionamento.append(grade_disc)
+            ManipulaBanco.cadastraGradeDisciplina(relacionamento)
+            self.limiteIns.mostraMessagebox('SUCESSO', 'Disciplina inseridas na grade %s com sucesso'%anoCurso, False)
+            self.limiteIns.janela.destroy()
         
     def gradeConsulta(self, event):
         anoCurso = self.limiteConsulta.inputAnoCurso.get()

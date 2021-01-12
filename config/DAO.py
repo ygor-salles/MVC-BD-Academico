@@ -15,6 +15,9 @@ class DAOCrud():
     def insere(sessao, obj):
         sessao.add(obj)
 
+    def insereLista(sessao, listaObj):
+        sessao.add_all(listaObj)
+
     def deleta(session, obj):
         session.delete(obj)
 
