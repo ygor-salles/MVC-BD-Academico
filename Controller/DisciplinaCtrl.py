@@ -24,7 +24,7 @@ class CtrlDisciplina():
         self.limiteIns = LimiteInsereDisciplina(self, root)
 
     def mostraDisciplinas(self):
-        string = 'CÓDIGO -- NOME -- CH\n'
+        string = 'CÓDIGO -- NOME -- CH\n\n'
         disciplinas = self.getListaDisciplinas()
         try:
             if disciplinas == False:
@@ -33,7 +33,7 @@ class CtrlDisciplina():
             LimiteMostraDisciplinas('ERROR', 'Falha de conexão com o banco', True)
         else:
             for disciplina in disciplinas:
-                string += disciplina.codigo+' -- '+disciplina.nome+' -- '+str(disciplina.cargahoraria)+'\n'       
+                string += '* '+disciplina.codigo+' -- '+disciplina.nome+' -- '+str(disciplina.cargahoraria)+'\n'       
             self.limiteLista = LimiteMostraDisciplinas('LISTA DE DISCIPLINAS', string, False)
     
     def consultaDisciplinas(self, root):
@@ -91,7 +91,7 @@ class CtrlDisciplina():
             except DisciplinaNaoCadastrada:
                 self.limiteConsulta.mostraMessagebox('ALERTA', 'Disciplina não cadastrada', True)
             else:
-                string = 'CODIGO -- NOME -- CH\n'+disciplina.codigo+' -- '+disciplina.nome+' -- '+str(disciplina.cargahoraria)
+                string = 'CODIGO -- NOME -- CH\n\n'+disciplina.codigo+' -- '+disciplina.nome+' -- '+str(disciplina.cargahoraria)
                 LimiteMostraDisciplinas('CONSULTA DISCIPLINA', string, False)
             finally:
                 self.limiteConsulta.clearConsulta(event)

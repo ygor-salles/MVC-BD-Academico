@@ -16,7 +16,8 @@ class Aluno(Base):
 class Grade(Base):
     __tablename__ = 'grades'
     anocurso = Column(String(10), primary_key=True)
-    curso_id = Column(ForeignKey('cursos.nome'), unique=True)
+    curso_id = Column(ForeignKey('cursos.nome', ondelete='CASCADE'), unique=True)
+    curso = relationship('Curso', backref='grades')
     disciplinas = relationship('Disciplina', secondary='grade_disciplina') 
     
     def __repr__(self):
@@ -26,7 +27,7 @@ class Curso(Base):
     __tablename__ = 'cursos'
     nome = Column(String(30), primary_key=True)
     alunos = relationship('Aluno')
-    grade = relationship('Grade')
+    grade = relationship('Grade', uselist=False, backref='cursos', cascade="all, delete", passive_deletes=True)
     
     def __repr__(self):
         return f'Curso(nome={self.nome}, alunos={self.alunos}, grade={self.grade})'

@@ -28,7 +28,7 @@ class CtrlAluno():
             self.limiteIns = LimiteInsereAluno(self, root, listaCursos) 
 
     def mostraAlunos(self):
-        string = 'MATRÍCULA -- NOME -- CURSO\n'
+        string = 'MATRÍCULA -- NOME -- CURSO\n\n'
         alunos = self.getListaAlunos()
         try:
             if alunos == False:
@@ -37,7 +37,7 @@ class CtrlAluno():
             LimiteMostraAlunos('ERROR', 'Falha de conexão com o banco', True)
         else:
             for aluno in alunos:
-                string += str(aluno.nromatric) + ' -- ' + aluno.nome + ' -- '+aluno.curso_id+'\n'       
+                string += '* '+str(aluno.nromatric) + ' -- ' + aluno.nome + ' -- '+aluno.curso_id+'\n'       
             self.limiteLista = LimiteMostraAlunos('LISTA DE ALUNOS', string, False)
     
     def consultaAlunos(self, root):
