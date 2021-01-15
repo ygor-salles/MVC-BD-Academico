@@ -120,7 +120,7 @@ class LimiteExcluiGrade():
 
         self.labelCurso = tk.Label(self.frameBody, text='Curso: ', bg='#76cb69')
         self.escolhaCurso = tk.StringVar()
-        self.comboboxCurso = ttk.Combobox(self.frameBody, width=10, textvariable=self.escolhaCurso)
+        self.comboboxCurso = ttk.Combobox(self.frameBody, width=30, textvariable=self.escolhaCurso)
         self.comboboxCurso['values'] = listaCurso
     
         self.buttonExcluir = tk.Button(self.frameBody, text='Excluir Grade')
