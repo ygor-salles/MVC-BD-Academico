@@ -37,7 +37,7 @@ class CtrlAluno():
             LimiteMostraAlunos('ERROR', 'Falha de conexão com o banco', True)
         else:
             for aluno in alunos:
-                string += '* '+str(aluno.nromatric) + ' -- ' + aluno.nome + ' -- '+aluno.curso_id+'\n'       
+                string += '* '+str(aluno.nro_matric) + ' -- ' + aluno.nome + ' -- '+aluno.curso_id+'\n'       
             self.limiteLista = LimiteMostraAlunos('LISTA DE ALUNOS', string, False)
     
     def consultaAlunos(self, root):
@@ -70,7 +70,7 @@ class CtrlAluno():
         except CamposNaoPreenchidos:
             self.limiteIns.mostraMessagebox('ATENÇÃO', 'Todos os campos devem ser preenchidos', True)
         else:
-            aluno = Aluno(nromatric=nroMatric, nome=nome, curso_id=curso)
+            aluno = Aluno(nro_matric=nroMatric, nome=nome, curso_id=curso)
             status = ManipulaBanco.cadastraAluno(aluno)
             print(status)
             try:
@@ -101,7 +101,7 @@ class CtrlAluno():
             except AlunoNaoCadastrado:
                 self.limiteConsulta.mostraMessagebox('ALERTA', 'Aluno não cadastrado', True)
             else:
-                string = 'MATRÍCULA -- NOME -- CURSO\n'+str(aluno.nromatric) + ' -- ' + aluno.nome + ' -- '+aluno.curso_id+'\n'
+                string = 'MATRÍCULA -- NOME -- CURSO\n'+str(aluno.nro_matric) + ' -- ' + aluno.nome + ' -- '+aluno.curso_id+'\n'
                 LimiteMostraAlunos('CONSULTA ALUNO', string, False)
             finally:
                 self.limiteConsulta.clearAluno(event)

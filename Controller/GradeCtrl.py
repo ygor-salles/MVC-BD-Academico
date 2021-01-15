@@ -40,27 +40,37 @@ class CtrlGrade():
             LimiteMostraGrades('ERROR', 'Falha de conexão com o banco', True)
         else:
             for grade in grades:
-                string += '* '+grade.anocurso+' -- '+grade.curso_id+'\n'       
+                string += '* '+str(grade.ano)+' -- '+grade.curso_id+'\n'       
             self.limiteLista = LimiteMostraGrades('LISTA DE GRADES', string, False)
     
     def consultaGrades(self, root):
-        self.limiteConsulta = LimiteConsultaGrade(self, root)
+        listaCursos = self.ctrlPrincipal.ctrlCurso.getListaNomeCursos()
+        listaAno = self.getlistaGradeById()
+        if listaCursos == None or listaAno == None:
+            LimiteMostraGrades('ERROR', 'Falha de conexão com Banco de Dados', True)
+        else:
+            self.limiteConsulta = LimiteConsultaGrade(self, root, listaCursos, listaAno)
 
     def excluiGrades(self, root):
-        self.limiteExclui = LimiteExcluiGrade(self, root)
+        listaCursos = self.ctrlPrincipal.ctrlCurso.getListaNomeCursos()
+        listaAno = self.getlistaGradeById()
+        if listaCursos == None or listaAno == None:
+            LimiteMostraGrades('ERROR', 'Falha de conexão com Banco de Dados', True)
+        else:
+            self.limiteExclui = LimiteExcluiGrade(self, root, listaAno, listaCursos)
     
     def atualizaGrades(self, root):
         listaCursos = self.ctrlPrincipal.ctrlCurso.getListaNomeCursos()
-        listaGrades = self.getListaAnoCurso()
-        if listaCursos == None or listaGrades == None:
+        listaAno = self.getlistaGradeById()
+        if listaCursos == None or listaAno == None:
             LimiteMostraGrades('ERROR', 'Falha de conexão com Banco de Dados', True)
         else:
-            self.limiteAtualiza = LimiteAtualizaGrade(self, root, listaGrades, listaCursos)
+            self.limiteAtualiza = LimiteAtualizaGrade(self, root, listaAno, listaCursos)
 
     #Funções auxiliares e de amarrações da classe ---------------------------------------------
     
-    def getListaAnoCurso(self):
-        listaAnoCurso = []
+    def getlistaGradeById(self):
+        listaGradeById = []
         grades = self.getListaGrades()
         try:
             if grades == False:
@@ -70,18 +80,18 @@ class CtrlGrade():
             return None
         else:
             for grade in grades:
-                listaAnoCurso.append(grade.anocurso)
-            return listaAnoCurso
+                listaGradeById.append(grade.ano)
+            return listaGradeById
 
 
     #Funções de CRUD dos Buttons ----------------------------------------------------
 
     def insereDisciplina(self, event):
-        anoCurso = self.limiteIns.inputAnoCurso.get()
+        ano = self.limiteIns.inputAno.get()
         cursoSelecionado = self.limiteIns.escolhaCurso.get()
         discSelecionada = self.limiteIns.listbox.get(tk.ACTIVE)
         try:
-            if len(anoCurso)==0 or len(cursoSelecionado)==0 or len(discSelecionada)==0:
+            if len(ano)==0 or len(cursoSelecionado)==0 or len(discSelecionada)==0:
                 raise CamposNaoPreenchidos()
         except CamposNaoPreenchidos:
             self.limiteIns.mostraMessagebox('ATENÇÃO', 'Todos os campos devem ser preenchidos', True)
@@ -91,33 +101,34 @@ class CtrlGrade():
             self.limiteIns.listbox.delete(tk.ACTIVE)
 
     def criaGrade(self, event):
-        anoCurso = self.limiteIns.inputAnoCurso.get()
+        ano = self.limiteIns.inputAno.get()
         cursoSelecionado = self.limiteIns.escolhaCurso.get()
         try:
-            if len(anoCurso)==0 or len(cursoSelecionado)==0:
+            if len(ano)==0 or len(cursoSelecionado)==0:
                 raise CamposNaoPreenchidos()
         except CamposNaoPreenchidos:
             self.limiteIns.mostraMessagebox('ATENÇÃO', 'Todos os campos devem ser preenchidos', True)
         else:
             relacionamento = []
-            grade = Grade(anocurso=anoCurso, curso_id=cursoSelecionado)
+            grade = Grade(ano=ano, curso_id=cursoSelecionado)
             ManipulaBanco.cadastraGrade(grade)
             for i in self.listaDiscGrade:
-                grade_disc = GradeDisciplina(grade_id=anoCurso, disciplina_id=i)
+                grade_disc = GradeDisciplina(grade_id_ano=ano, grade_id_curso=cursoSelecionado, disciplina_id=i)
                 relacionamento.append(grade_disc)
             ManipulaBanco.cadastraGradeDisciplina(relacionamento)
-            self.limiteIns.mostraMessagebox('SUCESSO', 'Disciplina inseridas na grade %s com sucesso'%anoCurso, False)
+            self.limiteIns.mostraMessagebox('SUCESSO', 'Disciplina inseridas na grade %s com sucesso'%ano, False)
             self.limiteIns.janela.destroy()
         
     def gradeConsulta(self, event):
-        anoCurso = self.limiteConsulta.inputAnoCurso.get()
+        ano = self.limiteConsulta.escolhaAno.get()
+        curso = self.limiteConsulta.escolhaCurso.get()
         try:
-            if len(anoCurso) == 0:
+            if len(ano) == 0 or len(curso) == 0:
                 raise CamposNaoPreenchidos()
         except CamposNaoPreenchidos:
             self.limiteConsulta.mostraMessagebox('ATENÇÃO', 'Todos os campos devem ser preenchidos', True)
         else:
-            grade = ManipulaBanco.consultaGrade(anoCurso)
+            grade = ManipulaBanco.consultaGrade(ano, curso)
             pprint(grade)
             try:
                 if grade == False: raise ConexaoBD()
@@ -127,24 +138,25 @@ class CtrlGrade():
             except GradeNaoCadastrada:
                 self.limiteConsulta.mostraMessagebox('ALERTA', 'Grade não cadastrada', True)
             else:
-                string = 'Grade: '+grade.anocurso+'\n'
+                string = 'Grade: '+str(grade.ano)+'\n'
                 string += 'Curso: '+grade.curso_id+'\n'
                 string += '\nDisciplinas da grade: '
                 for disc in grade.disciplinas:
-                    string += '\n'+disc.codigo+' -- '+disc.nome+' -- '+str(disc.cargahoraria)
+                    string += '\n'+disc.codigo+' -- '+disc.nome+' -- '+str(disc.carga_horaria)
                 LimiteMostraGrades('CONSULTA GRADE', string, False)
             finally:
                 self.limiteConsulta.clearConsulta(event)
             
     def gradeDelete(self, event):
-        anoCurso = self.limiteExclui.inputAnoCurso.get()
+        ano = self.limiteExclui.escolhaAno.get()
+        curso = self.limiteConsulta.escolhaCurso.get()
         try:
-            if len(anoCurso)==0:
+            if len(ano)==0 or len(curso):
                 raise CamposNaoPreenchidos()
         except CamposNaoPreenchidos:
             self.limiteExclui.mostraMessagebox('ATENÇÃO', 'Todos os campos devem ser preenchidos', True)
         else:
-            status = ManipulaBanco.deletaGrade(anoCurso)
+            status = ManipulaBanco.deletaGrade(ano, curso)
             try:
                 if status == False:
                     raise GradeNaoCadastrada()
@@ -156,15 +168,15 @@ class CtrlGrade():
                 self.limiteExclui.clearExclusao(event)
 
     def atualizarGrade(self, event):
-        anoCurso = self.limiteAtualiza.escolhaCurso.get()
+        ano = self.limiteAtualiza.escolhaCurso.get()
         curso = self.limiteAtualiza.escolhaGrade.get()
         try:
-            if len(anoCurso) == 0 or len(curso) == 0:
+            if len(ano) == 0 or len(curso) == 0:
                 raise CamposNaoPreenchidos()
         except CamposNaoPreenchidos:
             self.limiteAtualiza.mostraMessagebox('ATENÇÃO', 'Todos os campos devem ser preenchidos', True)
         else:
-            status = ManipulaBanco.atualizaGrade(anoCurso, curso)
+            status = ManipulaBanco.atualizaGrade(ano, curso)
             try:
                 if status == False:
                     raise GradeNaoCadastrada()

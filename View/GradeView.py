@@ -2,6 +2,8 @@ from tkinter import messagebox
 import tkinter as tk
 from tkinter import ttk
 
+from sqlalchemy.sql.expression import text
+
 class LimiteInsereGrade():
     def __init__(self, controle, root, listaCursos, listaDisc):
         self.janela = root
@@ -12,8 +14,8 @@ class LimiteInsereGrade():
         self.frameBody.configure(bg='#76cb69')
         self.labelTitulo = tk.Label(self.frameTitulo, text='CADASTRAR GRADE', font=('Heveltica Bold', 14), bg='#76cb69').pack()
 
-        self.labelAnoCurso = tk.Label(self.frameBody, text='Ano/Curso: ', bg='#76cb69')
-        self.inputAnoCurso = tk.Entry(self.frameBody, width=20)
+        self.labelAno = tk.Label(self.frameBody, text='Ano: ', bg='#76cb69')
+        self.inputAno = tk.Entry(self.frameBody, width=10)
 
         self.labelCurso = tk.Label(self.frameBody, text='Escolha curso: ', bg='#76cb69')
         self.escolhaCurso = tk.StringVar()
@@ -30,8 +32,8 @@ class LimiteInsereGrade():
         self.buttonCria = tk.Button(self.frameBody, text='Cria Grade')
         self.buttonCria.bind('<Button>', controle.criaGrade)
         
-        self.labelAnoCurso.grid(row=0, column=0, sticky='W', pady=20)
-        self.inputAnoCurso.grid(row=0, column=1, sticky='W', pady=20)
+        self.labelAno.grid(row=0, column=0, sticky='W', pady=20)
+        self.inputAno.grid(row=0, column=1, sticky='W', pady=20)
         self.labelCurso.grid(row=1, column=0, sticky='W', pady=20)
         self.combobox.grid(row=1, column=1, sticky='W', pady=20)
         self.labelDisciplina.grid(row=2, column=0, sticky='W', pady=20)
@@ -53,7 +55,7 @@ class LimiteMostraGrades():
             messagebox.showinfo(titulo, msg)
 
 class LimiteConsultaGrade():
-    def __init__(self, controle, root):
+    def __init__(self, controle, root, listaCursos, listaAno):
         self.janela=root
         self.frameTitulo = tk.Frame(self.janela)
         self.frameTitulo.pack()
@@ -62,8 +64,15 @@ class LimiteConsultaGrade():
         self.frameBody.configure(bg='#76cb69')
         self.labelTitulo = tk.Label(self.frameTitulo, text='CONSULTAR GRADE', font=('Heveltica Bold', 14), bg='#76cb69').pack()
 
-        self.labelAnoCurso = tk.Label(self.frameBody, text='Ano/Curso: ', bg='#76cb69')
-        self.inputAnoCurso = tk.Entry(self.frameBody, width=20)
+        self.labelAno = tk.Label(self.frameBody, text='Ano: ', bg='#76cb69')
+        self.escolhaAno = tk.StringVar()
+        self.comboboxAno = ttk.Combobox(self.frameBody, width=10, textvariable=self.escolhaAno)
+        self.comboboxAno['values'] = listaAno
+
+        self.labelCurso = tk.Label(self.frameBody, text='Curso: ', bg='#76cb69')
+        self.escolhaCurso = tk.StringVar()
+        self.comboboxCurso = ttk.Combobox(self.frameBody, width=30, textvariable=self.escolhaCurso)
+        self.comboboxCurso['values'] = listaCursos
 
         self.buttonConsultar = tk.Button(self.frameBody, text='Realizar Consulta')
         self.buttonConsultar.bind('<Button>', controle.gradeConsulta)
@@ -72,11 +81,13 @@ class LimiteConsultaGrade():
         self.buttonFecha = tk.Button(self.frameBody ,text='Finalizar')      
         self.buttonFecha.bind('<Button>', self.fechaConsulta)
 
-        self.labelAnoCurso.grid(row=0, column=0, sticky='W', pady=20)
-        self.inputAnoCurso.grid(row=0, column=1, sticky='W', pady=20)
-        self.buttonConsultar.grid(row=1, column=2, sticky='W', pady=20)
-        self.buttonClear.grid(row=1, column=3, sticky='W', pady=20)
-        self.buttonFecha.grid(row=1, column=4, sticky='W', pady=20)
+        self.labelAno.grid(row=0, column=0, sticky='W', pady=20)
+        self.comboboxAno.grid(row=0, column=1, sticky='W', pady=20)
+        self.labelCurso.grid(row=1, column=0, sticky='W', pady=20)
+        self.comboboxCurso.grid(row=1, column=1, sticky='W', pady=20)
+        self.buttonConsultar.grid(row=2, column=2, sticky='W', pady=20)
+        self.buttonClear.grid(row=2, column=3, sticky='W', pady=20)
+        self.buttonFecha.grid(row=2, column=4, sticky='W', pady=20)
 
     def mostraMessagebox(self, titulo, msg, erro):
         if erro == False:
@@ -85,14 +96,15 @@ class LimiteConsultaGrade():
             messagebox.showerror(titulo, msg)
 
     def clearConsulta(self, event):
-        self.inputAnoCurso.delete(0, len(self.inputAnoCurso.get()))
+        self.comboboxAno.delete(0, 'end')
+        self.comboboxCurso.delete(0, 'end')
 
     def fechaConsulta(self, event):
         self.janela.destroy()
 
 
 class LimiteExcluiGrade():
-    def __init__(self, controle, root):
+    def __init__(self, controle, root, listaAno, listaCurso):
         self.janela=root
         self.frameTitulo = tk.Frame(self.janela)
         self.frameTitulo.pack()
@@ -101,8 +113,15 @@ class LimiteExcluiGrade():
         self.frameBody.configure(bg='#76cb69')
         self.labelTitulo = tk.Label(self.frameTitulo, text='EXCLUIR GRADE', font=('Heveltica Bold', 14), bg='#76cb69').pack()
 
-        self.labelAnoCurso = tk.Label(self.frameBody, text='Ano/Curso: ', bg='#76cb69')
-        self.inputAnoCurso = tk.Entry(self.frameBody, width=20)
+        self.labelAno = tk.Label(self.frameBody, text='Ano: ', bg='#76cb69')
+        self.escolhaAno = tk.StringVar()
+        self.comboboxAno = ttk.Combobox(self.frameBody, width=10, textvariable=self.escolhaAno)
+        self.comboboxAno['values'] = listaAno
+
+        self.labelCurso = tk.Label(self.frameBody, text='Curso: ', bg='#76cb69')
+        self.escolhaCurso = tk.StringVar()
+        self.comboboxCurso = ttk.Combobox(self.frameBody, width=10, textvariable=self.escolhaCurso)
+        self.comboboxCurso['values'] = listaCurso
     
         self.buttonExcluir = tk.Button(self.frameBody, text='Excluir Grade')
         self.buttonExcluir.bind('<Button>', controle.gradeDelete)
@@ -111,11 +130,13 @@ class LimiteExcluiGrade():
         self.buttonFecha = tk.Button(self.frameBody ,text='Finalizar')      
         self.buttonFecha.bind('<Button>', self.fechaExclusao)
 
-        self.labelAnoCurso.grid(row=0, column=0, sticky='W', pady=20)
-        self.inputAnoCurso.grid(row=0, column=1, sticky='W', pady=20)
-        self.buttonExcluir.grid(row=1, column=2, sticky='W', pady=20)
-        self.buttonClear.grid(row=1, column=3, sticky='W', pady=20)
-        self.buttonFecha.grid(row=1, column=4, sticky='W', pady=20)
+        self.labelAno.grid(row=0, column=0, sticky='W', pady=20)
+        self.comboboxAno.grid(row=0, column=1, sticky='W', pady=20)
+        self.labelCurso.grid(row=1, column=0, sticky='W', pady=20)
+        self.comboboxCurso.grid(row=1, column=1, sticky='W', pady=20)
+        self.buttonExcluir.grid(row=2, column=2, sticky='W', pady=20)
+        self.buttonClear.grid(row=2, column=3, sticky='W', pady=20)
+        self.buttonFecha.grid(row=2, column=4, sticky='W', pady=20)
 
     def mostraMessagebox(self, titulo, msg, erro):
         if erro == False:
@@ -124,7 +145,8 @@ class LimiteExcluiGrade():
             messagebox.showerror(titulo, msg)
 
     def clearExclusao(self, event):
-        self.inputAnoCurso.delete(0, 'end')
+        self.comboboxAno.delete(0, 'end')
+        self.comboboxCurso.delete(0, 'end')
     
     def fechaExclusao(self, event):
         self.janela.destroy()

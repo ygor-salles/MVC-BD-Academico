@@ -21,10 +21,10 @@ class ManipulaBanco():
         except:
             return False
 
-    def deletaGrade(id):
+    def deletaGrade(ano_id, curso_id):
         try:
             sessao = DAOCrud.getSession()
-            grade = DAOCrud.consultaGrade(sessao, id)
+            grade = DAOCrud.consultaGrade(sessao, ano_id, curso_id)
             DAOCrud.deleta(sessao, grade)
             sessao.commit()
             sessao.close()
@@ -41,22 +41,22 @@ class ManipulaBanco():
         except :
             return False
 
-    def consultaGrade(id):
+    def consultaGrade(id_ano, id_curso):
         try:
             sessao = DAOCrud.getSession()
             sessao.expire_on_commit = False
-            grade = DAOCrud.consultaGrade(sessao, id)
+            grade = DAOCrud.consultaGrade(sessao, id_ano, id_curso)
             sessao.commit()
             #sessao.close()
             return grade
         except :
             return False
 
-    def atualizaGrade(id, curso):
+    def atualizaGrade(id_ano, id_curso):
         try:
             sessao = DAOCrud.getSession()
-            grade = DAOCrud.consultaGrade(sessao, id)
-            DAOCrud.atualizaGrade(grade, curso)
+            grade = DAOCrud.consultaGrade(sessao, id_ano, id_curso)
+            DAOCrud.atualizaGrade(grade, id_curso)
             sessao.commit()
             sessao.close()
             return True

@@ -52,20 +52,22 @@ class CtrlCurso():
         else:
             for curso in cursos:
                 string += '* '+curso.nome+'\n'
-                # string += 'Grade: '+curso.grade+'\n'
+                string += 'Grade: '+str(curso.grade.ano)+'\n'
             self.limiteMostra = LimiteMostraCursos('LISTA DE CURSOS', string, False)
     
     def consultaCursos(self, root):
-        self.limiteConsulta = LimiteConsultaCursos(self, root)
+        listaCursos = self.getListaNomeCursos()
+        self.limiteConsulta = LimiteConsultaCursos(self, root, listaCursos)
 
     def excluiCursos(self, root):
-        self.limiteExclui = LimiteExcluiCursos(self, root)
+        listaCursos = self.getListaNomeCursos()
+        self.limiteExclui = LimiteExcluiCursos(self, root, listaCursos)
 
     #Funções de CRUD dos Buttons ----------------------------------------------------
 
     #Inserção -----------------------------------------
     def enterHandler(self, event):
-        nome = self.limiteIns.inputNomeCurso.get()
+        nome = self.limiteIns.inputCurso.get()
         try:
             if len(nome) == 0:
                 raise CamposNaoPreenchidos()
@@ -86,7 +88,7 @@ class CtrlCurso():
 
     #Consulta -------------------------------------
     def consultaHandler(self, event):
-        nome = self.limiteConsulta.inputTextNome.get()
+        nome = self.limiteConsulta.escolhaCurso.get()
         try:
             if len(nome) == 0:
                 raise CamposNaoPreenchidos()
@@ -104,10 +106,10 @@ class CtrlCurso():
                 self.limiteConsulta.mostraMessagebox('ALERTA', 'Curso não cadastrado', True)
             else:
                 string = curso.nome+'\n'
-                # string += curso.grade+'\n'
+                string += 'Grade: '+str(curso.grade.ano)+'\n'
                 string += '\nALUNOS MATRICULADOS: \n'
                 for aluno in curso.alunos:
-                    string += str(aluno.nromatric)+' -- '+aluno.nome+'\n'
+                    string += str(aluno.nro_matric)+' -- '+aluno.nome+'\n'
                 string += '---------------------------\n'
                 LimiteMostraCursos('CONSULTA CURSO', string, False)
             finally:
@@ -116,7 +118,7 @@ class CtrlCurso():
 
     #Exclusão -------------------------------------
     def excluiHandler(self, event):
-        nomeCurso = self.limiteExclui.inputTextNome.get()
+        nomeCurso = self.limiteExclui.escolhaCurso.get()
         try:
             if len(nomeCurso) == 0: raise CamposNaoPreenchidos()
         except CamposNaoPreenchidos:

@@ -33,7 +33,7 @@ class CtrlDisciplina():
             LimiteMostraDisciplinas('ERROR', 'Falha de conexão com o banco', True)
         else:
             for disciplina in disciplinas:
-                string += '* '+disciplina.codigo+' -- '+disciplina.nome+' -- '+str(disciplina.cargahoraria)+'\n'       
+                string += '* '+disciplina.codigo+' -- '+disciplina.nome+' -- '+str(disciplina.carga_horaria)+'\n'       
             self.limiteLista = LimiteMostraDisciplinas('LISTA DE DISCIPLINAS', string, False)
     
     def consultaDisciplinas(self, root):
@@ -61,7 +61,7 @@ class CtrlDisciplina():
         except CamposNaoPreenchidos:
             self.limiteIns.mostraMessagebox('ATENÇÃO', 'Todos os campos devem ser preenchidos', True)
         else:
-            disciplina = Disciplina(codigo=codigo, nome=nome, cargahoraria=ch)
+            disciplina = Disciplina(codigo=codigo, nome=nome, carga_horaria=ch)
             status = ManipulaBanco.cadastraDisciplina(disciplina)
             print(status)
             try:
@@ -91,7 +91,7 @@ class CtrlDisciplina():
             except DisciplinaNaoCadastrada:
                 self.limiteConsulta.mostraMessagebox('ALERTA', 'Disciplina não cadastrada', True)
             else:
-                string = 'CODIGO -- NOME -- CH\n\n'+disciplina.codigo+' -- '+disciplina.nome+' -- '+str(disciplina.cargahoraria)
+                string = 'CODIGO -- NOME -- CH\n\n'+disciplina.codigo+' -- '+disciplina.nome+' -- '+str(disciplina.carga_horaria)
                 LimiteMostraDisciplinas('CONSULTA DISCIPLINA', string, False)
             finally:
                 self.limiteConsulta.clearConsulta(event)

@@ -23,7 +23,7 @@ class DAOCrud():
 
     # MÉTODOS ALUNOS ------------------------------
     def consultaAluno(sessao, id):
-        aluno = sessao.query(Aluno).filter(Aluno.nromatric == id).first()
+        aluno = sessao.query(Aluno).filter(Aluno.nro_matric == id).first()
         return aluno
     
     def listaAluno(sessao):
@@ -42,8 +42,8 @@ class DAOCrud():
         return sessao.query(Curso).all()
 
     # MÉTODOS GRADE ----------------------------------
-    def consultaGrade(sessao, id):
-        grade = sessao.query(Grade).filter(Grade.anocurso == id).first()
+    def consultaGrade(sessao, id_ano, id_curso):
+        grade = sessao.query(Grade).filter(Grade.ano == id_ano, Grade.curso_id == id_curso).first()
         return grade
 
     def listaGrades(sessao):
@@ -62,4 +62,4 @@ class DAOCrud():
 
     def atualizaDisciplina(disciplina: Disciplina, nomeDisc, chDisc):
         disciplina.nome = nomeDisc
-        disciplina.cargahoraria = chDisc
+        disciplina.carga_horaria = chDisc
