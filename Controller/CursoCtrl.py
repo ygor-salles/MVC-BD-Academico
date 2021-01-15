@@ -1,7 +1,7 @@
 from pprint import pprint
 from Model.CursoModel import ManipulaBanco
 from View.CursoView import *
-from config.Mapeamento import Curso
+from DAO.Mapeamento import Curso
 
 class CursoNaoCadastrado(Exception): pass
 
@@ -53,6 +53,7 @@ class CtrlCurso():
             for curso in cursos:
                 string += '* '+curso.nome+'\n'
                 string += 'Grade: '+str(curso.grade.ano)+'\n'
+                string += '----------------------------------\n\n'
             self.limiteMostra = LimiteMostraCursos('LISTA DE CURSOS', string, False)
     
     def consultaCursos(self, root):

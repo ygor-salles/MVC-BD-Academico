@@ -1,4 +1,4 @@
-from config.DAO import DAOCrud
+from DAO.DAO import DAOCrud
 
 class ManipulaBanco():
     def cadastraCurso(curso):

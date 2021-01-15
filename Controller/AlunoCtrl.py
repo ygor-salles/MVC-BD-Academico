@@ -1,5 +1,5 @@
 from View.AlunoView import *
-from config.Mapeamento import Aluno
+from DAO.Mapeamento import Aluno
 from Model.AlunoModel import ManipulaBanco
 from pprint import pprint
 

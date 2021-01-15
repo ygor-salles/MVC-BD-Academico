@@ -1,5 +1,5 @@
 from View.GradeView import *
-from config.Mapeamento import Grade, GradeDisciplina
+from DAO.Mapeamento import Grade, GradeDisciplina
 from Model.GradeModel import ManipulaBanco
 from pprint import pprint
 

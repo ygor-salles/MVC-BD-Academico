@@ -1,6 +1,6 @@
 from sqlalchemy.sql.sqltypes import ARRAY
 from View.DisciplinaView import *
-from config.Mapeamento import Disciplina
+from DAO.Mapeamento import Disciplina
 from Model.DisciplinaModel import ManipulaBanco
 
 class DisciplinaDuplicada(Exception): pass

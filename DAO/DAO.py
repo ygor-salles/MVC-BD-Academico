@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker
-from config.Mapeamento import Base, Aluno, Curso, Disciplina, Grade
+from DAO.Mapeamento import Base, Aluno, Curso, Disciplina, Grade
 
 class DAOCrud():
     # MÉTODOS GERAIS ------------------------------
