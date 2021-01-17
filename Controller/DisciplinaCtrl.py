@@ -16,6 +16,21 @@ class CtrlDisciplina():
 
     def getListaDisciplinas(self):
         return ManipulaBanco.listaDisciplinas() 
+
+    #Funções auxiliares e de amarrações da classe ---------------------------------------------
+
+    def getListaCodDisc(self):
+        listaCodDisc = []
+        disciplinas = self.getListaDisciplinas()
+        try:
+            if disciplinas == False:
+                raise ConexaoBD()
+        except ConexaoBD:
+            return None
+        else:
+            for disc in disciplinas:
+                listaCodDisc.append(disc.codigo)
+            return listaCodDisc
             
     #Funções que serão chamadas na Main --- Instaciadores (MENU BAR) ---------------------------
 
@@ -42,11 +57,8 @@ class CtrlDisciplina():
         self.limiteExclui = LimiteExcluiDisciplina(self, root)
     
     def atualizaDisciplinas(self, root):
-        self.limiteAtualiza = LimiteAtualizaDisciplina(self, root)
-
-    #Funções auxiliares e de amarrações da classe ---------------------------------------------
-    
-
+        listaCodDisc = self.getListaCodDisc()
+        self.limiteAtualiza = LimiteAtualizaDisciplina(self, root, listaCodDisc)
 
     #Funções de CRUD dos Buttons ----------------------------------------------------
 
@@ -115,7 +127,7 @@ class CtrlDisciplina():
                 self.limiteExclui.clearExclusao(event)
 
     def atualizarDisciplina(self, event):
-        codigo = self.limiteAtualiza.inputCodigo.get()
+        codigo = self.limiteAtualiza.escolhaCod.get()
         nome = self.limiteAtualiza.inputNome.get()
         ch = self.limiteAtualiza.inputCargaHoraria.get()
         try:

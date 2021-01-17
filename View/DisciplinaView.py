@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
+from tkinter import ttk
 
 class LimiteInsereDisciplina():
     def __init__(self, controle, root):
@@ -135,7 +136,7 @@ class LimiteExcluiDisciplina():
         self.janela.destroy()
 
 class LimiteAtualizaDisciplina():
-    def __init__(self, controle, root):
+    def __init__(self, controle, root, listaCodDisc):
         self.janela = root
         self.frameTitulo = tk.Frame(self.janela)
         self.frameTitulo.pack()
@@ -149,7 +150,9 @@ class LimiteAtualizaDisciplina():
         self.labelNome = tk.Label(self.frameBody, text="Atualizar Nome: ", bg='#76cb69')
         self.labelCargaHoraria = tk.Label(self.frameBody, text='Atualizar Carga Horária: ', bg='#76cb69')
         
-        self.inputCodigo = tk.Entry(self.frameBody, width=20)
+        self.escolhaCod = tk.StringVar()
+        self.comboboxCod = ttk.Combobox(self.frameBody, width=20, textvariable=self.escolhaCod)
+        self.comboboxCod['values'] = listaCodDisc
         self.inputNome = tk.Entry(self.frameBody, width=35)
         self.inputCargaHoraria = tk.Entry(self.frameBody, width=5)
         
@@ -162,7 +165,7 @@ class LimiteAtualizaDisciplina():
 
         self.labelMensagem.grid(columnspan=5, pady=15)
         self.labelCodigo.grid(row=1, column=0, sticky='W', pady=20)
-        self.inputCodigo.grid(row=1, column=1, sticky='W', pady=20)
+        self.comboboxCod.grid(row=1, column=1, sticky='W', pady=20)
         self.labelNome.grid(row=2, column=0, sticky='W', pady=20)
         self.inputNome.grid(row=2, column=1, sticky='W', pady=20)
         self.labelCargaHoraria.grid(row=3, column=0, sticky='W', pady=20)
@@ -178,7 +181,7 @@ class LimiteAtualizaDisciplina():
             messagebox.showerror(titulo, msg)
 
     def clearAtualiza(self, event):
-        self.inputCodigo.delete(0, 'end')
+        self.comboboxCod.delete(0, 'end')
         self.inputNome.delete(0, 'end')
         self.inputCargaHoraria.delete(0, 'end')
     
