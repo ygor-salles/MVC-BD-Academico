@@ -149,9 +149,9 @@ class CtrlGrade():
             
     def gradeDelete(self, event):
         ano = self.limiteExclui.escolhaAno.get()
-        curso = self.limiteConsulta.escolhaCurso.get()
+        curso = self.limiteExclui.escolhaCurso.get()
         try:
-            if len(ano)==0 or len(curso):
+            if len(ano)==0 or len(curso)==0:
                 raise CamposNaoPreenchidos()
         except CamposNaoPreenchidos:
             self.limiteExclui.mostraMessagebox('ATENÇÃO', 'Todos os campos devem ser preenchidos', True)
