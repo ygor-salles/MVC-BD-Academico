@@ -39,8 +39,8 @@ class CtrlGrade():
         except:
             LimiteMostraGrades('ERROR', 'Falha de conexão com o banco', True)
         else:
-            for grade in grades:
-                string += '* '+str(grade.ano)+' -- '+grade.curso_id+'\n'       
+            for grade in grades:       
+                string += f'* {grade.ano} -- {grade.curso_id}\n'       
             self.limiteLista = LimiteMostraGrades('LISTA DE GRADES', string, False)
     
     def consultaGrades(self, root):
@@ -138,11 +138,11 @@ class CtrlGrade():
             except GradeNaoCadastrada:
                 self.limiteConsulta.mostraMessagebox('ALERTA', 'Grade não cadastrada', True)
             else:
-                string = 'Grade: '+str(grade.ano)+'\n'
-                string += 'Curso: '+grade.curso_id+'\n'
+                string = f'Grade: {grade.ano}\n'
+                string += f'Curso: {grade.curso_id}\n'
                 string += '\nDisciplinas da grade: '
                 for disc in grade.disciplinas:
-                    string += '\n'+disc.codigo+' -- '+disc.nome+' -- '+str(disc.carga_horaria)
+                    string += f'\n{disc.codigo} -- {disc.nome} -- {disc.carga_horaria}'
                 LimiteMostraGrades('CONSULTA GRADE', string, False)
             finally:
                 self.limiteConsulta.clearConsulta(event)

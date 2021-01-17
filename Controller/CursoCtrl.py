@@ -51,9 +51,12 @@ class CtrlCurso():
             LimiteMostraCursos('ERROR', 'Falha de conexão com o Banco de Dados', True)
         else:
             for curso in cursos:
-                string += '* '+curso.nome+'\n'
-                string += 'Grade: '+str(curso.grade.ano)+'\n'
-                string += '----------------------------------\n\n'
+                string += f'* {curso.nome}\n'
+                if curso.grade == None:
+                    string += f'SEM GRADE\n'
+                else:
+                    string += f'Grade: {curso.grade.ano}\n'
+                string += '\n\n'
             self.limiteMostra = LimiteMostraCursos('LISTA DE CURSOS', string, False)
     
     def consultaCursos(self, root):
@@ -106,16 +109,18 @@ class CtrlCurso():
             except CursoNaoCadastrado:
                 self.limiteConsulta.mostraMessagebox('ALERTA', 'Curso não cadastrado', True)
             else:
-                string = curso.nome+'\n'
-                string += 'Grade: '+str(curso.grade.ano)+'\n'
+                string = f'{curso.nome}\n'
+                if curso.grade == None:
+                    string += 'SEM GRADE\n'
+                else:
+                    string += f'Grade: {curso.grade.ano}\n'
                 string += '\nALUNOS MATRICULADOS: \n'
                 for aluno in curso.alunos:
-                    string += str(aluno.nro_matric)+' -- '+aluno.nome+'\n'
+                    string += f'{aluno.nro_matric} -- {aluno.nome}\n'
                 string += '---------------------------\n'
                 LimiteMostraCursos('CONSULTA CURSO', string, False)
             finally:
                 self.limiteConsulta.clearConsulta(event)
-
 
     #Exclusão -------------------------------------
     def excluiHandler(self, event):

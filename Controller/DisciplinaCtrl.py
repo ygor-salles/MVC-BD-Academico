@@ -1,4 +1,3 @@
-from sqlalchemy.sql.sqltypes import ARRAY
 from View.DisciplinaView import *
 from DAO.Mapeamento import Disciplina
 from Model.DisciplinaModel import ManipulaBanco
@@ -32,8 +31,8 @@ class CtrlDisciplina():
         except:
             LimiteMostraDisciplinas('ERROR', 'Falha de conexão com o banco', True)
         else:
-            for disciplina in disciplinas:
-                string += '* '+disciplina.codigo+' -- '+disciplina.nome+' -- '+str(disciplina.carga_horaria)+'\n'       
+            for disciplina in disciplinas:       
+                string += f'* {disciplina.codigo} -- {disciplina.nome} -- {disciplina.carga_horaria}\n'       
             self.limiteLista = LimiteMostraDisciplinas('LISTA DE DISCIPLINAS', string, False)
     
     def consultaDisciplinas(self, root):
@@ -91,7 +90,7 @@ class CtrlDisciplina():
             except DisciplinaNaoCadastrada:
                 self.limiteConsulta.mostraMessagebox('ALERTA', 'Disciplina não cadastrada', True)
             else:
-                string = 'CODIGO -- NOME -- CH\n\n'+disciplina.codigo+' -- '+disciplina.nome+' -- '+str(disciplina.carga_horaria)
+                string = f'CODIGO -- NOME -- CH \n\n{disciplina.codigo} -- {disciplina.nome} -- {disciplina.carga_horaria}'
                 LimiteMostraDisciplinas('CONSULTA DISCIPLINA', string, False)
             finally:
                 self.limiteConsulta.clearConsulta(event)

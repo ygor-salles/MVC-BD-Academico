@@ -36,8 +36,11 @@ class CtrlAluno():
         except:
             LimiteMostraAlunos('ERROR', 'Falha de conexão com o banco', True)
         else:
-            for aluno in alunos:
-                string += '* '+str(aluno.nro_matric) + ' -- ' + aluno.nome + ' -- '+aluno.curso_id+'\n'       
+            for aluno in alunos: 
+                if aluno.curso_id == None:      
+                    string += f'* {aluno.nro_matric} -- {aluno.nome} -- SEM CURSO\n'
+                else:
+                    string += f'* {aluno.nro_matric} -- {aluno.nome} -- {aluno.curso_id}\n'
             self.limiteLista = LimiteMostraAlunos('LISTA DE ALUNOS', string, False)
     
     def consultaAlunos(self, root):
@@ -101,7 +104,10 @@ class CtrlAluno():
             except AlunoNaoCadastrado:
                 self.limiteConsulta.mostraMessagebox('ALERTA', 'Aluno não cadastrado', True)
             else:
-                string = 'MATRÍCULA -- NOME -- CURSO\n'+str(aluno.nro_matric) + ' -- ' + aluno.nome + ' -- '+aluno.curso_id+'\n'
+                if aluno.curso_id == None:
+                    string = f'MATRÍCULA -- NOME -- CURSO \n{aluno.nro_matric} -- {aluno.nome} -- SEM CURSO\n'
+                else:
+                    string = f'MATRÍCULA -- NOME -- CURSO \n{aluno.nro_matric} -- {aluno.nome} -- {aluno.curso_id}\n'
                 LimiteMostraAlunos('CONSULTA ALUNO', string, False)
             finally:
                 self.limiteConsulta.clearAluno(event)
