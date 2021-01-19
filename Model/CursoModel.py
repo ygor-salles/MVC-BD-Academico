@@ -14,9 +14,7 @@ class ManipulaBanco():
     def deletaCurso(id):
         try:
             sessao = DAOCrud.getSession()
-            sessao.expire_on_commit = False
-            curso = DAOCrud.consultaCurso(sessao, id)
-            DAOCrud.deleta(sessao, curso)
+            DAOCrud.deletaCurso(sessao, id)
             sessao.commit()
             # sessao.close()
             return True

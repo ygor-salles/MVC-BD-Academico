@@ -28,8 +28,7 @@ class ManipulaBanco():
     def deletaGrade(ano_id, curso_id):
         try:
             sessao = DAOCrud.getSession()
-            grade = DAOCrud.consultaGrade(sessao, ano_id, curso_id)
-            DAOCrud.deleta(sessao, grade)
+            DAOCrud.deletaGrade(sessao, ano_id, curso_id)
             sessao.commit()
             sessao.close()
             return True
@@ -73,8 +72,7 @@ class ManipulaBanco():
     def removerDisciplinaDaGrade(gradeAno, gradeCurso, disciplinaCod):
         try:
             sessao = DAOCrud.getSession()
-            gradeDisciplina = DAOCrud.consultaGradeDisciplina(sessao, gradeAno, gradeCurso, disciplinaCod)
-            DAOCrud.deleta(sessao, gradeDisciplina)
+            DAOCrud.deletaGradeDisciplina(sessao, gradeAno, gradeCurso, disciplinaCod)
             sessao.commit()
             sessao.close()
             return True

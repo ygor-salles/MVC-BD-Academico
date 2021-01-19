@@ -14,8 +14,7 @@ class ManipulaBanco():
     def deletaDisciplina(id):
         try:
             sessao = DAOCrud.getSession()
-            disciplina = DAOCrud.consultaDisciplina(sessao, id)
-            DAOCrud.deleta(sessao, disciplina)
+            DAOCrud.deletaDisciplina(sessao, id)
             sessao.commit()
             sessao.close()
             return True

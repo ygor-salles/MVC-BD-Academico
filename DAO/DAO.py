@@ -19,16 +19,15 @@ class DAOCrud():
     def insereLista(sessao, listaObj):
         sessao.add_all(listaObj)
 
-    def deleta(session, obj):
-        session.delete(obj)
-
     # MÉTODOS ALUNOS ------------------------------
     def consultaAluno(sessao, id):
-        aluno = sessao.query(Aluno).filter(Aluno.nro_matric == id).first()
-        return aluno
+        return sessao.query(Aluno).filter(Aluno.nro_matric == id).first()
     
     def listaAluno(sessao):
         return sessao.query(Aluno).all()
+
+    def deletaAluno(session, id):
+        session.query(Aluno).filter(Aluno.nro_matric==id).delete()
 
     def atualizaAluno(aluno: Aluno, nomeAluno, curso):
         aluno.nome = nomeAluno
@@ -36,34 +35,39 @@ class DAOCrud():
         
     # MÉTODOS CURSOS ------------------------------
     def consultaCurso(sessao, id):
-        curso = sessao.query(Curso).filter(Curso.nome == id).first()
-        return curso
+        return sessao.query(Curso).filter(Curso.nome == id).first()
 
     def listaCursos(sessao):
         return sessao.query(Curso).all()
 
+    def deletaCurso(sessao, id):
+        sessao.query(Curso).filter(Curso.nome == id).delete()
+
     # MÉTODOS GRADE ----------------------------------
     def consultaGrade(sessao, id_ano, id_curso):
-        grade = sessao.query(Grade).filter(Grade.ano == id_ano, Grade.curso_id == id_curso).first()
-        return grade
+        return sessao.query(Grade).filter(Grade.ano == id_ano, Grade.curso_id == id_curso).first()
 
     def listaGrades(sessao):
         return sessao.query(Grade).all()
 
+    def deletaGrade(sessao, id_ano, id_curso):
+        sessao.query(Grade).filter(Grade.ano==id_ano, Grade.curso_id==id_curso).delete()
+
     # MÉTODOS DISCIPLINA ----------------------------------
     def consultaDisciplina(sessao, id):
-        disciplina = sessao.query(Disciplina).filter(Disciplina.codigo == id).first()
-        return disciplina
+        return sessao.query(Disciplina).filter(Disciplina.codigo == id).first()
 
     def listaDisciplinas(sessao):
         return sessao.query(Disciplina).all()
+
+    def deletaDisciplina(sessao, id):
+        sessao.query(Disciplina).filter(Disciplina.codigo == id).delete()
 
     def atualizaDisciplina(disciplina: Disciplina, nomeDisc, chDisc):
         disciplina.nome = nomeDisc
         disciplina.carga_horaria = chDisc
 
     # MÉTODOS GRADEDISCIPLINA -------------------------------------------------------
-    def consultaGradeDisciplina(sessao, gradeAno, gradeCurso, disciplinaCod):
-        gradeDisciplina = sessao.query(GradeDisciplina).filter(GradeDisciplina.grade_id_ano==gradeAno,
-            GradeDisciplina.grade_id_curso==gradeCurso, GradeDisciplina.disciplina_id==disciplinaCod).first()
-        return gradeDisciplina
+    def deletaGradeDisciplina(sessao, gradeAno, gradeCurso, disciplinaCod):
+        sessao.query(GradeDisciplina).filter(GradeDisciplina.grade_id_ano==gradeAno,
+            GradeDisciplina.grade_id_curso==gradeCurso, GradeDisciplina.disciplina_id==disciplinaCod).delete()
