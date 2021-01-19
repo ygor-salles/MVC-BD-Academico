@@ -163,28 +163,39 @@ class LimiteAtualizaGrade():
 
         self.labelGrade = tk.Label(self.frameBody, text='Escolha grade: ', bg='#76cb69')
         self.escolhaGrade = tk.StringVar()
-        self.comboboxGrade = ttk.Combobox(self.frameBody, width=30, textvariable=self.escolhaGrade)
+        self.comboboxGrade = ttk.Combobox(self.frameBody, width=20, textvariable=self.escolhaGrade)
         self.comboboxGrade['values'] = listaGrade
 
         self.labelCurso = tk.Label(self.frameBody, text='Atualizar curso: ', bg='#76cb69')
         self.escolhaCurso = tk.StringVar()
-        self.comboboxCurso = ttk.Combobox(self.frameBody, width=30, textvariable=self.escolhaCurso)
+        self.comboboxCurso = ttk.Combobox(self.frameBody, width=20, textvariable=self.escolhaCurso)
         self.comboboxCurso['values'] = listaCurso
+        self.comboboxCurso.bind('<<ComboboxSelected>>', controle.popular)
 
-        self.buttonAtualizar = tk.Button(self.frameBody, text='Atualizar Grade')
-        self.buttonAtualizar.bind('<Button>', controle.atualizarGrade)
-        self.buttonClear = tk.Button(self.frameBody, text='Clear')
-        self.buttonClear.bind('<Button>', self.clearAtualizar)
-        self.buttonFechar = tk.Button(self.frameBody, text='Fechar')
-        self.buttonFechar.bind('<Button>', self.fechaAtualizacao)
+        self.labelDisc = tk.Label(self.frameBody, text='Remover disciplina: ', bg='#76cb69')
+        self.listbox = tk.Listbox(self.frameBody)
+
+        self.labelTodasDisc = tk.Label(self.frameBody, text='Adicionar disciplina', bg='#76cb69')
+        self.listboxTodas = tk.Listbox(self.frameBody)
+
+        self.buttonRemove = tk.Button(self.frameBody ,text="Remove Disciplina")           
+        self.buttonRemove.bind("<Button>", controle.removeDisciplina)
+        self.buttonAdiciona = tk.Button(self.frameBody ,text="Adiciona Disciplina")           
+        self.buttonAdiciona.bind("<Button>", controle.adicionaDisciplina)
+        self.buttonFecha = tk.Button(self.frameBody ,text="Fechar")           
+        self.buttonFecha.bind("<Button>", self.fechaAtualizacao)
 
         self.labelGrade.grid(row=0, column=0, sticky='W', pady=20)
         self.comboboxGrade.grid(row=0, column=1, sticky='W', pady=20)
         self.labelCurso.grid(row=1, column=0, sticky='W', pady=20)
         self.comboboxCurso.grid(row=1, column=1, sticky='W', pady=20)
-        self.buttonAtualizar.grid(row=2, column=2, sticky='W', pady=20)
-        self.buttonClear.grid(row=2, column=3, sticky='W', pady=20)
-        self.buttonFechar.grid(row=2, column=4, sticky='W', pady=20)
+        self.labelDisc.grid(row=2, column=1, sticky='W')
+        self.listbox.grid(row=3, column=1, sticky='W')
+        self.labelTodasDisc.grid(row=2, column=2, sticky='W')
+        self.listboxTodas.grid(row=3, column=2, sticky='W')
+        self.buttonRemove.grid(row=4, column=1, sticky='W', pady=10)
+        self.buttonAdiciona.grid(row=4, column=2, sticky='W', pady=10)
+        self.buttonFecha.grid(row=4, column=3, sticky='W', pady=10)
     
     def mostraMessagebox(self, titulo, msg, erro):
         if erro == False:
@@ -195,6 +206,17 @@ class LimiteAtualizaGrade():
     def fechaAtualizacao(self, event):
         self.janela.destroy()
 
-    def clearAtualizar(self, event):
-        self.comboboxCurso.delete(0, 'end')
-        self.comboboxGrade.delete(0, 'end')
+    def IsPopularListbox(self, listaGradeCodDisc):
+        for disc in listaGradeCodDisc:
+            self.listbox.insert(tk.END, disc)
+        return True
+
+    def IsPopularListboxTodas(self, listaTodasDisciplinas, listaGradeCodDisc):
+        for todas in listaTodasDisciplinas:
+            if todas not in listaGradeCodDisc:
+                self.listboxTodas.insert(tk.END, todas)
+        return True
+
+    def limparListBox(self):
+        self.listbox.delete(0, 'end')
+        self.listboxTodas.delete(0, 'end')

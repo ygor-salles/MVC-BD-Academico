@@ -1,5 +1,5 @@
 from View.GradeView import *
-from DAO.Mapeamento import Grade, GradeDisciplina
+from DAO.Mapeamento import Grade, GradeDisciplina, Disciplina
 from Model.GradeModel import ManipulaBanco
 from pprint import pprint
 
@@ -15,6 +15,8 @@ class CtrlGrade():
     def __init__(self, controlePrincipal):
         self.ctrlPrincipal = controlePrincipal
         self.listaDiscGrade = []
+        self.testePopula = False
+        self.listaGradeCodDisc = []
 
     def getListaGrades(self):
         return ManipulaBanco.listaGrades() 
@@ -83,9 +85,17 @@ class CtrlGrade():
                 listaGradeById.append(grade.ano)
             return listaGradeById
 
+    def getListaGradeCodDisc(self, cursoCombo, anoCombo):
+        listaGradeCodDisc = []
+        for grade in self.getListaGrades():
+            if cursoCombo==grade.curso_id and anoCombo==str(grade.ano):
+                for disc in grade.disciplinas:
+                    listaGradeCodDisc.append(disc.codigo)
+                return listaGradeCodDisc
 
     #Funções de CRUD dos Buttons ----------------------------------------------------
 
+    # inserção ----------------------------------
     def insereDisciplina(self, event):
         ano = self.limiteIns.inputAno.get()
         cursoSelecionado = self.limiteIns.escolhaCurso.get()
@@ -119,6 +129,7 @@ class CtrlGrade():
             self.limiteIns.mostraMessagebox('SUCESSO', 'Disciplina inseridas na grade %s com sucesso'%ano, False)
             self.limiteIns.janela.destroy()
         
+    # consulta ----------------------------------
     def gradeConsulta(self, event):
         ano = self.limiteConsulta.escolhaAno.get()
         curso = self.limiteConsulta.escolhaCurso.get()
@@ -147,6 +158,7 @@ class CtrlGrade():
             finally:
                 self.limiteConsulta.clearConsulta(event)
             
+    # deleta ----------------------------------
     def gradeDelete(self, event):
         ano = self.limiteExclui.escolhaAno.get()
         curso = self.limiteExclui.escolhaCurso.get()
@@ -167,22 +179,51 @@ class CtrlGrade():
             finally:
                 self.limiteExclui.clearExclusao(event)
 
-    def atualizarGrade(self, event):
-        ano = self.limiteAtualiza.escolhaCurso.get()
-        curso = self.limiteAtualiza.escolhaGrade.get()
-        try:
-            if len(ano) == 0 or len(curso) == 0:
-                raise CamposNaoPreenchidos()
-        except CamposNaoPreenchidos:
-            self.limiteAtualiza.mostraMessagebox('ATENÇÃO', 'Todos os campos devem ser preenchidos', True)
+    # atualização ----------------------------------
+
+    def popular(self, event):
+        #para os listBox's
+        comboCurso = self.limiteAtualiza.escolhaCurso.get()
+        comboAno = self.limiteAtualiza.escolhaGrade.get()
+        self.listaGradeCodDisc = self.getListaGradeCodDisc(comboCurso, comboAno)
+        listaTodasDisciplinas = self.ctrlPrincipal.ctrlDisciplina.getListaCodDisc()
+        if self.testePopula == False:
+            self.testePopula = self.limiteAtualiza.IsPopularListbox(self.listaGradeCodDisc)
+            self.limiteAtualiza.IsPopularListboxTodas(listaTodasDisciplinas ,self.listaGradeCodDisc)
         else:
-            status = ManipulaBanco.atualizaGrade(ano, curso)
-            try:
-                if status == False:
-                    raise GradeNaoCadastrada()
-            except GradeNaoCadastrada:
-                self.limiteAtualiza.mostraMessagebox('ALERTA', 'Grade não cadastrado ou falha de conexão com o Banco de Dados', True)
-            else: 
-                self.limiteAtualiza.mostraMessagebox('SUCESSO', 'Nome de grade atualizado com sucesso', False)
-            finally:
-                self.limiteAtualiza.clearAtualizar(event)
+            self.limiteAtualiza.limparListBox()
+            self.limiteAtualiza.IsPopularListbox(self.listaGradeCodDisc)
+            self.limiteAtualiza.IsPopularListboxTodas(listaTodasDisciplinas ,self.listaGradeCodDisc)
+    
+    def removeDisciplina(self, event):
+        print('remove disciplina')
+        comboCurso = self.limiteAtualiza.escolhaCurso.get()
+        comboAno = self.limiteAtualiza.escolhaGrade.get()
+        disciplinaSel = self.limiteAtualiza.listbox.get(tk.ACTIVE)
+        print(comboAno+'--'+comboCurso+'--'+disciplinaSel)
+        status = ManipulaBanco.removerDisciplinaDaGrade(comboAno, comboCurso, disciplinaSel) 
+        try:
+            if status == False:
+                raise ConexaoBD()
+        except ConexaoBD:
+            self.limiteAtualiza.mostraMessagebox('ERROR', 'Falha de conexão com Banco de Dados', True)
+        else:
+            self.limiteAtualiza.mostraMessagebox('Sucesso', 'Disciplina removida com sucesso', False)
+            self.popular(event)
+    
+    def adicionaDisciplina(self, event):
+        print('adiciona disciplina')
+        comboCurso = self.limiteAtualiza.escolhaCurso.get()
+        comboAno = self.limiteAtualiza.escolhaGrade.get()
+        disciplinaSel = self.limiteAtualiza.listboxTodas.get(tk.ACTIVE)
+        print(comboAno+'--'+comboCurso+'--'+disciplinaSel)
+        gradeDisciplina = GradeDisciplina(grade_id_ano=comboAno, grade_id_curso=comboCurso, disciplina_id=disciplinaSel)
+        status = ManipulaBanco.inserirDisciplinaNaGrade(gradeDisciplina) 
+        try:
+            if status == False:
+                raise ConexaoBD()
+        except ConexaoBD:
+            self.limiteAtualiza.mostraMessagebox('ERROR', 'Falha de conexão com Banco de Dados', True)
+        else:
+            self.limiteAtualiza.mostraMessagebox('Sucesso', 'Disciplina inserida com sucesso', False)
+            self.popular(event)

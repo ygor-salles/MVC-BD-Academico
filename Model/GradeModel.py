@@ -1,7 +1,9 @@
+from DAO.Mapeamento import Grade, GradeDisciplina
 from DAO.DAO import DAOCrud
 
 class ManipulaBanco():
-    def cadastraGrade(grade):
+    # insere ---------------------------
+    def cadastraGrade(grade: Grade):
         try:
             sessao = DAOCrud.getSession()
             DAOCrud.insere(sessao, grade)
@@ -11,7 +13,8 @@ class ManipulaBanco():
         except:
             return False
 
-    def cadastraGradeDisciplina(listaRelacionamento):
+    # insere varias disciplinas na grade ------------
+    def cadastraGradeDisciplina(listaRelacionamento: GradeDisciplina):
         try:
             sessao = DAOCrud.getSession()
             DAOCrud.insereLista(sessao, listaRelacionamento)
@@ -21,6 +24,7 @@ class ManipulaBanco():
         except:
             return False
 
+    # deleta grade -----------------------------------------
     def deletaGrade(ano_id, curso_id):
         try:
             sessao = DAOCrud.getSession()
@@ -32,6 +36,7 @@ class ManipulaBanco():
         except:
             return False
     
+    # listar grades -----------------------------------------
     def listaGrades():
         try:
             sessao = DAOCrud.getSession()
@@ -41,6 +46,7 @@ class ManipulaBanco():
         except :
             return False
 
+    # consulta grade por FK(id) ---------------------------
     def consultaGrade(id_ano, id_curso):
         try:
             sessao = DAOCrud.getSession()
@@ -52,13 +58,25 @@ class ManipulaBanco():
         except :
             return False
 
-    def atualizaGrade(id_ano, id_curso):
+    # insere uma disciplina na grade ----------------------------
+    def inserirDisciplinaNaGrade(gradeDisciplina: GradeDisciplina):
         try:
             sessao = DAOCrud.getSession()
-            grade = DAOCrud.consultaGrade(sessao, id_ano, id_curso)
-            DAOCrud.atualizaGrade(grade, id_curso)
+            DAOCrud.insere(sessao, gradeDisciplina)
             sessao.commit()
             sessao.close()
             return True
-        except :
+        except:
+            return False        
+    
+    # remove uma disciplina na grade ----------------------
+    def removerDisciplinaDaGrade(gradeAno, gradeCurso, disciplinaCod):
+        try:
+            sessao = DAOCrud.getSession()
+            gradeDisciplina = DAOCrud.consultaGradeDisciplina(sessao, gradeAno, gradeCurso, disciplinaCod)
+            DAOCrud.deleta(sessao, gradeDisciplina)
+            sessao.commit()
+            sessao.close()
+            return True
+        except:
             return False

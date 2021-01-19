@@ -2,7 +2,7 @@ from tkinter.constants import TRUE
 from sqlalchemy.orm import Session
 from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker
-from DAO.Mapeamento import Base, Aluno, Curso, Disciplina, Grade
+from DAO.Mapeamento import Base, Aluno, Curso, Disciplina, Grade, GradeDisciplina
 
 class DAOCrud():
     # MÉTODOS GERAIS ------------------------------
@@ -50,9 +50,6 @@ class DAOCrud():
     def listaGrades(sessao):
         return sessao.query(Grade).all()
 
-    def atualizaGrade(grade: Grade, curso):
-        grade.curso_id = curso
-
     # MÉTODOS DISCIPLINA ----------------------------------
     def consultaDisciplina(sessao, id):
         disciplina = sessao.query(Disciplina).filter(Disciplina.codigo == id).first()
@@ -64,3 +61,9 @@ class DAOCrud():
     def atualizaDisciplina(disciplina: Disciplina, nomeDisc, chDisc):
         disciplina.nome = nomeDisc
         disciplina.carga_horaria = chDisc
+
+    # MÉTODOS GRADEDISCIPLINA -------------------------------------------------------
+    def consultaGradeDisciplina(sessao, gradeAno, gradeCurso, disciplinaCod):
+        gradeDisciplina = sessao.query(GradeDisciplina).filter(GradeDisciplina.grade_id_ano==gradeAno,
+            GradeDisciplina.grade_id_curso==gradeCurso, GradeDisciplina.disciplina_id==disciplinaCod).first()
+        return gradeDisciplina
