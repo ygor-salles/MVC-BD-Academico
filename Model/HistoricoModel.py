@@ -1,5 +1,6 @@
 from DAO.DAO import DAOCrud
 from DAO.Mapeamento import Historico, HistoricoDisciplina
+from sqlalchemy.orm.exc import StaleDataError
 
 class ManipulaBanco():
     # insere ---------------------
@@ -51,8 +52,10 @@ class ManipulaBanco():
     def listaHistoricos():
         try:
             sessao = DAOCrud.getSession()
+            sessao.expire_on_commit = False
             historicos = DAOCrud.listaHistorico(sessao)
             sessao.commit()
+            # sessao.close()
             return historicos
         except :
             return False
@@ -66,7 +69,7 @@ class ManipulaBanco():
             sessao.commit()
             #sessao.close()
             return historico
-        except :
+        except:
             return False
 
     # insere uma disciplina na grade ----------------------------
@@ -100,5 +103,5 @@ class ManipulaBanco():
             sessao.commit()
             # sessao.close()
             return grade
-        except:
+        except StaleDataError as error:
             return False

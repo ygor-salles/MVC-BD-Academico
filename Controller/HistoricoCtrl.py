@@ -52,25 +52,6 @@ class CtrlHistorico():
             for hist in historicos:
                 listaCodHist.append(hist.id)
             return listaCodHist
-
-    def emitirHistorico(self, his, string):
-        eletiva=0
-        obrigatoria=0
-        grade = self.buscaGradeDoAluno(his.nro_matric)
-        string += f'\nMatrícula: {his.nro_matric}'
-        string += f'\nNome: {his.aluno.nome}'
-        string += f'\nGrade: {grade.ano}/{grade.curso_id}'
-        string += '\n\n|Ano|Semestre|Cod. Disciplina|Nome Disciplina|CH|Nota|Status|\n'
-        for disc in his.disciplinas:
-            string += f'{his.ano} - {his.semestre} - {disc.disciplinas.codigo} - {disc.disciplinas.nome} \
-                - {disc.disciplinas.carga_horaria} - {disc.nota_disciplina} - {disc.status}'
-            if (disc.obrigatorio == True):
-                obrigatoria += int(disc.disciplinas.carga_horaria)
-            else:
-                eletiva += int(disc.disciplinas.carga_horaria) 
-        string += f'\nTotal Carga Horária obrigatória: {obrigatoria} \nTotal Carga Horária eletiva: {eletiva}\n'             
-        return string
-        
             
     #Funções que serão chamadas na Main --- Instaciadores (MENU BAR) ---------------------------
 
@@ -79,19 +60,6 @@ class CtrlHistorico():
         listaCodDisc = self.ctrlPrincipal.ctrlDisciplina.getListaCodDisc()
         listaMatricAluno = self.ctrlPrincipal.ctrlAluno.getListaMatricAluno()
         self.limiteIns = LimiteInsereHistorico(self, root, listaCodDisc, listaMatricAluno)
-
-    def mostraHistoricos(self):
-        string = '..................RELATÓRIO DE HISTÓRICOS DOS ALUNOS..................'
-        historicos = self.getListaHistoricos()
-        try:
-            if historicos == False:
-                raise ConexaoBD()
-        except:
-            LimiteMostraHistorico('ERROR', 'Falha de conexão com o banco', True)
-        else:
-            for his in historicos:
-                string = self.emitirHistorico(his, string)
-            self.limiteMostra = LimiteMostraHistorico(string)
     
     def consultaHistoricos(self, root):
         self.limiteConsulta = LimiteConsultaHistorico(self, root)
@@ -163,7 +131,9 @@ class CtrlHistorico():
         except CamposNaoPreenchidos:
             self.limiteConsulta.mostraMessagebox('ATENÇÃO', 'Todos os campos devem ser preenchidos', True)
         else:
-            historicosAluno = ManipulaBanco.consultaHistorico(matric)
+            historicosAluno = ManipulaBanco.consultaHistorico(matric) 
+            for i in historicosAluno: print(i)
+            nome = self.ctrlPrincipal.ctrlAluno.getNomeAluno(matric)
             try:
                 if historicosAluno == False: raise ConexaoBD()
                 if historicosAluno == None: raise HistoricoNaoCadastrada()
@@ -172,8 +142,23 @@ class CtrlHistorico():
             except HistoricoNaoCadastrada:
                 self.limiteConsulta.mostraMessagebox('ALERTA', 'Historico não cadastrada', True)
             else:
-                string = '..................RELATÓRIO DE HISTÓRICO DO ALUNO..................'
-                string += self.emitirHistorico(historicosAluno, string)
+                string = '.....................RELATÓRIO DE HISTÓRICO DO ALUNO.....................'
+                grade = self.buscaGradeDoAluno(matric)
+                string += f'\nMatrícula: {matric}'
+                string += f'\nNome: {nome}'
+                string += f'\nGrade: {grade.ano}/{grade.curso_id}'
+                string += '\n\n|Ano|Semestre|Cod. Disciplina|Nome Disciplina|CH|Nota|Status'
+                eletiva=0
+                obrigatoria=0
+                for his in historicosAluno:
+                    for disc in his.disciplinas:
+                        string += f'\n{his.ano} - {his.semestre} - {disc.disciplinas.codigo} - {disc.disciplinas.nome} - {disc.disciplinas.carga_horaria} - {disc.nota_disciplina} - {disc.status}'
+                        if (disc.obrigatorio == True):
+                            obrigatoria += int(disc.disciplinas.carga_horaria)
+                        else:
+                            eletiva += int(disc.disciplinas.carga_horaria) 
+                string += f'\n\nTotal Carga Horária obrigatória: {obrigatoria} \nTotal Carga Horária eletiva: {eletiva}\n'
+                string += '----------------------------------------------------------------------\n\n'
                 LimiteMostraHistorico('CONSULTA HISTÓRICO DO ALUNO', string, False)
             finally:
                 self.limiteConsulta.clearConsulta(event)

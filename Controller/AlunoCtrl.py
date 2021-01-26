@@ -33,6 +33,18 @@ class CtrlAluno():
                 listaMatricAluno.append(aluno.nro_matric)
             return listaMatricAluno
 
+    def getNomeAluno(self, matric):
+        alunos = self.getListaAlunos()
+        try:
+            if alunos == False:
+                raise ConexaoBD()
+        except ConexaoBD:
+            return None
+        else:
+            for aluno in alunos:
+                if int(matric) == aluno.nro_matric:
+                    return aluno.nome
+            return None
             
     #Funções que serão chamadas na Main --- Instaciadores (MENU BAR) ---------------------------
 

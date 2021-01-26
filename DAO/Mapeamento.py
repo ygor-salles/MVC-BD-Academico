@@ -28,7 +28,7 @@ class Curso(Base):
     nome = Column(String(30), primary_key=True)
     
     alunos = relationship('Aluno')
-    grade = relationship('Grade', uselist=False, backref='cursos', cascade="all, delete", passive_deletes=True)
+    grade = relationship('Grade', uselist=False, cascade="all, delete", passive_deletes=True)
     def __repr__(self):
         return f'Curso(nome={self.nome}, alunos={self.alunos}, grade={self.grade})'
 
@@ -64,7 +64,7 @@ class Historico(Base):
     ano = Column(SmallInteger)
     
     aluno = relationship('Aluno', uselist=False)
-    disciplinas = relationship('HistoricoDisciplina', backref='historicos')
+    disciplinas = relationship('HistoricoDisciplina')
     def __repr__(self):
         return f'Historico(id={self.id}, nro_matric={self.nro_matric}, semestre={self.semestre}, ano={self.ano}, aluno={self.aluno}, disciplinas={self.disciplinas})'
 
@@ -79,7 +79,6 @@ class HistoricoDisciplina(Base):
     status = Column(String(10))
     obrigatorio = Column(Boolean)
 
-    disciplinas = relationship('Disciplina', backref='historico_disciplina')
+    disciplinas = relationship('Disciplina')
     def __repr__(self):
-        return f'HistoricoDisciplina(historico_id={self.historico_id}, disciplina_id={self.disciplina_id}, \
-            nota_disciplina={self.nota_disciplina}, status={self.status}, obrigatorio={self.obrigatorio})'
+        return f'HistoricoDisciplina(historico_id={self.historico_id}, disciplina_id={self.disciplina_id}, nota_disciplina={self.nota_disciplina}, status={self.status}, obrigatorio={self.obrigatorio})'

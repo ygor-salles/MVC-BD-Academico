@@ -60,8 +60,11 @@ class LimiteInsereHistorico():
             messagebox.showerror(titulo, msg)
 
 class LimiteMostraHistorico():
-    def __init__(self, string):
-        messagebox.showinfo('Lista de Historicos', string)
+    def __init__(self, titulo, msg, erro):
+        if erro:
+            messagebox.showerror(titulo, msg)
+        else:
+            messagebox.showinfo(titulo, msg)
 
 class LimiteConsultaHistorico():
     def __init__(self, controle, root):

@@ -58,7 +58,6 @@ class LimitePrincipal():
         self.menubar.add_cascade(label="Aluno", menu=self.alunoMenu)
 
         self.historicoMenu.add_command(label="Inserir", command=self.controle.insereHistoricos)
-        self.historicoMenu.add_command(label="Listar", command=self.controle.mostraHistoricos)
         self.historicoMenu.add_command(label="Consultar por aluno", command=self.controle.consultaHistoricos)        
         self.historicoMenu.add_command(label="Excluir", command=self.controle.excluiHistoricos)        
         self.menubar.add_cascade(label="Histórico", menu=self.historicoMenu)
