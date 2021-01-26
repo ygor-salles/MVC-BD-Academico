@@ -57,11 +57,11 @@ class LimitePrincipal():
         self.alunoMenu.add_command(label="Atualizar", command=self.controle.atualizaAlunos)
         self.menubar.add_cascade(label="Aluno", menu=self.alunoMenu)
 
-        # self.historicoMenu.add_command(label="Insere", command=self.controle.insereHistoricos)
-        # self.historicoMenu.add_command(label="Mostra", command=self.controle.mostraHistoricos)
-        # self.historicoMenu.add_command(label="Consulta", command=self.controle.consultaHistoricos)        
-        # self.historicoMenu.add_command(label="Exclui", command=self.controle.excluiHistoricos)        
-        # self.menubar.add_cascade(label="Histórico", menu=self.historicoMenu)
+        self.historicoMenu.add_command(label="Inserir", command=self.controle.insereHistoricos)
+        self.historicoMenu.add_command(label="Listar", command=self.controle.mostraHistoricos)
+        self.historicoMenu.add_command(label="Consultar por aluno", command=self.controle.consultaHistoricos)        
+        self.historicoMenu.add_command(label="Excluir", command=self.controle.excluiHistoricos)        
+        self.menubar.add_cascade(label="Histórico", menu=self.historicoMenu)
 
         # self.salvaMenu.add_command(label="Salvar os Dados", command=self.controle.salvaDados)
         # self.menubar.add_cascade(label="Salvar", menu=self.salvaMenu)

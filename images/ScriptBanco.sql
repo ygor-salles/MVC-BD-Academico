@@ -31,6 +31,23 @@ CREATE TABLE grade_disciplina(
 		FOREIGN KEY(disciplina_id) REFERENCES disciplinas(codigo) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+CREATE TABLE historicos (
+	id SERIAL PRIMARY KEY,
+	nro_matric INTEGER NOT NULL,
+	semestre SMALLINT CHECK(semestre=1 OR semestre=2),
+	ano SMALLINT,
+		FOREIGN KEY (nro_matric) REFERENCES alunos(nro_matric) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE historico_disciplina (
+	historico_id INTEGER,
+	disciplina_id VARCHAR(10),
+	nota_disciplina FLOAT,
+	PRIMARY KEY(historico_id, disciplina_id),
+		FOREIGN KEY (historico_id) REFERENCES historicos(id) ON DELETE CASCADE ON UPDATE CASCADE,
+		FOREIGN KEY (disciplina_id) REFERENCES disciplinas(codigo) ON DELETE CASCADE ON UPDATE CASCADE 
+);
+
 INSERT INTO cursos(nome) VALUES ('Sistemas de Informação');
 INSERT INTO cursos(nome) VALUES ('Ciencia da Computação');
 
@@ -53,3 +70,10 @@ INSERT INTO grade_disciplina(grade_id_ano, grade_id_curso, disciplina_id) VALUES
 INSERT INTO grade_disciplina(grade_id_ano, grade_id_curso, disciplina_id) VALUES (2017, 'Ciencia da Computação', 'COM110');
 INSERT INTO grade_disciplina(grade_id_ano, grade_id_curso, disciplina_id) VALUES (2017, 'Ciencia da Computação', 'COM111');
 INSERT INTO grade_disciplina(grade_id_ano, grade_id_curso, disciplina_id) VALUES (2017, 'Ciencia da Computação', 'MAT001');
+
+INSERT INTO historicos(nro_matric, semestre, ano) VALUES (201701, 1, 2017);
+INSERT INTO historicos(nro_matric, semestre, ano) VALUES (201701, 2, 2017);
+
+INSERT INTO historico_disciplina(historico_id, disciplina_id, nota_disciplina) VALUES (1, 'MAT001', 2.5);
+INSERT INTO historico_disciplina(historico_id, disciplina_id, nota_disciplina) VALUES (1, 'COM111', 4.7);
+INSERT INTO historico_disciplina(historico_id, disciplina_id, nota_disciplina) VALUES (1, 'SIN110', 9);

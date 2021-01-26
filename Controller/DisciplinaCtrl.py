@@ -46,8 +46,9 @@ class CtrlDisciplina():
         except:
             LimiteMostraDisciplinas('ERROR', 'Falha de conexão com o banco', True)
         else:
-            for disciplina in disciplinas:       
-                string += f'* {disciplina.codigo} -- {disciplina.nome} -- {disciplina.carga_horaria}\n'       
+            for disciplina in disciplinas:
+                if disciplina.ativo == True:       
+                    string += f'* {disciplina.codigo} -- {disciplina.nome} -- {disciplina.carga_horaria}\n'       
             self.limiteLista = LimiteMostraDisciplinas('LISTA DE DISCIPLINAS', string, False)
     
     def consultaDisciplinas(self, root):
@@ -73,7 +74,7 @@ class CtrlDisciplina():
             self.limiteIns.mostraMessagebox('ATENÇÃO', 'Todos os campos devem ser preenchidos', True)
         else:
             disciplina = Disciplina(codigo=codigo, nome=nome, carga_horaria=ch)
-            status = ManipulaBanco.cadastraDisciplina(disciplina)
+            status = ManipulaBanco.cadastraDisciplina(disciplina, codigo, nome, ch)
             print(status)
             try:
                 if status == False:
@@ -96,7 +97,7 @@ class CtrlDisciplina():
             disciplina = ManipulaBanco.consultaDisciplina(codigo)
             try:
                 if disciplina == False: raise ConexaoBD()
-                if disciplina == None: raise DisciplinaNaoCadastrada()
+                if disciplina == None or disciplina.ativo == False: raise DisciplinaNaoCadastrada()
             except ConexaoBD:
                 self.limiteConsulta.mostraMessagebox('ERROR', 'Falha de conexão com o Banco de Dados', True)
             except DisciplinaNaoCadastrada:

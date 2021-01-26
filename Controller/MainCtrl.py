@@ -5,7 +5,7 @@ import Controller.AlunoCtrl as al
 import Controller.DisciplinaCtrl as dic
 import Controller.GradeCtrl as gr
 import Controller.CursoCtrl as cr
-# import Controller.HistoricoCtrl as hist
+import Controller.HistoricoCtrl as hist
 
 class ControlePrincipal():       
     def __init__(self):
@@ -16,7 +16,7 @@ class ControlePrincipal():
         self.ctrlDisciplina = dic.CtrlDisciplina(self)
         self.ctrlGrade = gr.CtrlGrade(self)
         self.ctrlCurso = cr.CtrlCurso(self)
-        # self.ctrlHistorico = hist.CtrlHistorico(self)
+        self.ctrlHistorico = hist.CtrlHistorico(self)
     
         self.limite = LimitePrincipal(self.root, self) 
 

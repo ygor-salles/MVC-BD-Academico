@@ -1,20 +1,26 @@
 from DAO.DAO import DAOCrud
 
 class ManipulaBanco():
-    def cadastraDisciplina(disciplina):
+    def cadastraDisciplina(disciplina, id, nome, ch):
         try:
             sessao = DAOCrud.getSession()
-            DAOCrud.insere(sessao, disciplina)
+            disciplina = DAOCrud.consultaDisciplina(sessao, id)
+            if disciplina == None:
+                DAOCrud.insere(sessao, disciplina)
+            else:
+                DAOCrud.atualizaDisciplinaParaAtivo(disciplina, nome, ch)
             sessao.commit()
             sessao.close()
             return True
         except:
             return False
 
+    # o delete de disciplina apenas irá mudar o status da disciplina no banco para false e não excluí-lo
     def deletaDisciplina(id):
         try:
             sessao = DAOCrud.getSession()
-            DAOCrud.deletaDisciplina(sessao, id)
+            disciplina = DAOCrud.consultaDisciplina(sessao, id)
+            DAOCrud.deletaDisciplina(disciplina)
             sessao.commit()
             sessao.close()
             return True

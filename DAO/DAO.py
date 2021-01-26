@@ -1,8 +1,6 @@
-from tkinter.constants import TRUE
-from sqlalchemy.orm import Session
 from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker
-from DAO.Mapeamento import Base, Aluno, Curso, Disciplina, Grade, GradeDisciplina
+from DAO.Mapeamento import Base, Aluno, Curso, Disciplina, Grade, GradeDisciplina, Historico, HistoricoDisciplina
 
 class DAOCrud():
     # MÉTODOS GERAIS ------------------------------
@@ -18,6 +16,12 @@ class DAOCrud():
 
     def insereLista(sessao, listaObj):
         sessao.add_all(listaObj)
+
+    def retornaIdInserido(sessao):
+        idHistorico = None
+        consultaSelect = sessao.query(func.max(Historico.id)).first()
+        for i in consultaSelect: idHistorico = i
+        return idHistorico
 
     # MÉTODOS ALUNOS ------------------------------
     def consultaAluno(sessao, id):
@@ -60,10 +64,17 @@ class DAOCrud():
     def listaDisciplinas(sessao):
         return sessao.query(Disciplina).all()
 
-    def deletaDisciplina(sessao, id):
-        sessao.query(Disciplina).filter(Disciplina.codigo == id).delete()
+    # O delete de disciplina não irá excluir definitivamente do banco, só ficará invisível para a aplicação
+    def deletaDisciplina(disciplina: Disciplina):
+        disciplina.ativo = False
 
     def atualizaDisciplina(disciplina: Disciplina, nomeDisc, chDisc):
+        disciplina.nome = nomeDisc
+        disciplina.carga_horaria = chDisc
+
+    # caso o usuário insira novamente a disciplina que ja foi deletada, basta atualizar para ativo e os campos 
+    def atualizaDisciplinaParaAtivo(disciplina: Disciplina, nomeDisc, chDisc):
+        disciplina.ativo = True
         disciplina.nome = nomeDisc
         disciplina.carga_horaria = chDisc
 
@@ -71,3 +82,26 @@ class DAOCrud():
     def deletaGradeDisciplina(sessao, gradeAno, gradeCurso, disciplinaCod):
         sessao.query(GradeDisciplina).filter(GradeDisciplina.grade_id_ano==gradeAno,
             GradeDisciplina.grade_id_curso==gradeCurso, GradeDisciplina.disciplina_id==disciplinaCod).delete()
+
+    def consultaGradeDisciplina(sessao, gradeAno, gradeCurso, disciplinaCod):
+        return sessao.query(GradeDisciplina).filter(GradeDisciplina.grade_id_ano==gradeAno,
+            GradeDisciplina.grade_id_curso==gradeCurso, GradeDisciplina.disciplina_id==disciplinaCod).first()
+
+    # MÉTODOS HISTORICO -------------------------------------------------
+    def consultaHistorico(sessao, matric):
+        return sessao.query(Historico).filter(Historico.nro_matric == matric)
+    
+    def listaHistorico(sessao):
+        return sessao.query(Historico).all()
+
+    def deletaHistorico(sessao, matric):
+        sessao.query(Historico).filter(Historico.nro_matric == matric).delete()
+    
+    def atualizarHistorico(historico: Historico, semestre, ano):
+        historico.semestre = semestre
+        historico.ano = ano
+
+    # MÉTODO HISTORICODISCIPLINA ----------------------------------------
+    def deletaHistoricoDisciplina(sessao, id_historico, id_disciplina):
+        sessao.query(HistoricoDisciplina).filter(HistoricoDisciplina.disciplina_id==id_disciplina, 
+            HistoricoDisciplina.historico_id==id_historico).delete()

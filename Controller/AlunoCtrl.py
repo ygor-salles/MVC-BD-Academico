@@ -17,6 +17,22 @@ class CtrlAluno():
 
     def getListaAlunos(self):
         return ManipulaBanco.listaAlunos() 
+
+    # Funções auxiliares e de amarrações da classe ---------------------------------------------
+    
+    def getListaMatricAluno(self):
+        listaMatricAluno = []
+        alunos = self.getListaAlunos()
+        try:
+            if alunos == False:
+                raise ConexaoBD()
+        except ConexaoBD:
+            return None
+        else:
+            for aluno in alunos:
+                listaMatricAluno.append(aluno.nro_matric)
+            return listaMatricAluno
+
             
     #Funções que serão chamadas na Main --- Instaciadores (MENU BAR) ---------------------------
 
@@ -55,10 +71,6 @@ class CtrlAluno():
             LimiteMostraAlunos('ERROR', 'Falha de conexão com o Banco de Dados', True)
         else:
             self.limiteAtualiza = LimiteAtualizaAluno(self, root, listaCursos)
-
-    #Funções auxiliares e de amarrações da classe ---------------------------------------------
-    
-
 
     #Funções de CRUD dos Buttons ----------------------------------------------------
 
