@@ -55,12 +55,9 @@ class GradeDisciplina(Base):
 
 class Historico(Base):
     __tablename__ = 'historicos'
-    __table_args__ = (
-        CheckConstraint('(semestre = 1) OR (semestre = 2)'),
-    )
     id = Column(Integer, primary_key=True)
     nro_matric = Column(ForeignKey('alunos.nro_matric', ondelete='CASCADE', onupdate='CASCADE'))
-    semestre = Column(SmallInteger)
+    semestre = Column(SmallInteger, CheckConstraint('(semestre = 1) OR (semestre = 2)'))
     ano = Column(SmallInteger)
     
     aluno = relationship('Aluno', uselist=False)
@@ -70,13 +67,10 @@ class Historico(Base):
 
 class HistoricoDisciplina(Base):
     __tablename__ = 'historico_disciplina'
-    __table_args__ = (
-        CheckConstraint("((status)::text = 'APROVADO'::text) OR ((status)::text = 'REPROVADO'::text)"),
-    )
     historico_id = Column(ForeignKey('historicos.id', ondelete='CASCADE', onupdate='CASCADE'), primary_key=True)
     disciplina_id = Column(ForeignKey('disciplinas.codigo'), primary_key=True)
     nota_disciplina = Column(Float(53))
-    status = Column(String(10))
+    status = Column(String(10), CheckConstraint("status='APROVADO' OR status='REPROVADO'"))
     obrigatorio = Column(Boolean)
 
     disciplinas = relationship('Disciplina')
