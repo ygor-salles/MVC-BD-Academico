@@ -1,3 +1,4 @@
+from Controller.AlunoCtrl import AlunoDuplicado
 from View.HistoricoView import *
 from DAO.Mapeamento import Historico, HistoricoDisciplina
 from Model.HistoricoModel import ManipulaBanco
@@ -12,6 +13,8 @@ class CamposNaoPreenchidos(Exception): pass
 class ConexaoBD(Exception): pass
 
 class ErroRequisicao(Exception): pass
+
+class AlunoInexistente(Exception): pass
 
 class CtrlHistorico():
     def __init__(self, controlePrincipal):
@@ -142,24 +145,29 @@ class CtrlHistorico():
             except HistoricoNaoCadastrada:
                 self.limiteConsulta.mostraMessagebox('ALERTA', 'Historico não cadastrada', True)
             else:
-                string = '.....................RELATÓRIO DE HISTÓRICO DO ALUNO.....................'
                 grade = self.buscaGradeDoAluno(matric)
-                string += f'\nMatrícula: {matric}'
-                string += f'\nNome: {nome}'
-                string += f'\nGrade: {grade.ano}/{grade.curso_id}'
-                string += '\n\n|Ano|Semestre|Cod. Disciplina|Nome Disciplina|CH|Nota|Status'
-                eletiva=0
-                obrigatoria=0
-                for his in historicosAluno:
-                    for disc in his.disciplinas:
-                        string += f'\n{his.ano} - {his.semestre} - {disc.disciplinas.codigo} - {disc.disciplinas.nome} - {disc.disciplinas.carga_horaria} - {disc.nota_disciplina} - {disc.status}'
-                        if (disc.obrigatorio == True):
-                            obrigatoria += int(disc.disciplinas.carga_horaria)
-                        else:
-                            eletiva += int(disc.disciplinas.carga_horaria) 
-                string += f'\n\nTotal Carga Horária obrigatória: {obrigatoria} \nTotal Carga Horária eletiva: {eletiva}\n'
-                string += '----------------------------------------------------------------------\n\n'
-                LimiteMostraHistorico('CONSULTA HISTÓRICO DO ALUNO', string, False)
+                try:
+                    if grade == None: raise AlunoInexistente()
+                except AlunoInexistente:
+                    self.limiteConsulta.mostraMessagebox('ERROR', 'Aluno Inexistente', True)
+                else:
+                    string = '.....................RELATÓRIO DE HISTÓRICO DO ALUNO.....................'
+                    string += f'\nMatrícula: {matric}'
+                    string += f'\nNome: {nome}'
+                    string += f'\nGrade: {grade.ano}/{grade.curso_id}'
+                    string += '\n\n|Ano|Semestre|Cod. Disciplina|Nome Disciplina|CH|Nota|Status'
+                    eletiva=0
+                    obrigatoria=0
+                    for his in historicosAluno:
+                        for disc in his.disciplinas:
+                            string += f'\n{his.ano} - {his.semestre} - {disc.disciplinas.codigo} - {disc.disciplinas.nome} - {disc.disciplinas.carga_horaria} - {disc.nota_disciplina} - {disc.status}'
+                            if (disc.obrigatorio == True):
+                                obrigatoria += int(disc.disciplinas.carga_horaria)
+                            else:
+                                eletiva += int(disc.disciplinas.carga_horaria) 
+                    string += f'\n\nTotal Carga Horária obrigatória: {obrigatoria} \nTotal Carga Horária eletiva: {eletiva}\n'
+                    string += '----------------------------------------------------------------------\n\n'
+                    LimiteMostraHistorico('CONSULTA HISTÓRICO DO ALUNO', string, False)
             finally:
                 self.limiteConsulta.clearConsulta(event)
             
