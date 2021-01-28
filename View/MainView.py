@@ -15,7 +15,7 @@ class LimitePrincipal():
         self.root.geometry("{}x{}+{}+{}".format(window_width, window_height, x_cordinate, y_cordinate))
 
         #adicionar imagem de ícone da janela
-        self.root.iconbitmap('./images/school.ico')
+        self.root.iconbitmap('./assets/school.ico')
 
         #Fixar a janela em um só tamanho
         self.root.resizable(False, False)
