@@ -5,7 +5,8 @@ from DAO.Mapeamento import Base, Aluno, Curso, Disciplina, Grade, GradeDisciplin
 class DAOCrud():
     # MÉTODOS GERAIS ------------------------------
     def getSession():
-        engine = create_engine('postgresql+psycopg2://postgres:123456@localhost:5432/academico', echo=False)
+        # engine = create_engine('postgresql+psycopg2://postgres:123456@localhost:5432/academico', echo=False)
+        engine = create_engine('sqlite:///teste.db', echo=True)
         Session = sessionmaker(bind=engine)
         session = Session()
         Base.metadata.create_all(engine)

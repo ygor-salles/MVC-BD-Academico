@@ -4,11 +4,11 @@ class ManipulaBanco():
     def cadastraDisciplina(disciplina, id, nome, ch):
         try:
             sessao = DAOCrud.getSession()
-            disciplina = DAOCrud.consultaDisciplina(sessao, id)
-            if disciplina == None:
+            status = DAOCrud.consultaDisciplina(sessao, id)
+            if status == None:
                 DAOCrud.insere(sessao, disciplina)
             else:
-                DAOCrud.atualizaDisciplinaParaAtivo(disciplina, nome, ch)
+                DAOCrud.atualizaDisciplinaParaAtivo(status, nome, ch)
             sessao.commit()
             sessao.close()
             return True
