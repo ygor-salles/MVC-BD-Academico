@@ -39,3 +39,7 @@ https://www.youtube.com/playlist?list=PLqx8fDb-FZDFznZcXb_u_NyiQ7Nai674-
 ```url
 https://github.com/rafael-rfzorzi/Tkinter_Minhas_aulas_pt/blob/master/aula13.py
 ```
+
+```url
+https://www.youtube.com/watch?v=kScAALk2Awc
+```
