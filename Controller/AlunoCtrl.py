@@ -1,7 +1,6 @@
 from View.AlunoView import *
 from DAO.Mapeamento import Aluno
 from Model.AlunoModel import ManipulaBanco
-from pprint import pprint
 
 class AlunoDuplicado(Exception): pass
 
@@ -54,22 +53,6 @@ class CtrlAluno():
             LimiteMostraAlunos('ERROR', 'Falha de conexão com o Banco de Dados', True)
         else:
             self.limiteIns = LimiteInsereAluno(self, root, listaCursos) 
-
-    def mostraAlunos(self):
-        string = 'MATRÍCULA -- NOME -- CURSO\n\n'
-        alunos = self.getListaAlunos()
-        try:
-            if alunos == False:
-                raise ConexaoBD()
-        except:
-            LimiteMostraAlunos('ERROR', 'Falha de conexão com o banco', True)
-        else:
-            for aluno in alunos: 
-                if aluno.curso_id == None:      
-                    string += f'* {aluno.nro_matric} -- {aluno.nome} -- SEM CURSO\n'
-                else:
-                    string += f'* {aluno.nro_matric} -- {aluno.nome} -- {aluno.curso_id}\n'
-            self.limiteLista = LimiteMostraAlunos('LISTA DE ALUNOS', string, False)
     
     def relatorioAlunos(self, root):
         alunos = self.getListaAlunos()

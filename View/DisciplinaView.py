@@ -77,8 +77,9 @@ class LimiteTabelaDisciplinas():
         self.listaDisc.heading('ch', text='CH')
         self.listaDisc.pack(pady=30)
 
-        for curso in listaDisciplinas:
-            self.listaDisc.insert('', 'end', values=(curso.codigo, curso.nome, curso.carga_horaria))
+        for disc in listaDisciplinas:
+            if disc.ativo == True:
+                self.listaDisc.insert('', 'end', values=(disc.codigo, disc.nome, disc.carga_horaria))
 
 class LimiteConsultaDisciplina():
     def __init__(self, controle, root):

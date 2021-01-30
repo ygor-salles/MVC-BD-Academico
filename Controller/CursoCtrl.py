@@ -1,4 +1,3 @@
-from pprint import pprint
 from Model.CursoModel import ManipulaBanco
 from View.CursoView import *
 from DAO.Mapeamento import Curso
@@ -39,24 +38,6 @@ class CtrlCurso():
 
     def insereCursos(self, root):
         self.limiteIns = LimiteInsereCurso(self, root)
-
-    def mostraCursos(self):
-        string = ''
-        cursos = self.getListaCursos()
-        try:
-            if cursos == False:
-                raise ConexaoBD()
-        except ConexaoBD:
-            LimiteMostraCursos('ERROR', 'Falha de conexão com o Banco de Dados', True)
-        else:
-            for curso in cursos:
-                string += f'* {curso.nome}\n'
-                if curso.grade == None:
-                    string += f'SEM GRADE\n'
-                else:
-                    string += f'Grade: {curso.grade.ano}\n'
-                string += '\n\n'
-            self.limiteMostra = LimiteMostraCursos('LISTA DE CURSOS', string, False)
 
     def relatorioCursos(self, root):
         cursos = self.getListaCursos()

@@ -2,8 +2,6 @@ from tkinter import messagebox
 import tkinter as tk
 from tkinter import ttk
 
-from sqlalchemy.sql.expression import text
-
 class LimiteInsereGrade():
     def __init__(self, controle, root, listaCursos, listaDisc):
         self.janela = root

@@ -1,5 +1,4 @@
 import tkinter as tk
-from tkinter import messagebox
 from View.MainView import *
 import Controller.AlunoCtrl as al
 import Controller.DisciplinaCtrl as dic
@@ -36,9 +35,6 @@ class ControlePrincipal():
     def insereAlunos(self):
         self.ctrlAluno.insereAlunos(self.newFrame())
 
-    def mostraAlunos(self):
-        self.ctrlAluno.mostraAlunos()
-
     def relatorioAlunos(self):
         self.ctrlAluno.relatorioAlunos(self.newFrame())
     
@@ -54,9 +50,6 @@ class ControlePrincipal():
     ###############################################
     def insereDisciplinas(self):
         self.ctrlDisciplina.insereDisciplinas(self.newFrame())
-
-    def mostraDisciplinas(self):
-        self.ctrlDisciplina.mostraDisciplinas()
 
     def relatorioDisciplinas(self):
         self.ctrlDisciplina.relatorioDisciplinas(self.newFrame())
@@ -74,9 +67,6 @@ class ControlePrincipal():
     def insereGrade(self):
         self.ctrlGrade.insereGrades(self.newFrame())
 
-    def mostraGrade(self):
-        self.ctrlGrade.mostraGrades()
-
     def relatorioGrade(self):
         self.ctrlGrade.relatorioGrade(self.newFrame())
     
@@ -92,9 +82,6 @@ class ControlePrincipal():
     ###############################################
     def insereCursos(self):
         self.ctrlCurso.insereCursos(self.newFrame())
-
-    def mostraCursos(self):
-        self.ctrlCurso.mostraCursos()
 
     def relatorioCursos(self):
         self.ctrlCurso.relatorioCursos(self.newFrame())
@@ -118,14 +105,6 @@ class ControlePrincipal():
     def excluiHistoricos(self):
         self.ctrlHistorico.excluiHistoricos(self.newFrame())
 
-    ###############################################
-    def salvaDados(self):
-        self.ctrlAluno.salvaAlunos()
-        self.ctrlDisciplina.salvaDisciplinas()
-        self.ctrlGrade.salvaGrades()
-        self.ctrlCurso.salvaCursos()
-        self.ctrlHistorico.salvaHistoricos()
-        messagebox.showinfo('Backup', 'Arquivos salvos com sucesso!')
-        
+    ###############################################    
     def sair(self):
         self.root.destroy()

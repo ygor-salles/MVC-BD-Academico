@@ -36,20 +36,6 @@ class CtrlDisciplina():
 
     def insereDisciplinas(self, root):
         self.limiteIns = LimiteInsereDisciplina(self, root)
-
-    def mostraDisciplinas(self):
-        string = 'CÓDIGO -- NOME -- CH\n\n'
-        disciplinas = self.getListaDisciplinas()
-        try:
-            if disciplinas == False:
-                raise ConexaoBD()
-        except:
-            LimiteMostraDisciplinas('ERROR', 'Falha de conexão com o banco', True)
-        else:
-            for disciplina in disciplinas:
-                if disciplina.ativo == True:       
-                    string += f'* {disciplina.codigo} -- {disciplina.nome} -- {disciplina.carga_horaria}\n'       
-            LimiteMostraDisciplinas('LISTA DE DISCIPLINAS', string, False)
     
     def relatorioDisciplinas(self, root):
         disciplinas = self.getListaDisciplinas()

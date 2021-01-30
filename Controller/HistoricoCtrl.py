@@ -1,8 +1,6 @@
-from Controller.AlunoCtrl import AlunoDuplicado
 from View.HistoricoView import *
 from DAO.Mapeamento import Historico, HistoricoDisciplina
 from Model.HistoricoModel import ManipulaBanco
-from pprint import pprint
 
 class HistoricoDuplicada(Exception): pass
 

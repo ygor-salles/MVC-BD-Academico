@@ -1,5 +1,4 @@
 import tkinter as tk
-from tkinter.constants import FALSE
 
 class LimitePrincipal():
     def __init__(self, root, controle):
@@ -32,7 +31,6 @@ class LimitePrincipal():
         self.sairMenu = tk.Menu(self.menubar) 
              
         self.discipMenu.add_command(label="Inserir", command=self.controle.insereDisciplinas)
-        self.discipMenu.add_command(label="Listar", command=self.controle.mostraDisciplinas)
         self.discipMenu.add_command(label="Relatório", command=self.controle.relatorioDisciplinas)
         self.discipMenu.add_command(label="Consultar por id", command=self.controle.consultaDisciplinas)        
         self.discipMenu.add_command(label="Excluir", command=self.controle.excluiDisciplinas)        
@@ -40,14 +38,12 @@ class LimitePrincipal():
         self.menubar.add_cascade(label="Disciplina", menu=self.discipMenu)
 
         self.cursoMenu.add_command(label="Inserir", command=self.controle.insereCursos)
-        self.cursoMenu.add_command(label="Listar", command=self.controle.mostraCursos)
         self.cursoMenu.add_command(label="Relatório", command=self.controle.relatorioCursos)
         self.cursoMenu.add_command(label="Consultar por id", command=self.controle.consultaCursos)        
         self.cursoMenu.add_command(label="Excluir", command=self.controle.excluiCursos)                
         self.menubar.add_cascade(label="Curso", menu=self.cursoMenu)
 
         self.gradeMenu.add_command(label="Inserir", command=self.controle.insereGrade)
-        self.gradeMenu.add_command(label="Listar", command=self.controle.mostraGrade)
         self.gradeMenu.add_command(label="Relatório", command=self.controle.relatorioGrade)
         self.gradeMenu.add_command(label="Consultar por id", command=self.controle.consultaGrade)        
         self.gradeMenu.add_command(label="Excluir", command=self.controle.excluiGrade)        
@@ -55,7 +51,6 @@ class LimitePrincipal():
         self.menubar.add_cascade(label="Grade", menu=self.gradeMenu)
 
         self.alunoMenu.add_command(label="Inserir", command=self.controle.insereAlunos)
-        self.alunoMenu.add_command(label="Listar", command=self.controle.mostraAlunos)
         self.alunoMenu.add_command(label="Relatório", command=self.controle.relatorioAlunos)
         self.alunoMenu.add_command(label="Consultar por id", command=self.controle.consultaAlunos)
         self.alunoMenu.add_command(label="Excluir", command=self.controle.excluiAlunos)
@@ -67,10 +62,7 @@ class LimitePrincipal():
         self.historicoMenu.add_command(label="Excluir", command=self.controle.excluiHistoricos)        
         self.menubar.add_cascade(label="Histórico", menu=self.historicoMenu)
 
-        # self.salvaMenu.add_command(label="Salvar os Dados", command=self.controle.salvaDados)
-        # self.menubar.add_cascade(label="Salvar", menu=self.salvaMenu)
-
-        # self.sairMenu.add_command(label="Sair do Programa", command=self.controle.sair)
-        # self.menubar.add_cascade(label="Sair", menu=self.sairMenu)
+        self.sairMenu.add_command(label="Sair do Programa", command=self.controle.sair)
+        self.menubar.add_cascade(label="Sair", menu=self.sairMenu)
 
         self.root.config(menu=self.menubar)

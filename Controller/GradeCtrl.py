@@ -1,7 +1,6 @@
 from View.GradeView import *
 from DAO.Mapeamento import Grade, GradeDisciplina
 from Model.GradeModel import ManipulaBanco
-from pprint import pprint
 
 class GradeDuplicada(Exception): pass
 
@@ -31,19 +30,6 @@ class CtrlGrade():
             LimiteMostraGrades('ERROR', 'Falha de conexão com Banco de Dados', True)
         else:
             self.limiteIns = LimiteInsereGrade(self, root, listaCursos, listaDisciplinas) 
-
-    def mostraGrades(self):
-        string = 'ANO-CURSO -- NOME CURSO\n\n'
-        grades = self.getListaGrades()
-        try:
-            if grades == False:
-                raise ConexaoBD()
-        except:
-            LimiteMostraGrades('ERROR', 'Falha de conexão com o banco', True)
-        else:
-            for grade in grades:       
-                string += f'* {grade.ano} -- {grade.curso_id}\n'       
-            self.limiteLista = LimiteMostraGrades('LISTA DE GRADES', string, False)
 
     def relatorioGrade(self, root):
         grades = self.getListaGrades()
