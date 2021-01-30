@@ -58,7 +58,7 @@ class CtrlHistorico():
 
     def insereHistoricos(self, root):
         self.listaDiscHistorico = []
-        listaCodDisc = self.ctrlPrincipal.ctrlDisciplina.getListaCodDisc()
+        listaCodDisc = self.ctrlPrincipal.ctrlDisciplina.getListaCodDiscAtivas()
         listaMatricAluno = self.ctrlPrincipal.ctrlAluno.getListaMatricAluno()
         self.limiteIns = LimiteInsereHistorico(self, root, listaCodDisc, listaMatricAluno)
     

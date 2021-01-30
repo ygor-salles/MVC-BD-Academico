@@ -119,9 +119,13 @@ class CtrlAluno():
                 self.limiteConsulta.mostraMessagebox('ALERTA', 'Aluno não cadastrado', True)
             else:
                 if aluno.curso_id == None:
-                    string = f'MATRÍCULA -- NOME -- CURSO \n{aluno.nro_matric} -- {aluno.nome} -- SEM CURSO\n'
+                    string = f'Matrícula: {aluno.nro_matric}\n'
+                    string += f'Nome: {aluno.nome}\n'
+                    string += f'Curso: SEM CURSO\n'
                 else:
-                    string = f'MATRÍCULA -- NOME -- CURSO \n{aluno.nro_matric} -- {aluno.nome} -- {aluno.curso_id}\n'
+                    string = f'Matrícula: {aluno.nro_matric}\n'
+                    string += f'Nome: {aluno.nome}\n'
+                    string += f'Curso: {aluno.curso_id}\n'
                 LimiteMostraAlunos('CONSULTA ALUNO', string, False)
             finally:
                 self.limiteConsulta.clearAluno(event)

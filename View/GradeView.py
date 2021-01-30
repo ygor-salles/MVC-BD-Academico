@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import ttk
 
 class LimiteInsereGrade():
-    def __init__(self, controle, root, listaCursos, listaDisc):
+    def __init__(self, controle, root, listaCursos, listaCodDisc):
         self.janela = root
         self.frameTitulo = tk.Frame(self.janela)
         self.frameTitulo.pack()
@@ -22,8 +22,8 @@ class LimiteInsereGrade():
 
         self.labelDisciplina = tk.Label(self.frameBody, text='Escolha disciplinas: ', bg='#76cb69')
         self.listbox = tk.Listbox(self.frameBody)
-        for disc in listaDisc:
-            self.listbox.insert(tk.END, disc.codigo)
+        for disc in listaCodDisc:
+            self.listbox.insert(tk.END, disc)
 
         self.buttonInsere = tk.Button(self.frameBody, text='Insere disciplina')
         self.buttonInsere.bind('<Button>', controle.insereDisciplina)

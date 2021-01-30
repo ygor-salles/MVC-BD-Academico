@@ -31,6 +31,20 @@ class CtrlDisciplina():
             for disc in disciplinas:
                 listaCodDisc.append(disc.codigo)
             return listaCodDisc
+
+    def getListaCodDiscAtivas(self):
+        listaCodDiscAtivas = []
+        disciplinas = self.getListaDisciplinas()
+        try:
+            if disciplinas == False:
+                raise ConexaoBD()
+        except ConexaoBD:
+            return None
+        else:
+            for disc in disciplinas:
+                if disc.ativo == True:
+                    listaCodDiscAtivas.append(disc.codigo)
+            return listaCodDiscAtivas
             
     #Funções que serão chamadas na Main --- Instaciadores (MENU BAR) ---------------------------
 
@@ -54,7 +68,7 @@ class CtrlDisciplina():
         self.limiteExclui = LimiteExcluiDisciplina(self, root)
     
     def atualizaDisciplinas(self, root):
-        listaCodDisc = self.getListaCodDisc()
+        listaCodDisc = self.getListaCodDiscAtivas()
         self.limiteAtualiza = LimiteAtualizaDisciplina(self, root, listaCodDisc)
 
     #Funções de CRUD dos Buttons ----------------------------------------------------
@@ -98,7 +112,9 @@ class CtrlDisciplina():
             except DisciplinaNaoCadastrada:
                 self.limiteConsulta.mostraMessagebox('ALERTA', 'Disciplina não cadastrada', True)
             else:
-                string = f'CODIGO -- NOME -- CH \n\n{disciplina.codigo} -- {disciplina.nome} -- {disciplina.carga_horaria}'
+                string = f'Código: {disciplina.codigo}\n'
+                string += f'Nome: {disciplina.nome}\n'
+                string += f'Carga horária: {disciplina.carga_horaria}hr\n'
                 LimiteMostraDisciplinas('CONSULTA DISCIPLINA', string, False)
             finally:
                 self.limiteConsulta.clearConsulta(event)

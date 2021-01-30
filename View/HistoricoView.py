@@ -137,11 +137,11 @@ class LimiteRelatorioHistorico():
         self.labelTitulo = tk.Label(self.frameTitulo, text='HISTORICO DO ALUNO', font=('Heveltica Bold', 14)).pack(pady=30)
 
         self.labelMatric = tk.Label(self.frameInit, text=f'MATRÍCULA: {matric}', width=200)
-        self.labelMatric.pack(pady=2)
+        self.labelMatric.pack()
         self.labelNome = tk.Label(self.frameInit, text=f'NOME: {nome}', width=200)
-        self.labelNome.pack(pady=2)
+        self.labelNome.pack()
         self.labelGrade = tk.Label(self.frameInit, text=f'GRADE: {grade.ano}/{grade.curso_id}', width=200)
-        self.labelGrade.pack(pady=2)
+        self.labelGrade.pack()
 
         self.listaDisc = ttk.Treeview(self.frameTable, column=('ano', 'semestre', 'codDisc', 'nomeDisc', 'chDisc', 'nota', 'status'), show='headings')
         self.listaDisc.column('ano', minwidth=0, width=50)
@@ -171,9 +171,9 @@ class LimiteRelatorioHistorico():
                     eletiva += int(disc.disciplinas.carga_horaria)
         
         self.labelObrigatoria = tk.Label(self.frameFinish, text=f'TOTAL DE CARGA HORÁRIA OBRIGATÓRIA: {obrigatoria}', width=200)
-        self.labelObrigatoria.pack(pady=2)
+        self.labelObrigatoria.pack()
         self.labelEletiva = tk.Label(self.frameFinish, text=f'TOTAL DE CARGA HORÁRIA ELETIVA: {eletiva}', width=200)
-        self.labelEletiva.pack(pady=2)
+        self.labelEletiva.pack()
 
 class LimiteExcluiHistorico():
     def __init__(self, controle, root):

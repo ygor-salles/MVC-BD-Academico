@@ -25,7 +25,7 @@ class CtrlGrade():
     def insereGrades(self, root):
         self.listaDiscGrade = []
         listaCursos = self.ctrlPrincipal.ctrlCurso.getListaNomeCursos()
-        listaDisciplinas = self.ctrlPrincipal.ctrlDisciplina.getListaDisciplinas()
+        listaDisciplinas = self.ctrlPrincipal.ctrlDisciplina.getListaCodDiscAtivas()
         if listaCursos == None:
             LimiteMostraGrades('ERROR', 'Falha de conexão com Banco de Dados', True)
         else:
@@ -147,7 +147,7 @@ class CtrlGrade():
                 string += f'Curso: {grade.curso_id}\n'
                 string += '\nDisciplinas da grade: '
                 for disc in grade.disciplinas:
-                    string += f'\n{disc.codigo} -- {disc.nome} -- {disc.carga_horaria}'
+                    string += f'\n{disc.codigo} -- {disc.nome} -- {disc.carga_horaria}hr'
                 LimiteMostraGrades('CONSULTA GRADE', string, False)
             finally:
                 self.limiteConsulta.clearConsulta(event)
@@ -180,7 +180,7 @@ class CtrlGrade():
         comboCurso = self.limiteAtualiza.escolhaCurso.get()
         comboAno = self.limiteAtualiza.escolhaGrade.get()
         self.listaGradeCodDisc = self.getListaGradeCodDisc(comboCurso, comboAno)
-        listaTodasDisciplinas = self.ctrlPrincipal.ctrlDisciplina.getListaCodDisc()
+        listaTodasDisciplinas = self.ctrlPrincipal.ctrlDisciplina.getListaCodDiscAtivas()
         if self.testePopula == False:
             self.testePopula = self.limiteAtualiza.IsPopularListbox(self.listaGradeCodDisc)
             self.limiteAtualiza.IsPopularListboxTodas(listaTodasDisciplinas ,self.listaGradeCodDisc)
