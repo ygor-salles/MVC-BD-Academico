@@ -126,7 +126,7 @@ class CtrlHistorico():
             self.limiteIns.janela.destroy()
         
     # consultar -----------------------------------------------------------
-    def enterConsulta(self, event):
+    def enterConsulta(self, event, root):
         matric = self.limiteConsulta.inputMatricAluno.get()
         try:
             if len(matric) == 0:
@@ -135,7 +135,6 @@ class CtrlHistorico():
             self.limiteConsulta.mostraMessagebox('ATENÇÃO', 'Todos os campos devem ser preenchidos', True)
         else:
             historicosAluno = ManipulaBanco.consultaHistorico(matric) 
-            for i in historicosAluno: print(i)
             nome = self.ctrlPrincipal.ctrlAluno.getNomeAluno(matric)
             try:
                 if historicosAluno == False: raise ConexaoBD()
@@ -151,23 +150,7 @@ class CtrlHistorico():
                 except AlunoInexistente:
                     self.limiteConsulta.mostraMessagebox('ERROR', 'Aluno Inexistente', True)
                 else:
-                    string = '.....................RELATÓRIO DE HISTÓRICO DO ALUNO.....................'
-                    string += f'\nMatrícula: {matric}'
-                    string += f'\nNome: {nome}'
-                    string += f'\nGrade: {grade.ano}/{grade.curso_id}'
-                    string += '\n\n|Ano|Semestre|Cod. Disciplina|Nome Disciplina|CH|Nota|Status'
-                    eletiva=0
-                    obrigatoria=0
-                    for his in historicosAluno:
-                        for disc in his.disciplinas:
-                            string += f'\n{his.ano} - {his.semestre} - {disc.disciplinas.codigo} - {disc.disciplinas.nome} - {disc.disciplinas.carga_horaria} - {disc.nota_disciplina} - {disc.status}'
-                            if (disc.obrigatorio == True):
-                                obrigatoria += int(disc.disciplinas.carga_horaria)
-                            else:
-                                eletiva += int(disc.disciplinas.carga_horaria) 
-                    string += f'\n\nTotal Carga Horária obrigatória: {obrigatoria} \nTotal Carga Horária eletiva: {eletiva}\n'
-                    string += '----------------------------------------------------------------------\n\n'
-                    LimiteMostraHistorico('CONSULTA HISTÓRICO DO ALUNO', string, False)
+                    LimiteRelatorioHistorico(root, matric, nome, grade, historicosAluno)
             finally:
                 self.limiteConsulta.clearConsulta(event)
             

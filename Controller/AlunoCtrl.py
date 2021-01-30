@@ -100,7 +100,6 @@ class CtrlAluno():
         nroMatric = self.limiteIns.inputNro.get()
         nome = self.limiteIns.inputNome.get()
         curso = self.limiteIns.escolhaCombo.get()
-        print(curso)
         try:
             if len(nroMatric)==0 or len(nome)==0 or len(curso)==0:
                 raise CamposNaoPreenchidos()
@@ -109,7 +108,6 @@ class CtrlAluno():
         else:
             aluno = Aluno(nro_matric=nroMatric, nome=nome, curso_id=curso)
             status = ManipulaBanco.cadastraAluno(aluno)
-            print(status)
             try:
                 if status == False:
                     raise AlunoDuplicado()
@@ -129,7 +127,6 @@ class CtrlAluno():
             self.limiteConsulta.mostraMessagebox('ATENÇÃO', 'Todos os campos devem ser preenchidos', True)
         else:
             aluno = ManipulaBanco.consultaAluno(nroMatric)
-            pprint(aluno)
             try:
                 if aluno == False: raise ConexaoBD()
                 if aluno == None: raise AlunoNaoCadastrado()

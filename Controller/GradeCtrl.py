@@ -88,7 +88,6 @@ class CtrlGrade():
             if grades == False:
                 raise ConexaoBD()
         except ConexaoBD:
-            print('Error')
             return None
         else:
             for grade in grades:
@@ -150,7 +149,6 @@ class CtrlGrade():
             self.limiteConsulta.mostraMessagebox('ATENÇÃO', 'Todos os campos devem ser preenchidos', True)
         else:
             grade = ManipulaBanco.consultaGrade(ano, curso)
-            pprint(grade)
             try:
                 if grade == False: raise ConexaoBD()
                 if grade == None: raise GradeNaoCadastrada()
@@ -206,11 +204,9 @@ class CtrlGrade():
             self.limiteAtualiza.IsPopularListboxTodas(listaTodasDisciplinas ,self.listaGradeCodDisc)
     
     def removeDisciplina(self, event):
-        print('remove disciplina')
         comboCurso = self.limiteAtualiza.escolhaCurso.get()
         comboAno = self.limiteAtualiza.escolhaGrade.get()
         disciplinaSel = self.limiteAtualiza.listbox.get(tk.ACTIVE)
-        print(comboAno+'--'+comboCurso+'--'+disciplinaSel)
         status = ManipulaBanco.removerDisciplinaDaGrade(comboAno, comboCurso, disciplinaSel) 
         try:
             if status == False:
@@ -222,11 +218,9 @@ class CtrlGrade():
             self.popular(event)
     
     def adicionaDisciplina(self, event):
-        print('adiciona disciplina')
         comboCurso = self.limiteAtualiza.escolhaCurso.get()
         comboAno = self.limiteAtualiza.escolhaGrade.get()
         disciplinaSel = self.limiteAtualiza.listboxTodas.get(tk.ACTIVE)
-        print(comboAno+'--'+comboCurso+'--'+disciplinaSel)
         gradeDisciplina = GradeDisciplina(grade_id_ano=comboAno, grade_id_curso=comboCurso, disciplina_id=disciplinaSel)
         status = ManipulaBanco.inserirDisciplinaNaGrade(gradeDisciplina) 
         try:

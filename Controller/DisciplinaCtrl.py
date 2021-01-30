@@ -85,7 +85,6 @@ class CtrlDisciplina():
         else:
             disciplina = Disciplina(codigo=codigo, nome=nome, carga_horaria=ch)
             status = ManipulaBanco.cadastraDisciplina(disciplina, codigo, nome, ch)
-            print(status)
             try:
                 if status == False:
                     raise DisciplinaDuplicada()

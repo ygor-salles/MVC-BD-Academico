@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter.constants import FALSE
 
 class LimitePrincipal():
     def __init__(self, root, controle):
@@ -18,7 +19,7 @@ class LimitePrincipal():
         self.root.iconbitmap('./assets/school.ico')
 
         #Fixar a janela em um só tamanho
-        self.root.resizable(True, True)
+        self.root.resizable(False, False)
 
         #MenuBar
         self.menubar = tk.Menu(self.root)        

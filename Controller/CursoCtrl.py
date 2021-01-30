@@ -29,7 +29,6 @@ class CtrlCurso():
             if self.getListaCursos() == False:
                 raise ConexaoBD()
         except ConexaoBD:
-            print('Error')
             return None
         else:
             for curso in cursos:
@@ -110,7 +109,6 @@ class CtrlCurso():
             self.limiteConsulta.mostraMessagebox('ATENÇÃO', 'Todos os campos devem ser preenchidos', True)
         else:
             curso = ManipulaBanco.consultaCurso(nome)
-            pprint(curso)
             try:
                 if curso == False: raise ConexaoBD()
                 if curso == None: raise CursoNaoCadastrado()
@@ -141,7 +139,6 @@ class CtrlCurso():
             self.limiteExclui.mostraMessagebox('ATENÇÃO', 'Todos os campos devem ser preenchidos', True)
         else:
             status = ManipulaBanco.deletaCurso(nomeCurso)
-            print(status)
             try:
                 if status == False: raise CursoNaoCadastrado()
             except CursoNaoCadastrado:
