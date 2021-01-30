@@ -38,6 +38,9 @@ class ControlePrincipal():
 
     def mostraAlunos(self):
         self.ctrlAluno.mostraAlunos()
+
+    def relatorioAlunos(self):
+        self.ctrlAluno.relatorioAlunos(self.newFrame())
     
     def consultaAlunos(self):
         self.ctrlAluno.consultaAlunos(self.newFrame())
@@ -55,6 +58,9 @@ class ControlePrincipal():
     def mostraDisciplinas(self):
         self.ctrlDisciplina.mostraDisciplinas()
 
+    def relatorioDisciplinas(self):
+        self.ctrlDisciplina.relatorioDisciplinas(self.newFrame())
+
     def consultaDisciplinas(self):
         self.ctrlDisciplina.consultaDisciplinas(self.newFrame())
 
@@ -70,6 +76,9 @@ class ControlePrincipal():
 
     def mostraGrade(self):
         self.ctrlGrade.mostraGrades()
+
+    def relatorioGrade(self):
+        self.ctrlGrade.relatorioGrade(self.newFrame())
     
     def consultaGrade(self):
         self.ctrlGrade.consultaGrades(self.newFrame())
@@ -86,6 +95,9 @@ class ControlePrincipal():
 
     def mostraCursos(self):
         self.ctrlCurso.mostraCursos()
+
+    def relatorioCursos(self):
+        self.ctrlCurso.relatorioCursos(self.newFrame())
     
     def consultaCursos(self):
         self.ctrlCurso.consultaCursos(self.newFrame())

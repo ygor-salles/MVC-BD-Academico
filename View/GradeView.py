@@ -54,6 +54,26 @@ class LimiteMostraGrades():
         else:
             messagebox.showinfo(titulo, msg)
 
+class LimiteTabelaGrades():
+    def __init__(self, root, listaGrades):
+        self.janela = root
+        self.frameTitulo = tk.Frame(self.janela)
+        self.frameTitulo.pack()
+        self.frameBody = tk.Frame(self.janela)
+        self.frameBody.pack()
+        self.frameBody.configure(bg='#76cb69')
+        self.labelTitulo = tk.Label(self.frameTitulo, text='RELATÓRIO DE GRADES', font=('Heveltica Bold', 14), bg='#76cb69').pack()
+
+        self.listaDisc = ttk.Treeview(self.frameBody, column=('ano', 'curso_id'), show='headings')
+        self.listaDisc.column('ano', minwidth=0, width=100)
+        self.listaDisc.column('curso_id', minwidth=0, width=250)
+        self.listaDisc.heading('ano', text='ANO')
+        self.listaDisc.heading('curso_id', text='CURSO')
+        self.listaDisc.pack(pady=30)
+
+        for grade in listaGrades:
+            self.listaDisc.insert('', 'end', values=(grade.ano, grade.curso_id))
+
 class LimiteConsultaGrade():
     def __init__(self, controle, root, listaCursos, listaAno):
         self.janela=root

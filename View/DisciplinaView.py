@@ -58,6 +58,28 @@ class LimiteMostraDisciplinas():
         else:
             messagebox.showinfo(titulo, msg)
 
+class LimiteTabelaDisciplinas():
+    def __init__(self, root, listaDisciplinas):
+        self.janela = root
+        self.frameTitulo = tk.Frame(self.janela)
+        self.frameTitulo.pack()
+        self.frameBody = tk.Frame(self.janela)
+        self.frameBody.pack()
+        self.frameBody.configure(bg='#76cb69')
+        self.labelTitulo = tk.Label(self.frameTitulo, text='RELATÓRIO DE DISCIPLINAS', font=('Heveltica Bold', 14), bg='#76cb69').pack()
+
+        self.listaDisc = ttk.Treeview(self.frameBody, column=('codigo', 'nome', 'ch'), show='headings')
+        self.listaDisc.column('codigo', minwidth=0, width=100)
+        self.listaDisc.column('nome', minwidth=0, width=250)
+        self.listaDisc.column('ch', minwidth=0, width=50)
+        self.listaDisc.heading('codigo', text='CODIGO')
+        self.listaDisc.heading('nome', text='NOME')
+        self.listaDisc.heading('ch', text='CH')
+        self.listaDisc.pack(pady=30)
+
+        for curso in listaDisciplinas:
+            self.listaDisc.insert('', 'end', values=(curso.codigo, curso.nome, curso.carga_horaria))
+
 class LimiteConsultaDisciplina():
     def __init__(self, controle, root):
         self.janela=root

@@ -44,6 +44,16 @@ class CtrlGrade():
             for grade in grades:       
                 string += f'* {grade.ano} -- {grade.curso_id}\n'       
             self.limiteLista = LimiteMostraGrades('LISTA DE GRADES', string, False)
+
+    def relatorioGrade(self, root):
+        grades = self.getListaGrades()
+        try:
+            if grades == False:
+                raise ConexaoBD()
+        except:
+            LimiteMostraGrades('ERROR', 'Falha de conexão com o banco', True)
+        else:
+            LimiteTabelaGrades(root, grades)
     
     def consultaGrades(self, root):
         listaCursos = self.ctrlPrincipal.ctrlCurso.getListaNomeCursos()

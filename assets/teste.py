@@ -121,6 +121,7 @@ class Funcs():
         lista = self.cursor.execute(""" SELECT cod, nome_cliente, telefone, cidade FROM clientes
             ORDER BY nome_cliente ASC; """)
         for i in lista:
+            print(i)
             self.listaCli.insert("", END, values=i)
         self.desconecta_bd()
     def busca_cliente(self):

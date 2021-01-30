@@ -60,6 +60,32 @@ class LimiteMostraAlunos():
         else:
             messagebox.showinfo(titulo, msg)
 
+class LimiteTabelaAlunos():
+    def __init__(self, root, listaAlunos):
+        self.janela = root
+        self.frameTitulo = tk.Frame(self.janela)
+        self.frameTitulo.pack()
+        self.frameBody = tk.Frame(self.janela)
+        self.frameBody.pack()
+        self.frameBody.configure(bg='#76cb69')
+        self.labelTitulo = tk.Label(self.frameTitulo, text='RELATÓRIO DE ALUNOS', font=('Heveltica Bold', 14), bg='#76cb69').pack()
+
+        self.listaDisc = ttk.Treeview(self.frameBody, column=('matricula', 'nome', 'curso'), show='headings')
+        self.listaDisc.column('matricula', minwidth=0, width=100)
+        self.listaDisc.column('nome', minwidth=0, width=300)
+        self.listaDisc.column('curso', minwidth=0, width=200)
+        self.listaDisc.heading('matricula', text='MATRICULA')
+        self.listaDisc.heading('nome', text='NOME')
+        self.listaDisc.heading('curso', text='CURSO')
+        self.listaDisc.pack(pady=30)
+
+        for aluno in listaAlunos:
+            if aluno.curso_id == None:
+                self.listaDisc.insert('', 'end', values=(aluno.nro_matric, aluno.nome, 'SEM CURSO'))
+            else:
+                self.listaDisc.insert('', 'end', values=(aluno.nro_matric, aluno.nome, aluno.curso_id))
+                
+
 class LimiteConsultaAluno():
     def __init__(self, controle, root):
         self.janela=root

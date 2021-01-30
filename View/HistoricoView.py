@@ -39,7 +39,7 @@ class LimiteInsereHistorico():
         self.buttonCria = tk.Button(self.frameBody, text='Criar Semestre')
         self.buttonCria.bind('<Button>', controle.criaSemestre)
 
-        self.labelAluno.grid(row=0, column=0, sticky='W', pady=5)
+        self.labelAluno.grid(row=0, column=0, sticky='W', pady=15)
         self.comboboxAluno.grid(row=0, column=1, sticky='W', pady=5)
         self.labelSemestre.grid(row=1, column=0, sticky='W', pady=5)
         self.radio1.grid(row=1, column=1, sticky='W', pady=5)

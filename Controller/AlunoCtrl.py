@@ -71,6 +71,16 @@ class CtrlAluno():
                     string += f'* {aluno.nro_matric} -- {aluno.nome} -- {aluno.curso_id}\n'
             self.limiteLista = LimiteMostraAlunos('LISTA DE ALUNOS', string, False)
     
+    def relatorioAlunos(self, root):
+        alunos = self.getListaAlunos()
+        try:
+            if alunos == False:
+                raise ConexaoBD()
+        except:
+            LimiteMostraAlunos('ERROR', 'Falha de conexão com o banco', True)
+        else:
+            LimiteTabelaAlunos(root, alunos)
+    
     def consultaAlunos(self, root):
         self.limiteConsulta = LimiteConsultaAluno(self, root)
 

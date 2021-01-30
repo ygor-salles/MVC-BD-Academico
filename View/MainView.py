@@ -6,8 +6,8 @@ class LimitePrincipal():
         self.root = root
 
         #deixar a janela centralizada
-        window_height = 450
-        window_width = 600
+        window_height = 500
+        window_width = 650
         screen_width = self.root.winfo_screenwidth()
         screen_height = self.root.winfo_screenheight()
         x_cordinate = int((screen_width/2) - (window_width/2))
@@ -18,7 +18,7 @@ class LimitePrincipal():
         self.root.iconbitmap('./assets/school.ico')
 
         #Fixar a janela em um só tamanho
-        self.root.resizable(False, False)
+        self.root.resizable(True, True)
 
         #MenuBar
         self.menubar = tk.Menu(self.root)        
@@ -32,6 +32,7 @@ class LimitePrincipal():
              
         self.discipMenu.add_command(label="Inserir", command=self.controle.insereDisciplinas)
         self.discipMenu.add_command(label="Listar", command=self.controle.mostraDisciplinas)
+        self.discipMenu.add_command(label="Relatório", command=self.controle.relatorioDisciplinas)
         self.discipMenu.add_command(label="Consultar por id", command=self.controle.consultaDisciplinas)        
         self.discipMenu.add_command(label="Excluir", command=self.controle.excluiDisciplinas)        
         self.discipMenu.add_command(label="Atualizar", command=self.controle.atualizaDisciplinas)        
@@ -39,12 +40,14 @@ class LimitePrincipal():
 
         self.cursoMenu.add_command(label="Inserir", command=self.controle.insereCursos)
         self.cursoMenu.add_command(label="Listar", command=self.controle.mostraCursos)
+        self.cursoMenu.add_command(label="Relatório", command=self.controle.relatorioCursos)
         self.cursoMenu.add_command(label="Consultar por id", command=self.controle.consultaCursos)        
         self.cursoMenu.add_command(label="Excluir", command=self.controle.excluiCursos)                
         self.menubar.add_cascade(label="Curso", menu=self.cursoMenu)
 
         self.gradeMenu.add_command(label="Inserir", command=self.controle.insereGrade)
         self.gradeMenu.add_command(label="Listar", command=self.controle.mostraGrade)
+        self.gradeMenu.add_command(label="Relatório", command=self.controle.relatorioGrade)
         self.gradeMenu.add_command(label="Consultar por id", command=self.controle.consultaGrade)        
         self.gradeMenu.add_command(label="Excluir", command=self.controle.excluiGrade)        
         self.gradeMenu.add_command(label="Atualizar", command=self.controle.atualizaGrade)        
@@ -52,6 +55,7 @@ class LimitePrincipal():
 
         self.alunoMenu.add_command(label="Inserir", command=self.controle.insereAlunos)
         self.alunoMenu.add_command(label="Listar", command=self.controle.mostraAlunos)
+        self.alunoMenu.add_command(label="Relatório", command=self.controle.relatorioAlunos)
         self.alunoMenu.add_command(label="Consultar por id", command=self.controle.consultaAlunos)
         self.alunoMenu.add_command(label="Excluir", command=self.controle.excluiAlunos)
         self.alunoMenu.add_command(label="Atualizar", command=self.controle.atualizaAlunos)

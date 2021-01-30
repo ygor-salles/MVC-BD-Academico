@@ -58,6 +58,16 @@ class CtrlCurso():
                     string += f'Grade: {curso.grade.ano}\n'
                 string += '\n\n'
             self.limiteMostra = LimiteMostraCursos('LISTA DE CURSOS', string, False)
+
+    def relatorioCursos(self, root):
+        cursos = self.getListaCursos()
+        try:
+            if cursos == False:
+                raise ConexaoBD()
+        except:
+            LimiteMostraCursos('ERROR', 'Falha de conexão com o banco', True)
+        else:
+            LimiteTabelaCursos(root, cursos)
     
     def consultaCursos(self, root):
         listaCursos = self.getListaNomeCursos()
