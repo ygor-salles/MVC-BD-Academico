@@ -6,7 +6,7 @@ class DAOCrud():
     # MÉTODOS GERAIS ------------------------------
     def getSession():
         # engine = create_engine('postgresql+psycopg2://postgres:123456@localhost:5432/academico', echo=False)
-        engine = create_engine('sqlite:///teste.db', echo=False)
+        engine = create_engine('sqlite:///academico.db', echo=False)
         Session = sessionmaker(bind=engine)
         session = Session()
         Base.metadata.create_all(engine)
