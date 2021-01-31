@@ -9,7 +9,7 @@
 
 O aplicativo foi desenvolvido utilizando arquitetura MVC+DAO
 
-![Image](https://github.com/ygor-salles/MVC-BD-Academico/blob/master/assets/MODELAGEM.png "Modelagem do sistema")
+![Image](https://github.com/ygor-salles/MVC-BD-Academico/blob/master/02_MVC-BD-SQL-Academico/assets/MODELAGEM.png "Modelagem do sistema")
 
 ### Links útils:
 
