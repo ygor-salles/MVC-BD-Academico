@@ -15,10 +15,12 @@ class LimitePrincipal():
         self.root.geometry("{}x{}+{}+{}".format(window_width, window_height, x_cordinate, y_cordinate))
 
         #adicionar imagem de ícone da janela
-        # self.root.iconbitmap('./assets/school.ico')
+        self.root.iconbitmap('./assets/school.ico')
 
         #Fixar a janela em um só tamanho
-        self.root.resizable(False, False)
+        self.root.resizable(True, True)
+        self.root.maxsize(width= 1350, height= 700)
+        self.root.minsize(width=500, height= 400)
 
         #MenuBar
         self.menubar = tk.Menu(self.root)        
@@ -39,8 +41,8 @@ class LimitePrincipal():
         # self.gradeMenu.add_command(label="CRUD GRADE", command=self.controle.limiteGrade)
         # self.menubar.add_cascade(label="Grade", menu=self.gradeMenu)
         
-        # self.alunoMenu.add_command(label="CRUD ALUNO", command=self.controle.limiteAluno)
-        # self.menubar.add_cascade(label="Aluno", menu=self.alunoMenu)
+        self.alunoMenu.add_command(label="CRUD ALUNO", command=self.controle.limiteAluno)
+        self.menubar.add_cascade(label="Aluno", menu=self.alunoMenu)
         
         # self.historicoMenu.add_command(label="CRUD HISTÓRICO", command=self.controle.limiteHistorico)
         # self.menubar.add_cascade(label="Histórico", menu=self.historicoMenu)

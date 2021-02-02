@@ -19,10 +19,10 @@ class ControlePrincipal():
         
         self.limite = LimitePrincipal(self.root, self)
 
-        self.frame_1 = Frame(self.root, bd=4, bg='#dfe3ee', highlightbackground='#759fe6', highlightthickness=3)
-        self.frame_1.place(relx= 0.02, rely=0.02, relwidth= 0.96, relheight= 0.46)
-        self.frame_2 = Frame(self.root, bd=4, bg='#dfe3ee', highlightbackground='#759fe6', highlightthickness=3)
-        self.frame_2.place(relx=0.02, rely=0.5, relwidth=0.96, relheight=0.46)
+        self.frame_1 = Frame(self.root)
+        self.frame_1.place()
+        self.frame_2 = Frame(self.root)
+        self.frame_2.place()
 
         self.root.title('Sistema Academico YS')
         self.root.mainloop()
@@ -45,3 +45,6 @@ class ControlePrincipal():
     ###############################################
     def limiteDisiciplina(self):
         self.ctrlDisciplina.exibirTela(self.newFrame1(), self.newFrame2())
+
+    def limiteAluno(self):
+        self.ctrlAluno.exibirTela(self.newFrame1(), self.newFrame2())

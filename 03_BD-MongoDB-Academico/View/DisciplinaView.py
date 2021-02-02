@@ -2,89 +2,82 @@ from tkinter import *
 from tkinter import ttk, messagebox
 
 class LimiteDisciplina():
-    def __init__(self, controle, frame1, frame2):
+    def __init__(self, controle, frame1, frame2, listaDisciplinas):
         self.frame1 = frame1
         self.frame2 = frame2
 
-        self.canvas_bt = Canvas(self.frame1, bd=0, bg='#1e3743', highlightbackground = 'gray',
-            highlightthickness=5)
-        self.canvas_bt.place(relx= 0.19, rely= 0.08, relwidth= 0.22, relheight=0.19)
+        self.labelTitulo = Label(self.frame1, text='DISCIPLINAS', bg='#dfe3ee', font=('Heveltica Bold', 14))
+        self.labelTitulo.place(relx=0.38, rely=0.01, relwidth=0.2)
 
-        ### Criação do botao limpar
-        self.bt_limpar = Button(self.frame1, text= "Limpar", bd=2, bg = '#107db2',fg = 'white',
-                                activebackground='#108ecb', activeforeground="white"
-                                , font = ('verdana', 8, 'bold'), command= self.limpaDisciplina)
-        self.bt_limpar.place(relx= 0.2, rely=0.1, relwidth=0.1, relheight= 0.15)
-        ### Criação do botao buscar
-        self.bt_limpar = Button(self.frame1, text="Buscar", bd=2, bg = '#107db2',fg = 'white'
-                                , font = ('verdana', 8, 'bold'), command = self.buscaDisciplina)
-        self.bt_limpar.place(relx=0.3, rely=0.1, relwidth=0.1, relheight=0.15)
+        self.labelNome = Label(self.frame1, text='Nome disciplina', bg= '#dfe3ee', fg = '#107db2')
+        self.labelNome.place(relx=0.05, rely=0.1)
+        self.inputNome = Entry(self.frame1)
+        self.inputNome.place(relx=0.05, rely=0.2, relwidth=0.85)
 
-        ### Criação do botao alterar
-        self.bt_limpar = Button(self.frame1, text="Alterar", bd=2, bg = '#107db2',fg = 'white'
-                                , font = ('verdana', 8, 'bold'), command=self.alteraDisciplina)
-        self.bt_limpar.place(relx=0.7, rely=0.1, relwidth=0.1, relheight=0.15)
-        ### Criação do botao apagar
-        self.bt_limpar = Button(self.frame1, text="Apagar", bd=2, bg = '#107db2',fg = 'white'
-                                , font = ('verdana', 8, 'bold'), command=self.deletaDisciplina)
-        self.bt_limpar.place(relx=0.8, rely=0.1, relwidth=0.1, relheight=0.15)
+        self.labelCodigo = Label(self.frame1, text='Código', bg= '#dfe3ee', fg = '#107db2')
+        self.labelCodigo.place(relx=0.05, rely=0.35)
+        self.inputCodigo = Entry(self.frame1)
+        self.inputCodigo.place(relx=0.05, rely=0.45, relwidth=0.4)
 
-        ## Criação da label e entrada do codigo
-        self.lb_codigo = Label(self.frame1, text = "Código", bg= '#dfe3ee', fg = '#107db2')
-        self.lb_codigo.place(relx= 0.05, rely= 0.05 )
+        self.labelCargaHoraria = Label(self.frame1, text='Carga Horaria', bg= '#dfe3ee', fg = '#107db2')
+        self.labelCargaHoraria.place(relx=0.5, rely=0.35)
+        self.inputCargaHoraria = Entry(self.frame1)
+        self.inputCargaHoraria.place(relx=0.5, rely=0.45, relwidth=0.4)
+        
+        self.buttonBuscar = Button(self.frame1, text='Buscar', bd=2, bg = '#107db2',fg = 'white'
+                                , font = ('verdana', 8, 'bold'), command = controle.buscaDisciplina)
+        self.buttonBuscar.place(relx=0.05, rely=0.7, relwidth=0.1, relheight=0.15)
 
-        self.codigo_entry = Entry(self.frame1 )
-        self.codigo_entry.place(relx= 0.05, rely= 0.15, relwidth= 0.08)
+        self.buttonLimpar = Button(self.frame1, text= 'Limpar', bd=2, bg = '#107db2',fg = 'white', 
+                                font = ('verdana', 8, 'bold'), command= self.limpaDisciplina)
+        self.buttonLimpar.place(relx= 0.15, rely=0.7, relwidth=0.1, relheight= 0.15)
 
-        ## Criação da label e entrada do nome
-        self.lb_nome = Label(self.frame1, text="Nome", bg= '#dfe3ee', fg = '#107db2')
-        self.lb_nome.place(relx=0.05, rely=0.35)
+        self.buttonInserir = Button(self.frame1, text='Inserir', bd=2, bg = '#107db2',fg = 'white',
+                            font = ('verdana', 8, 'bold'), command=controle.insereDisciplina)
+        self.buttonInserir.place(relx=0.58, rely=0.7, relwidth=0.1, relheight=0.15)
 
-        self.nome_entry = Entry(self.frame1)
-        self.nome_entry.place(relx=0.05, rely=0.45, relwidth=0.8)
+        self.buttonAlterar = Button(self.frame1, text='Alterar', bd=2, bg = '#107db2',fg = 'white'
+                                , font = ('verdana', 8, 'bold'), command=controle.alteraDisciplina)
+        self.buttonAlterar.place(relx=0.7, rely=0.7, relwidth=0.1, relheight=0.15)
+        
+        self.buttonDeletar = Button(self.frame1, text='Apagar', bd=2, bg = '#107db2',fg = 'white'
+                                , font = ('verdana', 8, 'bold'), command=controle.deletaDisciplina)
+        self.buttonDeletar.place(relx=0.8, rely=0.7, relwidth=0.1, relheight=0.15)
 
-        ## Criação da label e entrada do telefone
-        self.lb_nome = Label(self.frame1, text="Telefone", bg= '#dfe3ee', fg = '#107db2')
-        self.lb_nome.place(relx=0.05, rely=0.6)
+        self.tabelaDisc = ttk.Treeview(self.frame2, column=('codigo', 'nome', 'ch'), show='headings')
+        self.tabelaDisc.column('codigo', minwidth=0, width=100)
+        self.tabelaDisc.column('nome', minwidth=0, width=250)
+        self.tabelaDisc.column('ch', minwidth=0, width=50)
+        self.tabelaDisc.heading('codigo', text='CODIGO')
+        self.tabelaDisc.heading('nome', text='NOME')
+        self.tabelaDisc.heading('ch', text='CH')
+        self.tabelaDisc.place(relx=0.01, rely=0.1, relwidth=0.95, relheight=0.85)
 
-        self.fone_entry = Entry(self.frame1)
-        self.fone_entry.place(relx=0.05, rely=0.7, relwidth=0.4)
-
-        ## Criação da label e entrada da cidade
-        self.lb_nome = Label(self.frame1, text="Cidade", bg= '#dfe3ee', fg = '#107db2')
-        self.lb_nome.place(relx=0.5, rely=0.6)
-
-        self.cidade_entry = Entry(self.frame1)
-        self.cidade_entry.place(relx=0.5, rely=0.7, relwidth=0.4)
-
-        self.listaCli = ttk.Treeview(self.frame2, height=3,
-                                     column=("col1", "col2", "col3", "col4"))
-        self.listaCli.heading("#0", text="")
-        self.listaCli.heading("#1", text="Codigo")
-        self.listaCli.heading("#2", text="Nome")
-        self.listaCli.heading("#3", text="Telefone")
-        self.listaCli.heading("#4", text="Cidade")
-        self.listaCli.column("#0", width=1)
-        self.listaCli.column("#1", width=50)
-        self.listaCli.column("#2", width=200)
-        self.listaCli.column("#3", width=125)
-        self.listaCli.column("#4", width=125)
-        self.listaCli.place(relx=0.01, rely=0.1, relwidth=0.95, relheight=0.85)
+        for disc in listaDisciplinas:
+            self.tabelaDisc.insert('', 'end', values=(disc.getCodigo(), disc.getNome(), disc.getCargaHoraria()))
 
         self.scroolLista = Scrollbar(self.frame2, orient='vertical')
-        self.listaCli.configure(yscroll=self.scroolLista.set)
+        self.tabelaDisc.configure(yscroll=self.scroolLista.set)
         self.scroolLista.place(relx=0.96, rely=0.1, relwidth=0.04, relheight=0.85)
-        # self.listaCli.bind("<Double-1>", self.OnDoubleClick)
+        self.tabelaDisc.bind('<Double-1>', self.OnDoubleClick)
 
-    def limpaDisciplina(self, event):
-        print('Limpa disciplina')
+    def limpaDisciplina(self):
+        self.inputCodigo.delete(0, 'end')
+        self.inputNome.delete(0, 'end')
+        self.inputCargaHoraria.delete(0, 'end')
 
-    def buscaDisciplina(self, event):
-        print('Busca disciplina')
+    def mostraMessagebox(self, titulo, msg, erro):
+        if erro == False:
+            messagebox.showinfo(titulo, msg)
+        else:
+            messagebox.showerror(titulo, msg)
 
-    def alteraDisciplina(self, event):
-        print('Altera disciplina')
+    def OnDoubleClick(self, event):
+        self.limpaDisciplina()
+        self.tabelaDisc.selection()
 
-    def deletaDisciplina(self, event):
-        print('Deleta disciplina')
-
+        for n in self.tabelaDisc.selection():
+            col1, col2, col3 = self.tabelaDisc.item(n, 'values')
+            self.inputCodigo.insert(END, col1)
+            self.inputNome.insert(END, col2)
+            self.inputCargaHoraria.insert(END, col3)
