@@ -47,7 +47,7 @@ class LimiteDisciplina():
         self.tabelaDisc = ttk.Treeview(self.frame2, column=('codigo', 'nome', 'ch'), show='headings')
         self.tabelaDisc.column('codigo', minwidth=0, width=100)
         self.tabelaDisc.column('nome', minwidth=0, width=250)
-        self.tabelaDisc.column('ch', minwidth=0, width=50)
+        self.tabelaDisc.column('ch', minwidth=0, width=50, anchor=CENTER)
         self.tabelaDisc.heading('codigo', text='CODIGO')
         self.tabelaDisc.heading('nome', text='NOME')
         self.tabelaDisc.heading('ch', text='CH')

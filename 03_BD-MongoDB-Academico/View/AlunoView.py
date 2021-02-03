@@ -25,54 +25,63 @@ class LimiteAluno():
         self.inputCurso.place(relx=0.5, rely=0.45, relwidth=0.4)
         
         self.buttonBuscar = Button(self.frame1, text='Buscar', bd=2, bg = '#107db2',fg = 'white'
-                                , font = ('verdana', 8, 'bold'), command = self.buscaDisciplina)
+                                , font = ('verdana', 8, 'bold'), command = controle.buscaAluno)
         self.buttonBuscar.place(relx=0.05, rely=0.7, relwidth=0.1, relheight=0.15)
 
         self.buttonLimpar = Button(self.frame1, text= 'Limpar', bd=2, bg = '#107db2',fg = 'white', 
-                                font = ('verdana', 8, 'bold'), command= self.limpaDisciplina)
+                                font = ('verdana', 8, 'bold'), command= self.limpaAluno)
         self.buttonLimpar.place(relx= 0.15, rely=0.7, relwidth=0.1, relheight= 0.15)
 
         self.buttonInserir = Button(self.frame1, text='Inserir', bd=2, bg = '#107db2',fg = 'white',
-                            font = ('verdana', 8, 'bold'), command=self.insereDisciplina)
+                            font = ('verdana', 8, 'bold'), command=controle.insereAluno)
         self.buttonInserir.place(relx=0.58, rely=0.7, relwidth=0.1, relheight=0.15)
 
         self.buttonAlterar = Button(self.frame1, text='Alterar', bd=2, bg = '#107db2',fg = 'white'
-                                , font = ('verdana', 8, 'bold'), command=self.alteraDisciplina)
+                                , font = ('verdana', 8, 'bold'), command=controle.alteraAluno)
         self.buttonAlterar.place(relx=0.7, rely=0.7, relwidth=0.1, relheight=0.15)
         
         self.buttonDeletar = Button(self.frame1, text='Apagar', bd=2, bg = '#107db2',fg = 'white'
-                                , font = ('verdana', 8, 'bold'), command=self.deletaDisciplina)
+                                , font = ('verdana', 8, 'bold'), command=controle.deletaAluno)
         self.buttonDeletar.place(relx=0.8, rely=0.7, relwidth=0.1, relheight=0.15)
 
-        self.tabelaAlunos = ttk.Treeview(self.frame2, column=('matricula', 'nome', 'curso'), show='headings')
-        self.tabelaAlunos.column('matricula', minwidth=0, width=100)
-        self.tabelaAlunos.column('nome', minwidth=0, width=250)
-        self.tabelaAlunos.column('curso', minwidth=0, width=200)
-        self.tabelaAlunos.heading('matricula', text='MATRÍCULA')
-        self.tabelaAlunos.heading('nome', text='NOME')
-        self.tabelaAlunos.heading('curso', text='CURSO')
-        self.tabelaAlunos.place(relx=0.01, rely=0.1, relwidth=0.95, relheight=0.85)
+        self.tabelaDisc = ttk.Treeview(self.frame2, column=('matricula', 'nome', 'curso'), show='headings')
+        self.tabelaDisc.column('matricula', minwidth=0, width=100)
+        self.tabelaDisc.column('nome', minwidth=0, width=250)
+        self.tabelaDisc.column('curso', minwidth=0, width=50, anchor=CENTER)
+        self.tabelaDisc.heading('matricula', text='MATRÍCULA')
+        self.tabelaDisc.heading('nome', text='NOME')
+        self.tabelaDisc.heading('curso', text='CURSO')
+        self.tabelaDisc.place(relx=0.01, rely=0.1, relwidth=0.95, relheight=0.85)
 
-        for disc in listaAlunos:
-            self.tabelaAlunos.insert('', 'end', values=(disc.getNroMatric(), disc.nome, disc.getCurso()))
+        for aluno in listaAlunos:
+            self.tabelaDisc.insert('', 'end', values=(aluno.matricula, aluno.nome, aluno.curso))
 
         self.scroolLista = Scrollbar(self.frame2, orient='vertical')
-        self.tabelaAlunos.configure(yscroll=self.scroolLista.set)
+        self.tabelaDisc.configure(yscroll=self.scroolLista.set)
         self.scroolLista.place(relx=0.96, rely=0.1, relwidth=0.04, relheight=0.85)
-        # self.tabelaAlunos.bind('<Double-1>', self.OnDoubleClick)
+        self.tabelaDisc.bind('<Double-1>', self.OnDoubleClick)
 
-    def limpaDisciplina(self):
-        print('Limpa aluno')
+    def limpaAluno(self):
+        self.inputMatric.config(state=NORMAL)
+        self.inputMatric.delete(0, 'end')
+        self.inputNome.delete(0, 'end')
+        self.inputCurso.delete(0, 'end')
 
-    def buscaDisciplina(self):
-        print('Busca aluno')
+    def mostraMessagebox(self, titulo, msg, erro):
+        if erro == False:
+            messagebox.showinfo(titulo, msg)
+        else:
+            messagebox.showerror(titulo, msg)
 
-    def alteraDisciplina(self):
-        print('Altera aluno')
+    def OnDoubleClick(self, event):
+        self.inputMatric.config(state=NORMAL)
+        self.limpaAluno()
+        self.tabelaDisc.selection()
 
-    def deletaDisciplina(self):
-        print('Deleta aluno')
-
-    def insereDisciplina(self):
-        print('Insere aluno')
-
+        for n in self.tabelaDisc.selection():
+            col1, col2, col3 = self.tabelaDisc.item(n, 'values')
+            self.inputMatric.insert(END, col1)
+            self.inputMatric.config(state=DISABLED)
+            self.inputNome.insert(END, col2)
+            self.inputCurso.insert(END, col3)
+        
