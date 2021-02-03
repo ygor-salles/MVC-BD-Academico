@@ -99,7 +99,7 @@ class CtrlDisciplina():
             else:
                 self.limite.mostraMessagebox('SUCESSO', f'Disciplina {codigo} alterada com sucesso', False)
                 self.limite.limpaDisciplina()
-                self.reloadTabela() # Mesmo que fazer reload
+                self.reloadTabela() 
 
     def deletaDisciplina(self):
         codigo = self.limite.inputCodigo.get()

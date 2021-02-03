@@ -62,6 +62,7 @@ class LimiteDisciplina():
         self.tabelaDisc.bind('<Double-1>', self.OnDoubleClick)
 
     def limpaDisciplina(self):
+        self.inputCodigo.config(state=NORMAL)
         self.inputCodigo.delete(0, 'end')
         self.inputNome.delete(0, 'end')
         self.inputCargaHoraria.delete(0, 'end')
@@ -73,11 +74,14 @@ class LimiteDisciplina():
             messagebox.showerror(titulo, msg)
 
     def OnDoubleClick(self, event):
+        self.inputCodigo.config(state=NORMAL)
         self.limpaDisciplina()
         self.tabelaDisc.selection()
 
         for n in self.tabelaDisc.selection():
             col1, col2, col3 = self.tabelaDisc.item(n, 'values')
             self.inputCodigo.insert(END, col1)
+            self.inputCodigo.config(state=DISABLED)
             self.inputNome.insert(END, col2)
             self.inputCargaHoraria.insert(END, col3)
+        
