@@ -54,7 +54,7 @@ class LimiteDisciplina():
         self.tabelaDisc.place(relx=0.01, rely=0.1, relwidth=0.95, relheight=0.85)
 
         for disc in listaDisciplinas:
-            self.tabelaDisc.insert('', 'end', values=(disc.getCodigo(), disc.getNome(), disc.getCargaHoraria()))
+            self.tabelaDisc.insert('', 'end', values=(disc.codigo, disc.nome, disc.cargaHoraria))
 
         self.scroolLista = Scrollbar(self.frame2, orient='vertical')
         self.tabelaDisc.configure(yscroll=self.scroolLista.set)

@@ -54,7 +54,7 @@ class LimiteAluno():
         self.tabelaAlunos.place(relx=0.01, rely=0.1, relwidth=0.95, relheight=0.85)
 
         for disc in listaAlunos:
-            self.tabelaAlunos.insert('', 'end', values=(disc.getNroMatric(), disc.getNome(), disc.getCurso()))
+            self.tabelaAlunos.insert('', 'end', values=(disc.getNroMatric(), disc.nome, disc.getCurso()))
 
         self.scroolLista = Scrollbar(self.frame2, orient='vertical')
         self.tabelaAlunos.configure(yscroll=self.scroolLista.set)

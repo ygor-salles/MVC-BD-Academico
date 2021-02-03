@@ -1,23 +1,13 @@
-class Disciplina():
-    def __init__(self, codigo, nome, ch):
-        self.__codigo = codigo
-        self.__nome = nome
-        self.__ch = ch
+from flask import Flask
+from flask_mongoalchemy import MongoAlchemy
+app = Flask(__name__)
+app.config['MONGOALCHEMY_DATABASE'] = 'academico'
+db = MongoAlchemy(app)
 
-    def getCodigo(self):
-        return self.__codigo
-    
-    def getNome(self):
-        return self.__nome
-
-    def getCargaHoraria(self):
-        return self.__ch
-
-    def setNome(self, nome):
-        self.__nome = nome
-    
-    def setCargaHoraria(self, ch):
-        self.__ch = ch
+class Disciplina(db.Document):
+    codigo = db.StringField()
+    nome = db.StringField()
+    cargaHoraria = db.IntField()
 
 class Aluno():
     def __init__(self, nroMatric, nome, curso):

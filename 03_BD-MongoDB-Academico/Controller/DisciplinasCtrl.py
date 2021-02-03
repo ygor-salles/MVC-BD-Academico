@@ -1,3 +1,4 @@
+from Model.DisciplinaModel import ManipulaBanco
 from DAO.Mapeamento import Disciplina
 from View.DisciplinaView import LimiteDisciplina
 
@@ -5,38 +6,59 @@ class PreencherCampos(Exception): pass
 
 class PreencherCampoId(Exception): pass
 
+class ConexaoBD(Exception): pass
+
+class ErroRequisicao(Exception): pass
+
+class DisciplinaNaoCadastrada(Exception): pass
+
 class CtrlDisciplina():
     def __init__(self, controlePrincipal):
         self.ctrlPrincipal = controlePrincipal
-        self.listaDisciplinas = []
+
+    def getListaDisciplinas(self):
+        return ManipulaBanco.listaDisciplina()
+
+    # Instanciação da Main ------------------------------------------------------
 
     def exibirTela(self, frame1, frame2):
-        self.listaDisciplinas = [
-            Disciplina('COM110', 'Fundamentos de Programação', 80),
-            Disciplina('COM111', 'Estrutura de Dados', 96),
-            Disciplina('MAT001', 'Calculo 1', 96),
-            Disciplina('SIN130', 'Fundamentos de Computação', 64),
-            Disciplina('COM312', 'Informática de Sociedade', 64),
-            Disciplina('MAT011', 'GA', 64)
-        ]
-        self.limite = LimiteDisciplina(self, frame1, frame2, self.listaDisciplinas)
-    
-    def buscaDisciplina(self):
+        listaDisciplinas = self.getListaDisciplinas()
+        self.limite = LimiteDisciplina(self, frame1, frame2, listaDisciplinas)
+
+    # Função reload na tabela ----------------------------------------------------
+
+    def reloadTabela(self):
         self.limite.tabelaDisc.delete(*self.limite.tabelaDisc.get_children())
-        codDisc = self.limite.inputCodigo.get()
-        encontrou = False
-        if len(codDisc)!=0:
-            for disc in self.listaDisciplinas:
-                if codDisc == disc.getCodigo():
-                    self.limite.tabelaDisc.insert('', 'end', values=(disc.getCodigo(), disc.getNome(), disc.getCargaHoraria()))
-                    encontrou = True
-                    break
+        for disc in self.getListaDisciplinas():
+            self.limite.tabelaDisc.insert('', 'end', values=(disc.codigo, disc.nome, disc.cargaHoraria))
+
+    def preencheTabela(self):
+        for disc in self.getListaDisciplinas():
+            self.limite.tabelaDisc.insert('', 'end', values=(disc.codigo, disc.nome, disc.cargaHoraria))
+    
+    # Funções de CRUD dos buttons ------------------------------------------------
+
+    def buscaDisciplina(self):
+        if len(self.limite.tabelaDisc.get_children())==1:
+            self.reloadTabela()
         else:
-            for disc in self.listaDisciplinas:
-                self.limite.tabelaDisc.insert('', 'end', values=(disc.getCodigo(), disc.getNome(), disc.getCargaHoraria()))
-        if not encontrou and len(codDisc)!=0: 
-            self.limite.mostraMessagebox('ERROR', f'Código de disciplina {codDisc} não encontrado', True)
-        self.limite.limpaDisciplina()
+            codDisc = self.limite.inputCodigo.get()
+            try:
+                if len(codDisc)==0: raise PreencherCampoId()
+            except PreencherCampoId:
+                self.limite.mostraMessagebox('ALERTA', 'Necessário preencher o campo código para busca', True)
+            else:
+                disc = ManipulaBanco.consultaDisciplina(codDisc)
+                try: 
+                    if disc == False: raise ConexaoBD()
+                    if disc == None: raise DisciplinaNaoCadastrada()
+                except ConexaoBD: self.limite.mostraMessagebox('ERROR', 'Falha de conexão com o Banco de Dados', True)
+                except DisciplinaNaoCadastrada: self.limite.mostraMessagebox('ERROR', f'Disciplina {codDisc} não cadastrada', True)
+                else:
+                    self.limite.tabelaDisc.delete(*self.limite.tabelaDisc.get_children())
+                    self.limite.tabelaDisc.insert('', 'end', values=(disc.codigo, disc.nome, disc.cargaHoraria))
+                finally:
+                    self.limite.limpaDisciplina()
 
     def insereDisciplina(self):
         codigo = self.limite.inputCodigo.get()
@@ -48,9 +70,17 @@ class CtrlDisciplina():
         except PreencherCampos:
             self.limite.mostraMessagebox('ALERTA', 'Atenção todos os campos devem ser preenchidos para inserção', True)
         else:
-            self.listaDisciplinas.append(Disciplina(codigo, nome, cargaHoraria))
-            self.limite.mostraMessagebox('SUCESSO', 'Disciplina inserida com sucesso', False)
-            self.limite.limpaDisciplina()
+            disc = Disciplina(codigo=codigo, nome=nome, cargaHoraria=int(cargaHoraria))
+            status = ManipulaBanco.cadastraDisciplina(disc)
+            try:
+                if status == False:
+                    raise ConexaoBD()
+            except ConexaoBD:
+                self.limite.mostraMessagebox('ERROR', 'Falha de conexão com o banco de dados')
+            else:
+                self.limite.mostraMessagebox('SUCESSO', 'Disciplina inserida com sucesso', False)
+                self.limite.limpaDisciplina()
+                self.reloadTabela()
 
     def alteraDisciplina(self):
         codigo = self.limite.inputCodigo.get()
@@ -58,33 +88,33 @@ class CtrlDisciplina():
         ch = self.limite.inputCargaHoraria.get()
         try:
             if len(codigo)==0 or len(nome)==0 or len(ch)==0:
-                raise PreencherCampos()
-        except PreencherCampos:
+                raise PreencherCampoId()
+        except PreencherCampoId:
             self.limite.mostraMessagebox('ALERTA', 'Selecionar a disciplina que deseja alterar', True)
         else:
-            for disc in self.listaDisciplinas:
-                if disc.getCodigo() == codigo: 
-                    disc.setNome(nome)
-                    disc.setCargaHoraria(ch)
-                    break
-            self.limite.mostraMessagebox('SUCESSO', f'Disciplina {codigo} alterada com sucesso', False)
-            self.limite.limpaDisciplina()
-            self.buscaDisciplina() # Mesmo que fazer reload
+            status = ManipulaBanco.atualizaDisciplina(codigo, nome, int(ch))
+            try:
+                if status == False: raise ConexaoBD()
+            except ConexaoBD: self.limite.mostraMessagebox('ERROR', 'Falha de conexão com o banco de dados', True)
+            else:
+                self.limite.mostraMessagebox('SUCESSO', f'Disciplina {codigo} alterada com sucesso', False)
+                self.limite.limpaDisciplina()
+                self.reloadTabela() # Mesmo que fazer reload
 
     def deletaDisciplina(self):
         codigo = self.limite.inputCodigo.get()
-        nome = self.limite.inputNome.get()
-        ch = self.limite.inputCargaHoraria.get()
         try:
             if len(codigo)==0:
                 raise PreencherCampoId()
         except PreencherCampoId:
             self.limite.mostraMessagebox('ALERTA', 'Necessário informar o campo de código para deletar', True)
         else:
-            for disc in self.listaDisciplinas:
-                if disc.getCodigo() == codigo: 
-                    self.listaDisciplinas.remove(disc)
-                    break
-            self.limite.mostraMessagebox('SUCESSO', f'Disciplina {codigo} excluída com sucesso', False)
-            self.limite.limpaDisciplina()
-            self.buscaDisciplina() # Mesmo que fazer reload
+            status = ManipulaBanco.deletaDisciplina(codigo)
+            try:
+                if status == False: raise ErroRequisicao()
+            except ErroRequisicao:
+                self.limite.mostraMessagebox('ERROR', 'Houve erro na requisição ou o dado informado não existe', True)
+            else:
+                self.limite.mostraMessagebox('SUCESSO', f'Disciplina {codigo} excluída com sucesso', False)
+                self.limite.limpaDisciplina()
+                self.reloadTabela()
