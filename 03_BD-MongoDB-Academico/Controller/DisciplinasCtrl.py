@@ -74,9 +74,9 @@ class CtrlDisciplina():
             status = ManipulaBanco.cadastraDisciplina(disc)
             try:
                 if status == False:
-                    raise ConexaoBD()
-            except ConexaoBD:
-                self.limite.mostraMessagebox('ERROR', 'Falha de conexão com o banco de dados')
+                    raise ErroRequisicao()
+            except ErroRequisicao:
+                self.limite.mostraMessagebox('ERROR', 'Houve erro na requisição ou dado informado não existe')
             else:
                 self.limite.mostraMessagebox('SUCESSO', 'Disciplina inserida com sucesso', False)
                 self.limite.limpaDisciplina()
