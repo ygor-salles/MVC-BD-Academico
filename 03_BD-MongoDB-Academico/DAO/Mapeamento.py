@@ -1,7 +1,7 @@
 from mongoengine import *
 from mongoengine.connection import connect
-from mongoengine.document import Document
-from mongoengine.fields import FloatField, IntField, ListField, ReferenceField, StringField
+from mongoengine.document import Document, EmbeddedDocument
+from mongoengine.fields import EmbeddedDocumentField, FloatField, IntField, ListField, ReferenceField, StringField
 from mongoengine.queryset.base import CASCADE
 connect('academico')
 
@@ -20,3 +20,11 @@ class Aluno(Document):
 
     def __repr__(self):
         return f'Disciplina(matricula{self.matricula}, nome={self.nome}, curso={self.curso})'
+
+class Grade(EmbeddedDocument):
+    ano = IntField()
+    disciplinas = ListField()
+
+class Curso(Document):
+    nome = StringField(unique=True)
+    grade = EmbeddedDocumentField(Grade)

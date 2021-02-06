@@ -2,8 +2,7 @@ from tkinter import *
 from View.MainView import *
 import Controller.AlunoCtrl as al
 import Controller.DisciplinasCtrl as dic
-import Controller.GradeCtrl as gr
-import Controller.CursoCtrl as cr
+import Controller.CursoGradeCtrl as cr
 import Controller.HistoricoCtrl as hist
 
 class ControlePrincipal():
@@ -13,7 +12,6 @@ class ControlePrincipal():
 
         self.ctrlAluno = al.CtrlAluno(self)
         self.ctrlDisciplina = dic.CtrlDisciplina(self)
-        self.ctrlGrade = gr.CtrlGrade(self)
         self.ctrlCurso = cr.CtrlCurso(self)
         self.ctrlHistorico = hist.CtrlHistorico(self)
         
