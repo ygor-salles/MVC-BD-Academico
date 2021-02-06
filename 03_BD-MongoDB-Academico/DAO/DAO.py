@@ -8,34 +8,26 @@ class DAOCrud():
 
     # Métodos disciplinas ------------------------------------
     def listaDisciplinas():
-        return Disciplina.query.all()
+        return Disciplina.objects()
 
     def buscaDisciplina(codigo):
-        return Disciplina.query.filter(Disciplina.codigo == codigo).first()
+        return Disciplina.objects(codigo=codigo).first()
 
     def removeDisciplina(codigo):
-        disc = Disciplina.query.filter(Disciplina.codigo == codigo).first()
-        disc.remove()
+        Disciplina.objects(codigo=codigo).delete()
 
     def atualizaDisciplina(codigo, nome, cargaHoraria):
-        disciplina: Disciplina = Disciplina.query.filter(Disciplina.codigo == codigo).first()
-        disciplina.nome = nome
-        disciplina.cargaHoraria = cargaHoraria
-        disciplina.save()
+        Disciplina.objects(codigo=codigo).update(nome=nome, cargaHoraria=cargaHoraria)
 
     # Métodos alunos ------------------------------------
     def listaAlunos():
-        return Aluno.query.all()
+        return Aluno.objects()
 
     def buscaAluno(matricula):
-        return Aluno.query.filter(Aluno.matricula == matricula).first()
+        return Aluno.objects(matricula=matricula).first()
 
     def removeAluno(matricula):
-        disc = Aluno.query.filter(Aluno.matricula == matricula).first()
-        disc.remove()
+        Aluno.objects(matricula=matricula).delete()
 
     def atualizaAluno(matricula, nome, curso):
-        aluno: Aluno = Aluno.query.filter(Aluno.matricula == matricula).first()
-        aluno.nome = nome
-        aluno.curso = curso
-        aluno.save()
+        Aluno.objects(matricula=matricula).update(nome=nome, curso=curso)

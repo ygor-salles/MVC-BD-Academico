@@ -45,9 +45,9 @@ class LimiteAluno():
         self.buttonDeletar.place(relx=0.8, rely=0.7, relwidth=0.1, relheight=0.15)
 
         self.tabelaDisc = ttk.Treeview(self.frame2, column=('matricula', 'nome', 'curso'), show='headings')
-        self.tabelaDisc.column('matricula', minwidth=0, width=100)
-        self.tabelaDisc.column('nome', minwidth=0, width=250)
-        self.tabelaDisc.column('curso', minwidth=0, width=50, anchor=CENTER)
+        self.tabelaDisc.column('matricula', minwidth=0, width=100, anchor=CENTER)
+        self.tabelaDisc.column('nome', minwidth=0, width=150)
+        self.tabelaDisc.column('curso', minwidth=0, width=150, anchor=CENTER)
         self.tabelaDisc.heading('matricula', text='MATRÍCULA')
         self.tabelaDisc.heading('nome', text='NOME')
         self.tabelaDisc.heading('curso', text='CURSO')

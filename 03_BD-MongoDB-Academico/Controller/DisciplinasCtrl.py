@@ -76,7 +76,7 @@ class CtrlDisciplina():
                 if status == False:
                     raise ErroRequisicao()
             except ErroRequisicao:
-                self.limite.mostraMessagebox('ERROR', 'Houve erro na requisição ou dado informado não existe')
+                self.limite.mostraMessagebox('ERROR', 'Houve erro na requisição ou código de disciplina já existente', True)
             else:
                 self.limite.mostraMessagebox('SUCESSO', 'Disciplina inserida com sucesso', False)
                 self.limite.limpaDisciplina()

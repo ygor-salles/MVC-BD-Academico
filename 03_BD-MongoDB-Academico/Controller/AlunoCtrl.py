@@ -76,7 +76,7 @@ class CtrlAluno():
                 if status == False:
                     raise ErroRequisicao()
             except ErroRequisicao:
-                self.limite.mostraMessagebox('ERROR', 'Houve erro na requisição ou dado informado não existe')
+                self.limite.mostraMessagebox('ERROR', 'Houve erro na requisição ou matrícula já existente', True)
             else:
                 self.limite.mostraMessagebox('SUCESSO', 'Aluno inserido com sucesso', False)
                 self.limite.limpaAluno()

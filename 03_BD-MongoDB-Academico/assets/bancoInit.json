@@ -1,0 +1,48 @@
+{
+    "disciplina": [
+        {
+            "codigo": "COM110",
+            "nome": "Fundamentos de Programação",
+            "cargahoraria": 80
+        },
+        {
+            "codigo": "COM111",
+            "nome": "Estrutura da Dados I",
+            "cargahoraria": 96
+        }
+    ],
+    "aluno": [
+        {
+            "matricula": 201701,
+            "nome": "Ygor Salles",
+            "curso": "Sistemas de Informação"
+        },
+        {
+            "matricula": 201702,
+            "nome": "Claudio Magalhaes",
+            "curso": "Ciencia da computação"
+        }
+    ],
+    "curso": [
+        {
+            "nome": "Sistema de Informação",
+            "alunos": [
+                {
+                    "matricula": 201701,
+                    "nome": "Ygor Salles",
+                    "curso": "Sistemas de Informação"
+                }
+            ]
+        },
+        {
+            "nome": "Ciencia da Computação",
+            "alunos": [
+                {
+                    "matricula": 201702,
+                    "nome": "Claudio Magalhaes",
+                    "curso": "Ciencia da computação"
+                }
+            ]
+        }
+    ]
+}
