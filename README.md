@@ -16,6 +16,6 @@ Aplicativo 02 utiliza python + tkinter + Modelo MVC+DAO + Banco SQL com SQLAlche
 
 ### 03_MVC-BD-MongoDB-Academico
 
-Aplicativo 03 utiliza python + tkinter + Modelo MVC + Banco MongoDB com pymongo
+Aplicativo 03 utiliza python + tkinter + Modelo MVC + Banco MongoDB com MongoEngine
 
 ![Image](https://github.com/ygor-salles/MVC-BD-Academico/blob/master/02_MVC-BD-SQL-Academico/assets/MODELAGEM.png "Modelagem do sistema")
