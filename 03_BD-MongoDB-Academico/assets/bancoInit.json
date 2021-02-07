@@ -26,21 +26,23 @@
     "curso": [
         {
             "nome": "Sistema de Informação",
+            "grade": 2017,
             "alunos": [
                 {
                     "matricula": 201701,
-                    "nome": "Ygor Salles",
+                    "nome": "Benedito José",
                     "curso": "Sistemas de Informação"
                 }
             ]
         },
         {
             "nome": "Ciencia da Computação",
+            "grade": 2017,
             "alunos": [
                 {
                     "matricula": 201702,
                     "nome": "Claudio Magalhaes",
-                    "curso": "Ciencia da computação"
+                    "curso": "Ciência da computação"
                 }
             ]
         }

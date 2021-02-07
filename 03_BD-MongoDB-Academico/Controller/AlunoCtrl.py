@@ -32,10 +32,6 @@ class CtrlAluno():
         for aluno in self.getListaAlunos():
             self.limite.tabelaDisc.insert('', 'end', values=(aluno.matricula, aluno.nome, aluno.curso))
 
-    def preencheTabela(self):
-        for aluno in self.getListaAlunos():
-            self.limite.tabelaDisc.insert('', 'end', values=(aluno.matricula, aluno.nome, aluno.curso))
-    
     # Funções de CRUD dos buttons ------------------------------------------------
 
     def buscaAluno(self):

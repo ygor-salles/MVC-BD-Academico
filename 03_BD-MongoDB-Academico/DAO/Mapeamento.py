@@ -28,3 +28,6 @@ class Grade(EmbeddedDocument):
 class Curso(Document):
     nome = StringField(unique=True)
     grade = EmbeddedDocumentField(Grade)
+
+    def __repr__(self):
+        return f'Curso(nome={self.nome}, grade=(ano={self.grade.ano}, disciplinas={self.grade.disciplinas})'

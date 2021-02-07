@@ -34,11 +34,11 @@ class LimitePrincipal():
         self.discipMenu.add_command(label="CRUD DISCIPLINA", command=self.controle.limiteDisiciplina)
         self.menubar.add_cascade(label="Disciplina", menu=self.discipMenu)
         
-        # self.cursoMenu.add_command(label="CRUD CURSO", command=self.controle.limiteCurso)
-        # self.menubar.add_cascade(label="Curso", menu=self.cursoMenu)
-        
         self.alunoMenu.add_command(label="CRUD ALUNO", command=self.controle.limiteAluno)
         self.menubar.add_cascade(label="Aluno", menu=self.alunoMenu)
+
+        self.cursoMenu.add_command(label="CRUD CURSO", command=self.controle.limiteCurso)
+        self.menubar.add_cascade(label="Curso", menu=self.cursoMenu)
         
         # self.historicoMenu.add_command(label="CRUD HISTÓRICO", command=self.controle.limiteHistorico)
         # self.menubar.add_cascade(label="Histórico", menu=self.historicoMenu)

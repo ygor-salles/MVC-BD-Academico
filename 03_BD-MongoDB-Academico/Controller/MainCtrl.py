@@ -46,3 +46,6 @@ class ControlePrincipal():
 
     def limiteAluno(self):
         self.ctrlAluno.exibirTela(self.newFrame1(), self.newFrame2())
+
+    def limiteCurso(self):
+        self.ctrlCurso.exibirTela(self.newFrame1(), self.newFrame2())

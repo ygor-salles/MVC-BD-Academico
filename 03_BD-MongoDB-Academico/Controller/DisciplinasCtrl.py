@@ -31,10 +31,6 @@ class CtrlDisciplina():
         self.limite.tabelaDisc.delete(*self.limite.tabelaDisc.get_children())
         for disc in self.getListaDisciplinas():
             self.limite.tabelaDisc.insert('', 'end', values=(disc.codigo, disc.nome, disc.cargaHoraria))
-
-    def preencheTabela(self):
-        for disc in self.getListaDisciplinas():
-            self.limite.tabelaDisc.insert('', 'end', values=(disc.codigo, disc.nome, disc.cargaHoraria))
     
     # Funções de CRUD dos buttons ------------------------------------------------
 
