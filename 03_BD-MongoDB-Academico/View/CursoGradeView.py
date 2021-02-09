@@ -44,7 +44,11 @@ class LimiteCurso():
 
         self.buttonInserir = Button(self.frame1, text='Inserir', bd=2, bg = '#107db2',fg = 'white',
                             font = ('verdana', 8, 'bold'), command=controle.insereCurso)
-        self.buttonInserir.place(relx=0.80, rely=0.80, relwidth=0.1, relheight=0.15)
+        self.buttonInserir.place(relx=0.77, rely=0.80, relwidth=0.1, relheight=0.15)
+        
+        self.buttonInserir = Button(self.frame1, text='Cadastrar', bd=2, bg = '#107db2',fg = 'white',
+                            font = ('verdana', 8, 'bold'), command=controle.cadastraCurso)
+        self.buttonInserir.place(relx=0.89, rely=0.80, relwidth=0.1, relheight=0.15)
 
         self.tabelaDisc = ttk.Treeview(self.frame2, column=('curso', 'grade'), show='headings')
         self.tabelaDisc.column('curso', minwidth=0, width=100)

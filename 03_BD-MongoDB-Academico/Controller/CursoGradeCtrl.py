@@ -1,3 +1,4 @@
+from tkinter.constants import ACTIVE
 from Model.CursoGradeModel import ManipulaBanco
 from DAO.Mapeamento import Curso, Disciplina, Grade
 from View.CursoGradeView import LimiteCurso
@@ -15,6 +16,7 @@ class CursoNaoCadastrado(Exception): pass
 class CtrlCurso():
     def __init__(self, controlePrincipal):
         self.ctrlPrincipal = controlePrincipal
+        self.listaDiscCurso = []
 
     def getListaCursos(self):
         return ManipulaBanco.listaCurso()
@@ -22,6 +24,7 @@ class CtrlCurso():
     # Instanciação da Main ------------------------------------------------------
 
     def exibirTela(self, frame1, frame2):
+        self.listaDiscCurso = []
         listaCursos = self.getListaCursos()
         listaDisc = self.ctrlPrincipal.ctrlDisciplina.getListaDisciplinas()
         self.limite = LimiteCurso(self, frame1, frame2, listaCursos, listaDisc)
@@ -64,22 +67,43 @@ class CtrlCurso():
     def insereCurso(self):
         nomeCurso = self.limite.inputCurso.get()
         anoGrade = self.limite.inputGrade.get()
+        discSel = self.limite.listboxDisc.get(ACTIVE)
         try:
-            if len(nomeCurso)==0 or len(anoGrade)==0:
+            if len(nomeCurso)==0 or len(anoGrade)==0 or len(discSel)==0:
                 raise PreencherCampos()
         except PreencherCampos:
             self.limite.mostraMessagebox('ALERTA', 'Atenção todos os campos devem ser preenchidos para inserção', True)
         else:
-            grade = Grade(ano=anoGrade, disciplinas=[Disciplina(codigo='COM110', nome='Fundmanetos de Programação', cargaHoraria=80)])
+            disciplina = self.ctrlPrincipal.ctrlDisciplina.getDisciplinaByCode(discSel)
+            try:
+                if disciplina == None:
+                    raise ErroRequisicao()
+            except ErroRequisicao:
+                self.limite.mostraMessagebox('ERROR', 'Houve erro na requisição', True)
+            else:
+                self.listaDiscCurso.append(disciplina)
+                self.limite.mostraMessagebox('SUCESSO', 'Disciplina inserida na lista', False)
+                self.limite.listboxDisc.delete(ACTIVE)
+
+    def cadastraCurso(self):
+        nomeCurso = self.limite.inputCurso.get()
+        anoGrade = self.limite.inputGrade.get()
+        discSel = self.limite.listboxDisc.get(ACTIVE)
+        try:
+            if len(nomeCurso)==0 or len(anoGrade)==0 or len(discSel)==0:
+                raise PreencherCampos()
+        except PreencherCampos:
+            self.limite.mostraMessagebox('ALERTA', 'Atenção todos os campos devem ser preenchidos para inserção', True)
+        else:
+            grade = Grade(ano=anoGrade, disciplinas=self.listaDiscCurso)
             curso = Curso(nome=nomeCurso, grade=grade)
             status = ManipulaBanco.cadastraCurso(curso)
             try:
-                if status == False:
-                    raise ErroRequisicao()
-            except ErroRequisicao:
-                self.limite.mostraMessagebox('ERROR', 'Houve erro na requisição ou curso já existente', True)
+                if status == False: raise ConexaoBD()
+            except ConexaoBD:
+                self.limite.mostraMessagebox('ERROR', 'Falha de conexão com o Banco de dados', True)
             else:
-                self.limite.mostraMessagebox('SUCESSO', 'Curso inserido com sucesso', False)
+                self.limite.mostraMessagebox('SUCESSO', 'Curso cadastrado com sucesso', False)
                 self.limite.limpaCurso()
                 self.reloadTabela()
 

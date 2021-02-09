@@ -31,6 +31,21 @@ class CtrlDisciplina():
         self.limite.tabelaDisc.delete(*self.limite.tabelaDisc.get_children())
         for disc in self.getListaDisciplinas():
             self.limite.tabelaDisc.insert('', 'end', values=(disc.codigo, disc.nome, disc.cargaHoraria))
+
+    # Funções auxiliares e de amarrações ----------------------------------------
+
+    def getDisciplinaByCode(self, codigo):
+        disciplinas = self.getListaDisciplinas()
+        try:
+            if disciplinas == False:
+                raise ConexaoBD()
+        except ConexaoBD:
+            return None
+        else:
+            for disc in disciplinas:
+                if codigo == disc.codigo:
+                    return disc
+            return None
     
     # Funções de CRUD dos buttons ------------------------------------------------
 
