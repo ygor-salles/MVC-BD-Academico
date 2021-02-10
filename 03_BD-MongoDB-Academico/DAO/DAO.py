@@ -1,4 +1,4 @@
-from DAO.Mapeamento import Aluno, Curso, Disciplina
+from DAO.Mapeamento import Aluno, Disciplina, Grade
 
 class DAOCrud():
     
@@ -33,14 +33,14 @@ class DAOCrud():
         Aluno.objects(matricula=matricula).update(nome=nome, curso=curso)
 
     # Métodos cursos ---------------------------------------
-    def listaCursos():
-        return Curso.objects()
+    def listaGrades():
+        return Grade.objects()
 
-    def buscaCurso(nome):
-        return Curso.objects(nome=nome).first()
+    def buscaGrade(anoCurso):
+        return Grade.objects(anoCurso=anoCurso).first()
 
-    def removeCurso(nome):
-        Curso.objects(nome=nome).delete()
+    def removeGrade(anoCurso):
+        Grade.objects(anoCurso=anoCurso).delete()
 
-    def atualizaCurso(nome, grade):
-        Curso.objects(nome=nome).update(nome=nome, grade=grade)
+    def atualizaGrade(anoCurso, listaDisciplinas):
+        Grade.objects(anoCurso=anoCurso).update(anoCurso=anoCurso, disciplinas=listaDisciplinas)

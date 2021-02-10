@@ -1,35 +1,35 @@
 from DAO.DAO import DAOCrud
 
 class ManipulaBanco():
-    def cadastraCurso(obj):
+    def cadastraGrade(obj):
         try:
             DAOCrud.insere(obj)
             return True
         except:
             return False
     
-    def listaCurso():
+    def listaGrade():
         try:
-            return DAOCrud.listaCursos()
+            return DAOCrud.listaGrades()
         except:
             return False
 
-    def consultaCurso(nome):
+    def consultaGrade(anoCurso):
         try:
-            return DAOCrud.buscaCurso(nome)
+            return DAOCrud.buscaGrade(anoCurso)
         except:
             return False
 
-    def deletaCurso(nome):
+    def deletaGrade(anoCurso):
         try:
-            DAOCrud.removeCurso(nome)
+            DAOCrud.removeGrade(anoCurso)
             return True
         except:
             return False
 
-    def atualizaCurso(nome, grade):
+    def atualizaGrade(anoCurso, listaDisciplinas):
         try:
-            DAOCrud.atualizaCurso(nome, grade)
+            DAOCrud.atualizaGrade(anoCurso, listaDisciplinas)
             return True
         except:
             return False

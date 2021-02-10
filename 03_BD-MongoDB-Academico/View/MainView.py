@@ -26,6 +26,7 @@ class LimitePrincipal():
         self.menubar = tk.Menu(self.root)        
         self.alunoMenu = tk.Menu(self.menubar)
         self.discipMenu = tk.Menu(self.menubar)
+        self.gradeMenu = tk.Menu(self.menubar)
         self.cursoMenu = tk.Menu(self.menubar)
         self.historicoMenu = tk.Menu(self.menubar)
         self.salvaMenu = tk.Menu(self.menubar)
@@ -37,8 +38,11 @@ class LimitePrincipal():
         self.alunoMenu.add_command(label="CRUD ALUNO", command=self.controle.limiteAluno)
         self.menubar.add_cascade(label="Aluno", menu=self.alunoMenu)
 
-        self.cursoMenu.add_command(label="CRUD CURSO", command=self.controle.limiteCurso)
-        self.menubar.add_cascade(label="Curso", menu=self.cursoMenu)
+        self.gradeMenu.add_command(label="CRUD GRADE", command=self.controle.limiteGrade)
+        self.menubar.add_cascade(label="Grade", menu=self.gradeMenu)
+
+        # self.cursoMenu.add_command(label="CRUD CURSO", command=self.controle.limiteCurso)
+        # self.menubar.add_cascade(label="Curso", menu=self.cursoMenu)
         
         # self.historicoMenu.add_command(label="CRUD HISTÓRICO", command=self.controle.limiteHistorico)
         # self.menubar.add_cascade(label="Histórico", menu=self.historicoMenu)

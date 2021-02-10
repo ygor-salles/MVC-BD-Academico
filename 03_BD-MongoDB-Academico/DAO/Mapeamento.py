@@ -21,13 +21,17 @@ class Aluno(Document):
     def __repr__(self):
         return f'Disciplina(matricula{self.matricula}, nome={self.nome}, curso={self.curso})'
 
-class Grade(EmbeddedDocument):
-    ano = IntField()
+class Grade(Document):
+    anoCurso = StringField(unique=True)
     disciplinas = ListField()
+
+    def __repr__(self):
+        return f'Grade(anoCurso={self.anoCurso}, disciplinas={self.disciplinas})'
 
 class Curso(Document):
     nome = StringField(unique=True)
-    grade = EmbeddedDocumentField(Grade)
+    grade = ReferenceField(Grade)
+    alunos = ListField()
 
     def __repr__(self):
-        return f'Curso(nome={self.nome}, grade=(ano={self.grade.ano}, disciplinas={self.grade.disciplinas})'
+        return f'Curso(nome={self.nome}, grade=(anoCurso={self.grade.ano}), alunos={self.alunos})'

@@ -2,7 +2,8 @@ from tkinter import *
 from View.MainView import *
 import Controller.AlunoCtrl as al
 import Controller.DisciplinasCtrl as dic
-import Controller.CursoGradeCtrl as cr
+import Controller.CursoCtrl as cr
+import Controller.GradeCtrl as gr
 import Controller.HistoricoCtrl as hist
 
 class ControlePrincipal():
@@ -12,6 +13,7 @@ class ControlePrincipal():
 
         self.ctrlAluno = al.CtrlAluno(self)
         self.ctrlDisciplina = dic.CtrlDisciplina(self)
+        self.ctrlGrade = gr.CtrlGrade(self)
         self.ctrlCurso = cr.CtrlCurso(self)
         self.ctrlHistorico = hist.CtrlHistorico(self)
         
@@ -47,5 +49,5 @@ class ControlePrincipal():
     def limiteAluno(self):
         self.ctrlAluno.exibirTela(self.newFrame1(), self.newFrame2())
 
-    def limiteCurso(self):
-        self.ctrlCurso.exibirTela(self.newFrame1(), self.newFrame2())
+    def limiteGrade(self):
+        self.ctrlGrade.exibirTela(self.newFrame1(), self.newFrame2())
