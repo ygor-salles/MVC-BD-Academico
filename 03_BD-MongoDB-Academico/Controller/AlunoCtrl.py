@@ -35,10 +35,10 @@ class CtrlAluno():
     # Funções de CRUD dos buttons ------------------------------------------------
 
     def buscaAluno(self):
-        if len(self.limite.tabelaDisc.get_children())==1:
+        matricula = self.limite.inputMatric.get()
+        if len(self.limite.tabelaDisc.get_children())==1 and len(matricula)==0:
             self.reloadTabela()
         else:
-            matricula = self.limite.inputMatric.get()
             try:
                 if len(matricula)==0: raise PreencherCampoId()
             except PreencherCampoId:

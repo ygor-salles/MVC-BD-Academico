@@ -26,27 +26,27 @@ class LimiteGrade():
         
         self.buttonBuscar = Button(self.frame1, text='Buscar', bd=2, bg = '#107db2',fg = 'white'
                                 , font = ('verdana', 8, 'bold'), command = controle.buscaGrade)
-        self.buttonBuscar.place(relx=0.70, rely=0.20, relwidth=0.1, relheight=0.15)
+        self.buttonBuscar.place(relx=0.70, rely=0.20, relwidth=0.12, relheight=0.15)
 
         self.buttonLimpar = Button(self.frame1, text= 'Limpar', bd=2, bg = '#107db2',fg = 'white', 
                                 font = ('verdana', 8, 'bold'), command= self.limpaGrade)
-        self.buttonLimpar.place(relx=0.85, rely=0.20, relwidth=0.1, relheight= 0.15)
+        self.buttonLimpar.place(relx=0.85, rely=0.20, relwidth=0.12, relheight= 0.15)
 
         self.buttonAlterar = Button(self.frame1, text='Alterar', bd=2, bg = '#107db2',fg = 'white'
                                 , font = ('verdana', 8, 'bold'), command=controle.alteraGrade)
-        self.buttonAlterar.place(relx=0.70, rely=0.50, relwidth=0.1, relheight=0.15)
+        self.buttonAlterar.place(relx=0.70, rely=0.50, relwidth=0.12, relheight=0.15)
         
         self.buttonDeletar = Button(self.frame1, text='Apagar', bd=2, bg = '#107db2',fg = 'white'
                                 , font = ('verdana', 8, 'bold'), command=controle.deletaGrade)
-        self.buttonDeletar.place(relx=0.85, rely=0.50, relwidth=0.1, relheight=0.15)
+        self.buttonDeletar.place(relx=0.85, rely=0.50, relwidth=0.12, relheight=0.15)
 
         self.buttonInserir = Button(self.frame1, text='Inserir', bd=2, bg = '#107db2',fg = 'white',
                             font = ('verdana', 8, 'bold'), command=controle.insereGrade)
-        self.buttonInserir.place(relx=0.70, rely=0.80, relwidth=0.1, relheight=0.15)
+        self.buttonInserir.place(relx=0.70, rely=0.80, relwidth=0.12, relheight=0.15)
         
         self.buttonCadastrar = Button(self.frame1, text='Cadastrar', bd=2, bg = '#107db2',fg = 'white',
                             font = ('verdana', 8, 'bold'), command=controle.cadastraGrade)
-        self.buttonCadastrar.place(relx=0.85, rely=0.80, relwidth=0.1, relheight=0.15)
+        self.buttonCadastrar.place(relx=0.85, rely=0.80, relwidth=0.12, relheight=0.15)
 
         self.tabelaDisc = ttk.Treeview(self.frame2)
         self.tabelaDisc['columns'] = ('grade', 'discCodigo', 'discNome', 'discCH')  

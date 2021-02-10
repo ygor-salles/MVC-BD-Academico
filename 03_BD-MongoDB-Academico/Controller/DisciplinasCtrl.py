@@ -50,10 +50,10 @@ class CtrlDisciplina():
     # Funções de CRUD dos buttons ------------------------------------------------
 
     def buscaDisciplina(self):
-        if len(self.limite.tabelaDisc.get_children())==1:
+        codDisc = self.limite.inputCodigo.get()
+        if len(self.limite.tabelaDisc.get_children())==1 and len(codDisc)==0:
             self.reloadTabela()
         else:
-            codDisc = self.limite.inputCodigo.get()
             try:
                 if len(codDisc)==0: raise PreencherCampoId()
             except PreencherCampoId:

@@ -69,10 +69,10 @@ class CtrlGrade():
     # Funções de CRUD dos buttons ------------------------------------------------
 
     def buscaGrade(self):
-        if len(self.limite.tabelaDisc.get_children())==1:
+        anoCurso = self.limite.inputGrade.get()
+        if len(self.limite.tabelaDisc.get_children())==1 and len(anoCurso)==0:
             self.reloadTabela()
         else:
-            anoCurso = self.limite.inputGrade.get()
             try:
                 if len(anoCurso)==0: raise PreencherCampoId()
             except PreencherCampoId:
