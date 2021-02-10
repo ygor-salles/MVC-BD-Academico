@@ -1,6 +1,6 @@
 from tkinter.constants import ACTIVE
 from Model.GradeModel import ManipulaBanco
-from DAO.Mapeamento import Grade, Grade
+from DAO.Mapeamento import Grade
 from View.GradeView import LimiteGrade
 
 class PreencherCampos(Exception): pass
@@ -33,12 +33,39 @@ class CtrlGrade():
 
     def reloadTabela(self):
         self.limite.tabelaDisc.delete(*self.limite.tabelaDisc.get_children())
+        contChild=0
+        contParent=0
         for grade in self.getListaGrades():
-            self.limite.tabelaDisc.insert(parent='', index='end', values=(grade.anoCurso))
+            self.limite.tabelaDisc.insert(parent='', index='end', iid=contParent, values=(grade.anoCurso))
             for disc in grade.disciplinas:
-                self.limite.tabelaDisc.insert(parent='', index='end', values=('', disc.codigo, disc.nome, disc.cargaHoraria))
+                contChild += 1
+                self.limite.tabelaDisc.insert(parent='', index='end', iid=contChild, values=('', disc['codigo'], disc['nome'], disc['cargaHoraria']))
+                self.limite.tabelaDisc.move(f'{contChild}', f'{contParent}', f'{contParent}')
+            contParent = contChild+1
+            contChild = contParent
 
- 
+    def reloadOneElement(self, grade):
+        self.limite.tabelaDisc.delete(*self.limite.tabelaDisc.get_children())
+        cont = 0
+        self.limite.tabelaDisc.insert(parent='', index='end', iid=0, values=(grade.anoCurso))
+        for disc in grade.disciplinas:
+            cont += 1
+            self.limite.tabelaDisc.insert(parent='', index='end', iid=cont, values=('', disc['codigo'], disc['nome'], disc['cargaHoraria']))
+            self.limite.tabelaDisc.move(f'{cont}', '0', '0')
+
+    # Funções auxiliares e de amarrações de classes
+
+    def converteDict(self, listaDiscGrade):
+        listaDict = []
+        for i in listaDiscGrade:
+            listaDict.append({
+                '_id': i.id,
+                'codigo': i.codigo,
+                'nome': i.nome,
+                'cargaHoraria': i.cargaHoraria
+            })
+        return listaDict
+
     # Funções de CRUD dos buttons ------------------------------------------------
 
     def buscaGrade(self):
@@ -58,10 +85,7 @@ class CtrlGrade():
                 except ConexaoBD: self.limite.mostraMessagebox('ERROR', 'Falha de conexão com o Banco de Dados', True)
                 except GradeNaoCadastrado: self.limite.mostraMessagebox('ERROR', f'Grade {anoCurso} não cadastrada', True)
                 else:
-                    self.limite.tabelaDisc.delete(*self.limite.tabelaDisc.get_children())
-                    self.limite.tabelaDisc.insert(parent='', index='end', values=(grade.anoCurso))
-                    for disc in grade.disciplinas:
-                        self.limite.tabelaDisc.insert(parent='discCodigo', index='end', values=(disc['codigo'], disc['nome'], disc['cargaHoraria']))
+                    self.reloadOneElement(grade)
                 finally:
                     self.limite.limpaGrade()
 
@@ -87,14 +111,14 @@ class CtrlGrade():
 
     def cadastraGrade(self):
         anoCurso = self.limite.inputGrade.get()
-        discSel = self.limite.listboxDisc.get(ACTIVE)
         try:
             if len(anoCurso)==0:
                 raise PreencherCampos()
         except PreencherCampos:
             self.limite.mostraMessagebox('ALERTA', 'Atenção todos os campos devem ser preenchidos para inserção', True)
         else:
-            grade = Grade(anoCurso=anoCurso, disciplinas=self.listaDiscGrade)
+            listaDict = self.converteDict(self.listaDiscGrade)
+            grade = Grade(anoCurso=anoCurso, disciplinas=listaDict)
             status = ManipulaBanco.cadastraGrade(grade)
             try:
                 if status == False: raise ConexaoBD()

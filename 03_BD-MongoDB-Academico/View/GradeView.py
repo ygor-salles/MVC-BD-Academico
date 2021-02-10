@@ -65,7 +65,7 @@ class LimiteGrade():
             self.tabelaDisc.insert(parent='', index='end', iid=contParent, values=(grade.anoCurso))
             for disc in grade.disciplinas:
                 contChild += 1
-                self.tabelaDisc.insert(parent='', index='end', iid=contChild, values=('', disc.codigo, disc.nome, disc.cargaHoraria))
+                self.tabelaDisc.insert(parent='', index='end', iid=contChild, values=('', disc['codigo'], disc['nome'], disc['cargaHoraria']))
                 self.tabelaDisc.move(f'{contChild}', f'{contParent}', f'{contParent}')
             contParent = contChild+1
             contChild = contParent
