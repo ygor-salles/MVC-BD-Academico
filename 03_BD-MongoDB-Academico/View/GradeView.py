@@ -9,41 +9,44 @@ class LimiteGrade():
         self.labelTitulo = Label(self.frame1, text='GRADES', bg='#dfe3ee', font=('Heveltica Bold', 14))
         self.labelTitulo.place(relx=0.38, rely=0.01, relwidth=0.2)
 
-        self.labelGrade = Label(self.frame1, text='ANO/CURSO - (2017/SIN)', bg= '#dfe3ee', fg = '#107db2')
-        self.labelGrade.place(relx=0.05, rely=0.15)
-        self.inputGrade = Entry(self.frame1)
-        self.inputGrade.place(relx=0.05, rely=0.25, relwidth=0.4)
+        self.labelGrade = Label(self.frame1, text='ANO/CURSO (2017/SIN):', bg= '#dfe3ee', fg = '#107db2')
+        self.labelGrade.place(relx=0.05, rely=0.20)
+        self.placeholder = StringVar(None)
+        self.placeholder.set('Ex: 2017/SIN')
+        self.inputGrade = Entry(self.frame1, textvariable=self.placeholder)
+        self.inputGrade.bind('<Enter>', self.clearBox)
+        self.inputGrade.place(relx=0.26, rely=0.20, relwidth=0.3)
 
-        self.labelDisc = Label(self.frame1, text='Disciplinas',  bg= '#dfe3ee', fg = '#107db2')
-        self.labelDisc.place(relx=0.55, rely=0.15)
+        self.labelDisc = Label(self.frame1, text='DISCIPLINAS: ',  bg= '#dfe3ee', fg = '#107db2')
+        self.labelDisc.place(relx=0.05, rely=0.35)
         self.listboxDisc = Listbox(self.frame1)
         for disc in listaDisc:
             self.listboxDisc.insert(END, disc.codigo)
-        self.listboxDisc.place(relx=0.55, rely=0.25, relheight=0.70)
+        self.listboxDisc.place(relx=0.26, rely=0.35, relheight=0.60)
         
         self.buttonBuscar = Button(self.frame1, text='Buscar', bd=2, bg = '#107db2',fg = 'white'
                                 , font = ('verdana', 8, 'bold'), command = controle.buscaGrade)
-        self.buttonBuscar.place(relx=0.05, rely=0.80, relwidth=0.1, relheight=0.15)
+        self.buttonBuscar.place(relx=0.70, rely=0.20, relwidth=0.1, relheight=0.15)
 
         self.buttonLimpar = Button(self.frame1, text= 'Limpar', bd=2, bg = '#107db2',fg = 'white', 
                                 font = ('verdana', 8, 'bold'), command= self.limpaGrade)
-        self.buttonLimpar.place(relx= 0.15, rely=0.80, relwidth=0.1, relheight= 0.15)
+        self.buttonLimpar.place(relx=0.85, rely=0.20, relwidth=0.1, relheight= 0.15)
 
         self.buttonAlterar = Button(self.frame1, text='Alterar', bd=2, bg = '#107db2',fg = 'white'
                                 , font = ('verdana', 8, 'bold'), command=controle.alteraGrade)
-        self.buttonAlterar.place(relx=0.3, rely=0.80, relwidth=0.1, relheight=0.15)
+        self.buttonAlterar.place(relx=0.70, rely=0.50, relwidth=0.1, relheight=0.15)
         
         self.buttonDeletar = Button(self.frame1, text='Apagar', bd=2, bg = '#107db2',fg = 'white'
                                 , font = ('verdana', 8, 'bold'), command=controle.deletaGrade)
-        self.buttonDeletar.place(relx=0.4, rely=0.80, relwidth=0.1, relheight=0.15)
+        self.buttonDeletar.place(relx=0.85, rely=0.50, relwidth=0.1, relheight=0.15)
 
         self.buttonInserir = Button(self.frame1, text='Inserir', bd=2, bg = '#107db2',fg = 'white',
                             font = ('verdana', 8, 'bold'), command=controle.insereGrade)
-        self.buttonInserir.place(relx=0.77, rely=0.80, relwidth=0.1, relheight=0.15)
+        self.buttonInserir.place(relx=0.70, rely=0.80, relwidth=0.1, relheight=0.15)
         
-        self.buttonInserir = Button(self.frame1, text='Cadastrar', bd=2, bg = '#107db2',fg = 'white',
+        self.buttonCadastrar = Button(self.frame1, text='Cadastrar', bd=2, bg = '#107db2',fg = 'white',
                             font = ('verdana', 8, 'bold'), command=controle.cadastraGrade)
-        self.buttonInserir.place(relx=0.89, rely=0.80, relwidth=0.1, relheight=0.15)
+        self.buttonCadastrar.place(relx=0.85, rely=0.80, relwidth=0.1, relheight=0.15)
 
         self.tabelaDisc = ttk.Treeview(self.frame2)
         self.tabelaDisc['columns'] = ('grade', 'discCodigo', 'discNome', 'discCH')  
@@ -94,4 +97,6 @@ class LimiteGrade():
             col1 = self.tabelaDisc.item(n, 'values')
             self.inputGrade.insert(END, col1)
             self.inputGrade.config(state=DISABLED)
-        
+
+    def clearBox(self, event):
+        self.inputGrade.delete(0, 'end')
