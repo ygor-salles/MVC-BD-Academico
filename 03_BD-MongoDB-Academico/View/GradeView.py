@@ -110,34 +110,34 @@ class LimiteAlteraGrade():
         self.labelTitulo.place(relx=0.25, rely=0.01, relwidth=0.5)
 
         self.labelGrade = Label(self.frame1, text='ANO/CURSO:', bg= '#dfe3ee', fg = '#107db2')
-        self.labelGrade.place(relx=0.05, rely=0.20)
+        self.labelGrade.place(relx=0.05, rely=0.25)
         self.escolhaGrade = StringVar()
         self.comboboxGrade = ttk.Combobox(self.frame1, textvariable=self.escolhaGrade)
         self.comboboxGrade['values'] = listaAnoCurso
         self.comboboxGrade.bind('<<ComboboxSelected>>', self.popular)
-        self.comboboxGrade.place(relx=0.20, rely=0.20, relwidth=0.2)
+        self.comboboxGrade.place(relx=0.20, rely=0.25, relwidth=0.2)
 
         self.labelAdd = Label(self.frame1, text='Adiciona disciplinas',  bg= '#dfe3ee', fg = '#107db2')
-        self.labelAdd.place(relx=0.05, rely=0.35)
+        self.labelAdd.place(relx=0.70, rely=0.20)
         self.listboxAdd = Listbox(self.frame1)
-        self.listboxAdd.place(relx=0.05, rely=0.45, relheight=0.50, relwidth=0.15)
+        self.listboxAdd.place(relx=0.70, rely=0.30, relheight=0.50, relwidth=0.15)
 
         self.labelRemove = Label(self.frame1, text='Remove disciplinas',  bg= '#dfe3ee', fg = '#107db2')
-        self.labelRemove.place(relx=0.25, rely=0.35)
+        self.labelRemove.place(relx=0.50, rely=0.20)
         self.listboxRemove = Listbox(self.frame1)
-        self.listboxRemove.place(relx=0.25, rely=0.45, relheight=0.50, relwidth=0.15)
+        self.listboxRemove.place(relx=0.50, rely=0.30, relheight=0.50, relwidth=0.15)
 
         self.buttonRemover = Button(self.frame1, text='Remover', bd=2, bg = '#107db2',fg = 'white',
                             font = ('verdana', 8, 'bold'), command=controle.removeGrade)
-        self.buttonRemover.place(relx=0.55, rely=0.80, relwidth=0.12, relheight=0.15)
+        self.buttonRemover.place(relx=0.50, rely=0.82, relwidth=0.12, relheight=0.15)
         
         self.buttonAdicionar = Button(self.frame1, text='Adicionar', bd=2, bg = '#107db2',fg = 'white',
                             font = ('verdana', 8, 'bold'), command=controle.adicionaGrade)
-        self.buttonAdicionar.place(relx=0.70, rely=0.80, relwidth=0.12, relheight=0.15)
+        self.buttonAdicionar.place(relx=0.70, rely=0.82, relwidth=0.12, relheight=0.15)
         
         self.buttonAtualizar = Button(self.frame1, text='Atualizar', bd=2, bg = '#107db2',fg = 'white',
                             font = ('verdana', 8, 'bold'), command=controle.atualizaGrade)
-        self.buttonAtualizar.place(relx=0.85, rely=0.80, relwidth=0.12, relheight=0.15)
+        self.buttonAtualizar.place(relx=0.05, rely=0.82, relwidth=0.12, relheight=0.15)
 
         self.tabelaDisc = ttk.Treeview(self.frame2)
         self.tabelaDisc['columns'] = ('grade', 'discCodigo', 'discNome', 'discCH')  
