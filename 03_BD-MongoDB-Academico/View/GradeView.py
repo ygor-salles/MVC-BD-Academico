@@ -31,18 +31,14 @@ class LimiteGrade():
         self.buttonLimpar = Button(self.frame1, text= 'Limpar', bd=2, bg = '#107db2',fg = 'white', 
                                 font = ('verdana', 8, 'bold'), command= self.limpaGrade)
         self.buttonLimpar.place(relx=0.85, rely=0.20, relwidth=0.12, relheight= 0.15)
-
-        self.buttonAlterar = Button(self.frame1, text='Alterar', bd=2, bg = '#107db2',fg = 'white'
-                                , font = ('verdana', 8, 'bold'), command=controle.alteraGrade)
-        self.buttonAlterar.place(relx=0.70, rely=0.50, relwidth=0.12, relheight=0.15)
         
+        self.buttonInserir = Button(self.frame1, text='Inserir', bd=2, bg = '#107db2',fg = 'white',
+                            font = ('verdana', 8, 'bold'), command=controle.insereGrade)
+        self.buttonInserir.place(relx=0.70, rely=0.50, relwidth=0.12, relheight=0.15)
+
         self.buttonDeletar = Button(self.frame1, text='Apagar', bd=2, bg = '#107db2',fg = 'white'
                                 , font = ('verdana', 8, 'bold'), command=controle.deletaGrade)
         self.buttonDeletar.place(relx=0.85, rely=0.50, relwidth=0.12, relheight=0.15)
-
-        self.buttonInserir = Button(self.frame1, text='Inserir', bd=2, bg = '#107db2',fg = 'white',
-                            font = ('verdana', 8, 'bold'), command=controle.insereGrade)
-        self.buttonInserir.place(relx=0.70, rely=0.80, relwidth=0.12, relheight=0.15)
         
         self.buttonCadastrar = Button(self.frame1, text='Cadastrar', bd=2, bg = '#107db2',fg = 'white',
                             font = ('verdana', 8, 'bold'), command=controle.cadastraGrade)
@@ -100,3 +96,129 @@ class LimiteGrade():
 
     def clearBox(self, event):
         self.inputGrade.delete(0, 'end')
+
+class LimiteAlteraGrade():
+    def __init__(self, controle, frame1, frame2, listaAnoCurso, listaGrades, listaDisc):
+        self.frame1 = frame1
+        self.frame2 = frame2
+        self.listaAnoCurso = listaAnoCurso
+        self.listaGrade = listaGrades
+        self.listaDisc = listaDisc
+        self.testePopula = False
+
+        self.labelTitulo = Label(self.frame1, text='ATUALIZAR GRADE', bg='#dfe3ee', font=('Heveltica Bold', 14))
+        self.labelTitulo.place(relx=0.25, rely=0.01, relwidth=0.5)
+
+        self.labelGrade = Label(self.frame1, text='ANO/CURSO:', bg= '#dfe3ee', fg = '#107db2')
+        self.labelGrade.place(relx=0.05, rely=0.20)
+        self.escolhaGrade = StringVar()
+        self.comboboxGrade = ttk.Combobox(self.frame1, textvariable=self.escolhaGrade)
+        self.comboboxGrade['values'] = listaAnoCurso
+        self.comboboxGrade.bind('<<ComboboxSelected>>', self.popular)
+        self.comboboxGrade.place(relx=0.20, rely=0.20, relwidth=0.2)
+
+        self.labelAdd = Label(self.frame1, text='Adiciona disciplinas',  bg= '#dfe3ee', fg = '#107db2')
+        self.labelAdd.place(relx=0.05, rely=0.35)
+        self.listboxAdd = Listbox(self.frame1)
+        self.listboxAdd.place(relx=0.05, rely=0.45, relheight=0.50, relwidth=0.15)
+
+        self.labelRemove = Label(self.frame1, text='Remove disciplinas',  bg= '#dfe3ee', fg = '#107db2')
+        self.labelRemove.place(relx=0.25, rely=0.35)
+        self.listboxRemove = Listbox(self.frame1)
+        self.listboxRemove.place(relx=0.25, rely=0.45, relheight=0.50, relwidth=0.15)
+
+        self.buttonRemover = Button(self.frame1, text='Remover', bd=2, bg = '#107db2',fg = 'white',
+                            font = ('verdana', 8, 'bold'), command=controle.removeGrade)
+        self.buttonRemover.place(relx=0.55, rely=0.80, relwidth=0.12, relheight=0.15)
+        
+        self.buttonAdicionar = Button(self.frame1, text='Adicionar', bd=2, bg = '#107db2',fg = 'white',
+                            font = ('verdana', 8, 'bold'), command=controle.adicionaGrade)
+        self.buttonAdicionar.place(relx=0.70, rely=0.80, relwidth=0.12, relheight=0.15)
+        
+        self.buttonAtualizar = Button(self.frame1, text='Atualizar', bd=2, bg = '#107db2',fg = 'white',
+                            font = ('verdana', 8, 'bold'), command=controle.atualizaGrade)
+        self.buttonAtualizar.place(relx=0.85, rely=0.80, relwidth=0.12, relheight=0.15)
+
+        self.tabelaDisc = ttk.Treeview(self.frame2)
+        self.tabelaDisc['columns'] = ('grade', 'discCodigo', 'discNome', 'discCH')  
+        self.tabelaDisc.column('#0', minwidth=0, width=5)
+        self.tabelaDisc.column('grade', minwidth=0, width=50)
+        self.tabelaDisc.column('discCodigo', minwidth=0, width=100)
+        self.tabelaDisc.column('discNome', minwidth=0, width=195)
+        self.tabelaDisc.column('discCH', minwidth=0, width=50)
+        self.tabelaDisc.heading('#0', text='', anchor=W)
+        self.tabelaDisc.heading('grade', text='GRADE')
+        self.tabelaDisc.heading('discCodigo', text='CODIGO DISC')
+        self.tabelaDisc.heading('discNome', text='NOME DISC')
+        self.tabelaDisc.heading('discCH', text='CH DISC')
+        self.tabelaDisc.place(relx=0.01, rely=0.1, relwidth=0.95, relheight=0.85)
+
+        contChild=0
+        contParent=0
+        for grade in listaGrades:
+            self.tabelaDisc.insert(parent='', index='end', iid=contParent, values=(grade.anoCurso))
+            for disc in grade.disciplinas:
+                contChild += 1
+                self.tabelaDisc.insert(parent='', index='end', iid=contChild, values=('', disc['codigo'], disc['nome'], disc['cargaHoraria']))
+                self.tabelaDisc.move(f'{contChild}', f'{contParent}', f'{contParent}')
+            contParent = contChild+1
+            contChild = contParent
+
+        self.scroolLista = Scrollbar(self.frame2, orient='vertical')
+        self.tabelaDisc.configure(yscroll=self.scroolLista.set)
+        self.scroolLista.place(relx=0.96, rely=0.1, relwidth=0.04, relheight=0.85)
+        self.tabelaDisc.bind('<Double-1>', self.OnDoubleClick)
+
+    def limpaGrade(self):
+        self.comboboxGrade.config(state=NORMAL)
+        self.comboboxGrade.delete(0, 'end')
+
+    def mostraMessagebox(self, titulo, msg, erro):
+        if erro == False:
+            messagebox.showinfo(titulo, msg)
+        else:
+            messagebox.showerror(titulo, msg)
+
+    def OnDoubleClick(self, event):
+        self.limpaGrade()
+        self.tabelaDisc.selection()
+
+        for n in self.tabelaDisc.selection():
+            col1 = self.tabelaDisc.item(n, 'values')
+            self.comboboxGrade.insert(END, col1)
+    
+    def getListaGradeCodDisc(self, anoCurso):
+        listaGradeCodDisc = []
+        for grade in self.listaGrade:
+            if anoCurso == grade.anoCurso:
+                for disc in grade.disciplinas:
+                    listaGradeCodDisc.append(disc['codigo'])
+                return listaGradeCodDisc
+    
+    def limparListBox(self):
+        self.listboxRemove.delete(0, 'end')
+        self.listboxAdd.delete(0, 'end')
+    
+    def IsPopularListbox(self, listaGradeCodDisc):
+        for disc in listaGradeCodDisc:
+            self.listboxRemove.insert(END, disc)
+        return True
+    
+    def IsPopularListboxTodas(self, listaTodasDisciplinas, listaGradeCodDisc):
+        for todas in listaTodasDisciplinas:
+            if todas not in listaGradeCodDisc:
+                self.listboxAdd.insert(END, todas)
+        return True
+    
+    def popular(self, event):
+        #para os listBox's
+        comboAnoCurso = self.escolhaGrade.get()
+        listaGradeCodDisc = self.getListaGradeCodDisc(comboAnoCurso)
+        if self.testePopula == False:
+            self.testePopula = self.IsPopularListbox(listaGradeCodDisc)
+            self.IsPopularListboxTodas(self.listaDisc ,listaGradeCodDisc)
+        else:
+            self.limparListBox()
+            self.IsPopularListbox(listaGradeCodDisc)
+            self.IsPopularListboxTodas(self.listaDisc ,listaGradeCodDisc)
+

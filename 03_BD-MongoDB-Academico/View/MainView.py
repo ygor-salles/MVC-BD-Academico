@@ -32,13 +32,14 @@ class LimitePrincipal():
         self.salvaMenu = tk.Menu(self.menubar)
         self.sairMenu = tk.Menu(self.menubar) 
 
-        self.discipMenu.add_command(label="CRUD DISCIPLINA", command=self.controle.limiteDisiciplina)
+        self.discipMenu.add_command(label="Crud disciplina", command=self.controle.limiteDisiciplina)
         self.menubar.add_cascade(label="Disciplina", menu=self.discipMenu)
         
-        self.alunoMenu.add_command(label="CRUD ALUNO", command=self.controle.limiteAluno)
+        self.alunoMenu.add_command(label="Crud aluno", command=self.controle.limiteAluno)
         self.menubar.add_cascade(label="Aluno", menu=self.alunoMenu)
 
-        self.gradeMenu.add_command(label="CRUD GRADE", command=self.controle.limiteGrade)
+        self.gradeMenu.add_command(label="Crud grade", command=self.controle.limiteGrade)
+        self.gradeMenu.add_command(label="Alterar grade", command=self.controle.limiteAlteraGrade)
         self.menubar.add_cascade(label="Grade", menu=self.gradeMenu)
 
         # self.cursoMenu.add_command(label="CRUD CURSO", command=self.controle.limiteCurso)

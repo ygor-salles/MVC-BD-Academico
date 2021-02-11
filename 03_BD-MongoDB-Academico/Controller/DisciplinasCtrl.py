@@ -46,6 +46,19 @@ class CtrlDisciplina():
                 if codigo == disc.codigo:
                     return disc
             return None
+
+    def getListaCodDisc(self):
+        disciplinas = self.getListaDisciplinas()
+        try:
+            if disciplinas == False:
+                raise ConexaoBD()
+        except ConexaoBD:
+            return None
+        else:
+            listaCodDisc = []
+            for disc in disciplinas:
+                listaCodDisc.append(disc.codigo)
+            return listaCodDisc
     
     # Funções de CRUD dos buttons ------------------------------------------------
 

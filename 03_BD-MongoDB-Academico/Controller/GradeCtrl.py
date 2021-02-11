@@ -1,7 +1,7 @@
 from tkinter.constants import ACTIVE
 from Model.GradeModel import ManipulaBanco
 from DAO.Mapeamento import Grade
-from View.GradeView import LimiteGrade
+from View.GradeView import LimiteAlteraGrade, LimiteGrade
 
 class PreencherCampos(Exception): pass
 
@@ -23,6 +23,12 @@ class CtrlGrade():
 
     # Instanciação da Main ------------------------------------------------------
 
+    def exibirTelaGrade(self, frame1, frame2):
+        listaAnoCurso = self.getListaAnoCurso()
+        listaGrades = self.getListaGrades()
+        listaDisc = self.ctrlPrincipal.ctrlDisciplina.getListaCodDisc()
+        self.limiteAltera = LimiteAlteraGrade(self, frame1, frame2, listaAnoCurso, listaGrades, listaDisc)
+    
     def exibirTela(self, frame1, frame2):
         self.listaDiscGrade = []
         listaGrades = self.getListaGrades()
@@ -65,6 +71,18 @@ class CtrlGrade():
                 'cargaHoraria': i.cargaHoraria
             })
         return listaDict
+
+    def getListaAnoCurso(self):
+        listaAnoCurso = []
+        listaGrades = self.getListaGrades()
+        try:
+            if listaGrades == False: raise ConexaoBD()
+        except ConexaoBD():
+            return None
+        else:
+            for grade in listaGrades:
+                listaAnoCurso.append(grade.anoCurso)
+            return listaAnoCurso
 
     # Funções de CRUD dos buttons ------------------------------------------------
 
@@ -127,26 +145,7 @@ class CtrlGrade():
             else:
                 self.limite.mostraMessagebox('SUCESSO', 'Grade cadastrada com sucesso', False)
                 self.limite.limpaGrade()
-                self.reloadTabela()
-
-    def alteraGrade(self):
-        print('Alterando Grade')
-    #     anoCurso = self.limite.inputGrade.get()
-    #     grade = self.limite.inputGrade.get()
-    #     try:
-    #         if len(anoCurso)==0:
-    #             raise PreencherCampoId()
-    #     except PreencherCampoId:
-    #         self.limite.mostraMessagebox('ALERTA', 'Selecionar o grade que deseja alterar', True)
-    #     else:
-    #         status = ManipulaBanco.atualizaGrade(anoCurso)
-    #         try:
-    #             if status == False: raise ConexaoBD()
-    #         except ConexaoBD: self.limite.mostraMessagebox('ERROR', 'Falha de conexão com o banco de dados', True)
-    #         else:
-    #             self.limite.mostraMessagebox('SUCESSO', f'Grade {anoCurso} alterada com sucesso', False)
-    #             self.limite.limpaGrade()
-    #             self.reloadTabela() 
+                self.reloadTabela() 
 
     def deletaGrade(self):
         anoCurso = self.limite.inputGrade.get()
@@ -165,3 +164,14 @@ class CtrlGrade():
                 self.limite.mostraMessagebox('SUCESSO', f'Grade {anoCurso} excluído com sucesso', False)
                 self.limite.limpaGrade()
                 self.reloadTabela()
+
+    # Funções da tela altera grade ----------------------------------------------------------
+    
+    def adicionaGrade(self):
+        print('Add grade')
+
+    def atualizaGrade(self):
+        print('Atualiza grade')
+
+    def removeGrade(self):
+        print('Remove Grade')
