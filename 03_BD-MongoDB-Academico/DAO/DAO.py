@@ -43,4 +43,4 @@ class DAOCrud():
         Grade.objects(anoCurso=anoCurso).delete()
 
     def atualizaGrade(anoCurso, listaDisciplinas):
-        Grade.objects(anoCurso=anoCurso).update(anoCurso=anoCurso, disciplinas=listaDisciplinas)
+        Grade.objects(anoCurso=anoCurso).update(disciplinas=listaDisciplinas)

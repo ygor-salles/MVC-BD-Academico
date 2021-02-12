@@ -105,6 +105,7 @@ class LimiteAlteraGrade():
         self.listaGrade = listaGrades
         self.listaDisc = listaDisc
         self.testePopula = False
+        self.listaGradeDisc = []
 
         self.labelTitulo = Label(self.frame1, text='ATUALIZAR GRADE', bg='#dfe3ee', font=('Heveltica Bold', 14))
         self.labelTitulo.place(relx=0.25, rely=0.01, relwidth=0.5)
@@ -117,12 +118,12 @@ class LimiteAlteraGrade():
         self.comboboxGrade.bind('<<ComboboxSelected>>', self.popular)
         self.comboboxGrade.place(relx=0.20, rely=0.25, relwidth=0.2)
 
-        self.labelAdd = Label(self.frame1, text='Adiciona disciplinas',  bg= '#dfe3ee', fg = '#107db2')
+        self.labelAdd = Label(self.frame1, text='Add disciplinas',  bg= '#dfe3ee', fg = '#107db2')
         self.labelAdd.place(relx=0.70, rely=0.20)
         self.listboxAdd = Listbox(self.frame1)
         self.listboxAdd.place(relx=0.70, rely=0.30, relheight=0.50, relwidth=0.15)
 
-        self.labelRemove = Label(self.frame1, text='Remove disciplinas',  bg= '#dfe3ee', fg = '#107db2')
+        self.labelRemove = Label(self.frame1, text='Disciplinas da grade',  bg= '#dfe3ee', fg = '#107db2')
         self.labelRemove.place(relx=0.50, rely=0.20)
         self.listboxRemove = Listbox(self.frame1)
         self.listboxRemove.place(relx=0.50, rely=0.30, relheight=0.50, relwidth=0.15)
@@ -170,7 +171,6 @@ class LimiteAlteraGrade():
         self.tabelaDisc.bind('<Double-1>', self.OnDoubleClick)
 
     def limpaGrade(self):
-        self.comboboxGrade.config(state=NORMAL)
         self.comboboxGrade.delete(0, 'end')
 
     def mostraMessagebox(self, titulo, msg, erro):
@@ -194,6 +194,14 @@ class LimiteAlteraGrade():
                 for disc in grade.disciplinas:
                     listaGradeCodDisc.append(disc['codigo'])
                 return listaGradeCodDisc
+
+    def getListaGradeDisc(self, anoCurso):
+        listaGradeDisc = []
+        for grade in self.listaGrade:
+            if anoCurso == grade.anoCurso:
+                for disc in grade.disciplinas:
+                    listaGradeDisc.append(disc)
+                return listaGradeDisc
     
     def limparListBox(self):
         self.listboxRemove.delete(0, 'end')
@@ -214,6 +222,7 @@ class LimiteAlteraGrade():
         #para os listBox's
         comboAnoCurso = self.escolhaGrade.get()
         listaGradeCodDisc = self.getListaGradeCodDisc(comboAnoCurso)
+        self.listaGradeDisc = self.getListaGradeDisc(comboAnoCurso)
         if self.testePopula == False:
             self.testePopula = self.IsPopularListbox(listaGradeCodDisc)
             self.IsPopularListboxTodas(self.listaDisc ,listaGradeCodDisc)
