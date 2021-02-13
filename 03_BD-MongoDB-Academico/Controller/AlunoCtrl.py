@@ -32,6 +32,30 @@ class CtrlAluno():
         for aluno in self.getListaAlunos():
             self.limite.tabelaDisc.insert('', 'end', values=(aluno.matricula, aluno.nome, aluno.curso))
 
+    # Funções auxiliares e de amarrações de classes -------------------------------
+
+    def getListaMatricAluno(self):
+        listaAlunos = self.getListaAlunos()
+        listaMatricAluno = []
+        try: 
+            if listaAlunos == False: raise ConexaoBD()
+        except ConexaoBD: return None
+        else:
+            for aluno in listaAlunos:
+                listaMatricAluno.append(aluno.matricula)
+            return listaMatricAluno
+
+    def getAlunoByCode(self, matricula):
+        listaAlunos = self.getListaAlunos()
+        try: 
+            if listaAlunos == False: raise ConexaoBD()
+        except ConexaoBD: return None
+        else:
+            for aluno in listaAlunos:
+                if matricula == aluno.matricula:
+                    return aluno
+            return None
+
     # Funções de CRUD dos buttons ------------------------------------------------
 
     def buscaAluno(self):

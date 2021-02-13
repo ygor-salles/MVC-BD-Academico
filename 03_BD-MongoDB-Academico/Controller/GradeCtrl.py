@@ -130,7 +130,7 @@ class CtrlGrade():
                 finally:
                     self.limite.limpaGrade()
 
-    def insereGrade(self):
+    def insereDisc(self):
         anoCurso = self.limite.inputGrade.get()
         discSel = self.limite.listboxDisc.get(ACTIVE)
         try:
@@ -167,8 +167,7 @@ class CtrlGrade():
                 self.limite.mostraMessagebox('ERROR', 'Falha de conexão com o Banco de dados', True)
             else:
                 self.limite.mostraMessagebox('SUCESSO', 'Grade cadastrada com sucesso', False)
-                self.limite.limpaGrade()
-                self.reloadTabela() 
+                self.limite.fechaJanela()
 
     def deletaGrade(self):
         anoCurso = self.limite.inputGrade.get()

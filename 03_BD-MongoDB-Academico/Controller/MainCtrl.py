@@ -54,3 +54,9 @@ class ControlePrincipal():
 
     def limiteAlteraGrade(self):
         self.ctrlGrade.exibirTelaGrade(self.newFrame1(), self.newFrame2())
+
+    def limiteCurso(self):
+        self.ctrlCurso.exibirTela(self.newFrame1(), self.newFrame2())
+
+    def limiteAlteraCurso(self):
+        self.ctrlCurso.exibirTelaCurso(self.newFrame1(), self.newFrame2())

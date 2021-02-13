@@ -15,9 +15,9 @@ class LimiteGrade():
         self.placeholder.set('Ex: 2017/SIN')
         self.inputGrade = Entry(self.frame1, textvariable=self.placeholder)
         self.inputGrade.bind('<Enter>', self.clearBox)
-        self.inputGrade.place(relx=0.26, rely=0.20, relwidth=0.3)
+        self.inputGrade.place(relx=0.26, rely=0.20, relwidth=0.2)
 
-        self.labelDisc = Label(self.frame1, text='DISCIPLINAS: ',  bg= '#dfe3ee', fg = '#107db2')
+        self.labelDisc = Label(self.frame1, text='Disciplinas p/ cadastro: ',  bg= '#dfe3ee', fg = '#107db2')
         self.labelDisc.place(relx=0.05, rely=0.35)
         self.listboxDisc = Listbox(self.frame1)
         for disc in listaDisc:
@@ -33,7 +33,7 @@ class LimiteGrade():
         self.buttonLimpar.place(relx=0.85, rely=0.20, relwidth=0.12, relheight= 0.15)
         
         self.buttonInserir = Button(self.frame1, text='Inserir', bd=2, bg = '#107db2',fg = 'white',
-                            font = ('verdana', 8, 'bold'), command=controle.insereGrade)
+                            font = ('verdana', 8, 'bold'), command=controle.insereDisc)
         self.buttonInserir.place(relx=0.70, rely=0.50, relwidth=0.12, relheight=0.15)
 
         self.buttonDeletar = Button(self.frame1, text='Apagar', bd=2, bg = '#107db2',fg = 'white'
@@ -74,6 +74,10 @@ class LimiteGrade():
         self.scroolLista.place(relx=0.96, rely=0.1, relwidth=0.04, relheight=0.85)
         self.tabelaDisc.bind('<Double-1>', self.OnDoubleClick)
 
+    def fechaJanela(self):
+        self.frame1.destroy()
+        self.frame2.destroy()
+    
     def limpaGrade(self):
         self.inputGrade.config(state=NORMAL)
         self.inputGrade.delete(0, 'end')
@@ -169,7 +173,7 @@ class LimiteAlteraGrade():
         self.tabelaDisc.configure(yscroll=self.scroolLista.set)
         self.scroolLista.place(relx=0.96, rely=0.1, relwidth=0.04, relheight=0.85)
         self.tabelaDisc.bind('<Double-1>', self.OnDoubleClick)
-
+    
     def limpaGrade(self):
         self.comboboxGrade.delete(0, 'end')
 
