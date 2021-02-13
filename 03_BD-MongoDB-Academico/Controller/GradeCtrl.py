@@ -74,7 +74,7 @@ class CtrlGrade():
             contParent = contChild+1
             contChild = contParent
 
-    # Funções auxiliares e de amarrações de classes
+    # Funções auxiliares e de amarrações de classes ------------------------------------
 
     def converteDict(self, listaDiscGrade):
         listaDict = []
@@ -99,9 +99,19 @@ class CtrlGrade():
                 listaAnoCurso.append(grade.anoCurso)
             return listaAnoCurso
 
-    def getListaDiscGrade(self):
-        listaDiscGrade = []
-        
+    def getDiscGrade(self, anoCurso, codDisc):
+        listaGrades = self.getListaGrades()
+        try:
+            if listaGrades == False: raise ConexaoBD()
+        except ConexaoBD():
+            return None
+        else:
+            for grade in listaGrades:
+                if anoCurso == grade.anoCurso:
+                    for disc in grade.disciplinas:
+                        if disc['codigo'] == codDisc:
+                            return disc
+            return None 
 
 
     # Funções de CRUD dos buttons ------------------------------------------------
@@ -187,7 +197,7 @@ class CtrlGrade():
 
     # Funções da tela altera grade ----------------------------------------------------------
     
-    def adicionaGrade(self):
+    def adicionaDisciplina(self):
         anoCurso = self.limiteAltera.escolhaGrade.get()
         discSel = self.limiteAltera.listboxAdd.get(ACTIVE)
         try:
@@ -212,7 +222,7 @@ class CtrlGrade():
                 self.limiteAltera.listboxAdd.delete(ACTIVE)
                 self.limiteAltera.listboxRemove.insert(END, discSel)
 
-    def removeGrade(self):
+    def removeDisciplina(self):
         anoCurso = self.limiteAltera.escolhaGrade.get()
         discSel = self.limiteAltera.listboxRemove.get(ACTIVE)
         try:
@@ -221,7 +231,7 @@ class CtrlGrade():
         except PreencherCampos:
             self.limiteAltera.mostraMessagebox('ALERTA', 'Todos os campos devem ser preenchidos', True)
         else:
-            disciplina = self.ctrlPrincipal.ctrlDisciplina.getDisciplinaByCode(discSel)
+            disciplina = self.getDiscGrade(anoCurso, discSel)
             try:
                 if disciplina == None: raise ErroRequisicao()
             except ErroRequisicao:
@@ -230,7 +240,9 @@ class CtrlGrade():
                 self.limiteAltera.listaGradeDisc.remove(disciplina)
                 self.limiteAltera.mostraMessagebox('SUCESSO', 'Disciplina removida da lista', False)
                 self.limiteAltera.listboxRemove.delete(ACTIVE)
-                self.limiteAltera.listboxAdd.insert(END, discSel)
+                status = self.ctrlPrincipal.ctrlDisciplina.getDisciplinaByCode(discSel)
+                if status != None:
+                    self.limiteAltera.listboxAdd.insert(END, discSel)
     
     def atualizaGrade(self):
         anoCurso = self.limiteAltera.escolhaGrade.get()

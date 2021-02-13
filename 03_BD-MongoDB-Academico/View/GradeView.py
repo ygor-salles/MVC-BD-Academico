@@ -129,11 +129,11 @@ class LimiteAlteraGrade():
         self.listboxRemove.place(relx=0.50, rely=0.30, relheight=0.50, relwidth=0.15)
 
         self.buttonRemover = Button(self.frame1, text='Remover', bd=2, bg = '#107db2',fg = 'white',
-                            font = ('verdana', 8, 'bold'), command=controle.removeGrade)
+                            font = ('verdana', 8, 'bold'), command=controle.removeDisciplina)
         self.buttonRemover.place(relx=0.50, rely=0.82, relwidth=0.12, relheight=0.15)
         
         self.buttonAdicionar = Button(self.frame1, text='Adicionar', bd=2, bg = '#107db2',fg = 'white',
-                            font = ('verdana', 8, 'bold'), command=controle.adicionaGrade)
+                            font = ('verdana', 8, 'bold'), command=controle.adicionaDisciplina)
         self.buttonAdicionar.place(relx=0.70, rely=0.82, relwidth=0.12, relheight=0.15)
         
         self.buttonAtualizar = Button(self.frame1, text='Atualizar', bd=2, bg = '#107db2',fg = 'white',
