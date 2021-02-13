@@ -92,8 +92,7 @@ class CtrlGrade():
         listaGrades = self.getListaGrades()
         try:
             if listaGrades == False: raise ConexaoBD()
-        except ConexaoBD():
-            return None
+        except ConexaoBD(): return None
         else:
             for grade in listaGrades:
                 listaAnoCurso.append(grade.anoCurso)
@@ -106,6 +105,16 @@ class CtrlGrade():
                 return disc
         return None 
 
+    def getObjGrade(self, anoCurso):
+        listaGrades = self.getListaGrades()
+        try:
+            if listaGrades == False: raise ConexaoBD()
+        except ConexaoBD(): return None
+        else:
+            for grade in listaGrades:
+                if anoCurso == grade.anoCurso:
+                    return grade
+            return None
 
     # Funções de CRUD dos buttons ------------------------------------------------
 

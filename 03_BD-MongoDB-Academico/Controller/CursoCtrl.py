@@ -34,44 +34,50 @@ class CtrlCurso():
     def exibirTela(self, frame1, frame2):
         self.listaAlunoCurso = []
         listaCursos = self.getListaCursos()
-        listaAlunos = self.ctrlPrincipal.ctrlAluno.getListaAlunos()
+
+        listaAlunos = self.ctrlPrincipal.ctrlAluno.getListaMatricAluno()
+        #Para inserir no listbox apenas alunos que não estão matriculados em outro curso
+        listaMatricExclusiva = []
+        for matric in listaAlunos:
+            listaMatricExclusiva.append(self.verificaAluno(matric))
+
         listaGrades = self.ctrlPrincipal.ctrlGrade.getListaAnoCurso()
-        self.limite = LimiteCurso(self, frame1, frame2, listaCursos, listaAlunos, listaGrades)
+        self.limite = LimiteCurso(self, frame1, frame2, listaCursos, listaMatricExclusiva, listaGrades)
 
     # Função reload na tabela ----------------------------------------------------
 
     def reloadTabela(self):
-        self.limite.tabelaDisc.delete(*self.limite.tabelaDisc.get_children())
+        self.limite.tabelaAl.delete(*self.limite.tabelaAl.get_children())
         contChild=0
         contParent=0
         for curso in self.getListaCursos():
-            self.limite.tabelaDisc.insert(parent='', index='end', iid=contParent, values=(curso.nome, curso.grade.anoCurso))
+            self.limite.tabelaAl.insert(parent='', index='end', iid=contParent, values=(curso.nome, curso.grade.anoCurso))
             for aluno in curso.alunos:
                 contChild += 1
-                self.limite.tabelaDisc.insert(parent='', index='end', iid=contChild, values=('', aluno['matricula'], aluno['nome'], aluno['curso']))
-                self.limite.tabelaDisc.move(f'{contChild}', f'{contParent}', f'{contParent}')
+                self.limite.tabelaAl.insert(parent='', index='end', iid=contChild, values=('', '', aluno['matricula'], aluno['nome'], aluno['curso']))
+                self.limite.tabelaAl.move(f'{contChild}', f'{contParent}', f'{contParent}')
             contParent = contChild+1
             contChild = contParent
 
     def reloadOneElement(self, curso):
-        self.limite.tabelaDisc.delete(*self.limite.tabelaDisc.get_children())
+        self.limite.tabelaAl.delete(*self.limite.tabelaAl.get_children())
         cont = 0
-        self.limite.tabelaDisc.insert(parent='', index='end', iid=0, values=(curso.nome, curso.grade.anoCurso))
+        self.limite.tabelaAl.insert(parent='', index='end', iid=0, values=(curso.nome, curso.grade.anoCurso))
         for aluno in curso.alunos:
             cont += 1
-            self.limite.tabelaDisc.insert(parent='', index='end', iid=cont, values=('', aluno['matricula'], aluno['nome'], aluno['curso']))
-            self.limite.tabelaDisc.move(f'{cont}', '0', '0')
+            self.limite.tabelaAl.insert(parent='', index='end', iid=cont, values=('', '', aluno['matricula'], aluno['nome'], aluno['curso']))
+            self.limite.tabelaAl.move(f'{cont}', '0', '0')
 
     def reloadTabelaAltera(self):
-        self.limiteAltera.tabelaDisc.delete(*self.limiteAltera.tabelaDisc.get_children())
+        self.limiteAltera.tabelaAl.delete(*self.limiteAltera.tabelaAl.get_children())
         contChild=0
         contParent=0
         for curso in self.getListaCursos():
-            self.limiteAltera.tabelaDisc.insert(parent='', index='end', iid=contParent, values=(curso.nome, curso.grade.anoCurso))
+            self.limiteAltera.tabelaAl.insert(parent='', index='end', iid=contParent, values=(curso.nome, curso.grade.anoCurso))
             for aluno in curso.alunos:
                 contChild += 1
-                self.limiteAltera.tabelaDisc.insert(parent='', index='end', iid=contChild, values=('', aluno['matricula'], aluno['nome'], aluno['curso']))
-                self.limiteAltera.tabelaDisc.move(f'{contChild}', f'{contParent}', f'{contParent}')
+                self.limiteAltera.tabelaAl.insert(parent='', index='end', iid=contChild, values=('', '', aluno['matricula'], aluno['nome'], aluno['curso']))
+                self.limiteAltera.tabelaAl.move(f'{contChild}', f'{contParent}', f'{contParent}')
             contParent = contChild+1
             contChild = contParent
 
@@ -107,12 +113,23 @@ class CtrlCurso():
                 return aluno
         return None 
 
+    def verificaAluno(self, matricula):
+        listaCursos = self.getListaCursos()
+        try:
+            if listaCursos == False: raise ConexaoBD()
+        except ConexaoBD(): return False
+        else:
+            for curso in listaCursos:
+                for aluno in curso.alunos:
+                    if aluno['matricula'] == matricula:
+                        return None
+            return matricula
 
     # Funções de CRUD dos buttons ------------------------------------------------
 
     def buscaCurso(self):
         nomeCurso = self.limite.inputCurso.get()
-        if len(self.limite.tabelaDisc.get_children())==1 and len(nomeCurso)==0:
+        if len(self.limite.tabelaAl.get_children())==1 and len(nomeCurso)==0:
             self.reloadTabela()
         else:
             try:
@@ -152,13 +169,14 @@ class CtrlCurso():
 
     def cadastraCurso(self):
         nomeCurso = self.limite.inputCurso.get()
-        grade = self.limite.escolhaGrade.get()
+        anoCurso = self.limite.escolhaGrade.get()
         try:
-            if len(nomeCurso)==0 or len(grade)==0: raise PreencherCampos()
+            if len(nomeCurso)==0 or len(anoCurso)==0: raise PreencherCampos()
         except PreencherCampos:
             self.limite.mostraMessagebox('ALERTA', 'Atenção todos os campos devem ser preenchidos para inserção', True)
         else:
             listaDict = self.converteDict(self.listaAlunoCurso)
+            grade = self.ctrlPrincipal.ctrlGrade.getObjGrade(anoCurso)
             curso = Curso(nome=nomeCurso, alunos=listaDict, grade=grade)
             status = ManipulaBanco.cadastraCurso(curso)
             try:

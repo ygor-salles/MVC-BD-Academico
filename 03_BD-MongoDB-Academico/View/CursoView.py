@@ -25,7 +25,7 @@ class LimiteCurso():
         self.labelAluno.place(relx=0.50, rely=0.18)
         self.listboxAluno = Listbox(self.frame1)
         for aluno in listaAlunos:
-            self.listboxAluno.insert(END, aluno.matricula)
+            self.listboxAluno.insert(END, aluno)
         self.listboxAluno.place(relx=0.50, rely=0.28, relheight=0.65)
         
         self.buttonBuscar = Button(self.frame1, text='Buscar', bd=2, bg = '#107db2',fg = 'white'
@@ -48,41 +48,42 @@ class LimiteCurso():
                             font = ('verdana', 8, 'bold'), command=controle.cadastraCurso)
         self.buttonCadastrar.place(relx=0.86, rely=0.80, relwidth=0.12, relheight=0.15)
 
-        self.tabelaDisc = ttk.Treeview(self.frame2)
-        self.tabelaDisc['columns'] = ('curso', 'grade', 'alMatricula', 'alNome', 'alCurso')  
-        self.tabelaDisc.column('#0', minwidth=0, width=5)
-        self.tabelaDisc.column('curso', minwidth=0, width=80)
-        self.tabelaDisc.column('grade', minwidth=0, width=60)
-        self.tabelaDisc.column('alMatricula', minwidth=0, width=50)
-        self.tabelaDisc.column('alNome', minwidth=0, width=125)
-        self.tabelaDisc.column('alCurso', minwidth=0, width=80)
-        self.tabelaDisc.heading('#0', text='', anchor=W)
-        self.tabelaDisc.heading('curso', text='CURSO')
-        self.tabelaDisc.heading('grade', text='GRADE')
-        self.tabelaDisc.heading('alMatricula', text='MATRIC ALUNO')
-        self.tabelaDisc.heading('alNome', text='NOME ALUNO')
-        self.tabelaDisc.heading('alCurso', text='CURSO DO ALUNO')
-        self.tabelaDisc.place(relx=0.01, rely=0.1, relwidth=0.95, relheight=0.85)
+        self.tabelaAl = ttk.Treeview(self.frame2)
+        self.tabelaAl['columns'] = ('curso', 'grade', 'alMatricula', 'alNome', 'alCurso')  
+        self.tabelaAl.column('#0', minwidth=0, width=5)
+        self.tabelaAl.column('curso', minwidth=0, width=80)
+        self.tabelaAl.column('grade', minwidth=0, width=60)
+        self.tabelaAl.column('alMatricula', minwidth=0, width=50)
+        self.tabelaAl.column('alNome', minwidth=0, width=125)
+        self.tabelaAl.column('alCurso', minwidth=0, width=80)
+        self.tabelaAl.heading('#0', text='', anchor=W)
+        self.tabelaAl.heading('curso', text='CURSO')
+        self.tabelaAl.heading('grade', text='GRADE')
+        self.tabelaAl.heading('alMatricula', text='MATRIC ALUNO')
+        self.tabelaAl.heading('alNome', text='NOME ALUNO')
+        self.tabelaAl.heading('alCurso', text='CURSO DO ALUNO')
+        self.tabelaAl.place(relx=0.01, rely=0.1, relwidth=0.95, relheight=0.85)
 
         contChild=0
         contParent=0
         for curso in listaCursos:
-            self.tabelaDisc.insert(parent='', index='end', iid=contParent, values=(curso.nome, curso.grade.anoCurso))
+            self.tabelaAl.insert(parent='', index='end', iid=contParent, values=(curso.nome, curso.grade.anoCurso))
             for aluno in curso.alunos:
                 contChild += 1
-                self.tabelaDisc.insert(parent='', index='end', iid=contChild, values=('', aluno['matricula'], aluno['nome'], aluno['curso']))
-                self.tabelaDisc.move(f'{contChild}', f'{contParent}', f'{contParent}')
+                self.tabelaAl.insert(parent='', index='end', iid=contChild, values=('', '', aluno['matricula'], aluno['nome'], aluno['curso']))
+                self.tabelaAl.move(f'{contChild}', f'{contParent}', f'{contParent}')
             contParent = contChild+1
             contChild = contParent
 
         self.scroolLista = Scrollbar(self.frame2, orient='vertical')
-        self.tabelaDisc.configure(yscroll=self.scroolLista.set)
+        self.tabelaAl.configure(yscroll=self.scroolLista.set)
         self.scroolLista.place(relx=0.96, rely=0.1, relwidth=0.04, relheight=0.85)
-        self.tabelaDisc.bind('<Double-1>', self.OnDoubleClick)
+        self.tabelaAl.bind('<Double-1>', self.OnDoubleClick)
 
     def limpaCurso(self):
         self.inputCurso.config(state=NORMAL)
         self.inputCurso.delete(0, 'end')
+        self.comboboxGrade.delete(0, 'end')
 
     def mostraMessagebox(self, titulo, msg, erro):
         if erro == False:
@@ -93,10 +94,10 @@ class LimiteCurso():
     def OnDoubleClick(self, event):
         self.inputCurso.config(state=NORMAL)
         self.limpaCurso()
-        self.tabelaDisc.selection()
+        self.tabelaAl.selection()
 
-        for n in self.tabelaDisc.selection():
-            col1 = self.tabelaDisc.item(n, 'values')
+        for n in self.tabelaAl.selection():
+            col1 = self.tabelaAl.item(n, 'values')
             self.inputCurso.insert(END, col1)
             self.inputCurso.config(state=DISABLED)
 
@@ -143,37 +144,37 @@ class LimiteAlteraCurso():
                             font = ('verdana', 8, 'bold'), command=controle.atualizaCurso)
         self.buttonAtualizar.place(relx=0.05, rely=0.82, relwidth=0.12, relheight=0.15)
 
-        self.tabelaDisc = ttk.Treeview(self.frame2)
-        self.tabelaDisc['columns'] = ('curso', 'grade', 'alMatricula', 'alNome', 'alCurso')  
-        self.tabelaDisc.column('#0', minwidth=0, width=5)
-        self.tabelaDisc.column('curso', minwidth=0, width=80)
-        self.tabelaDisc.column('grade', minwidth=0, width=60)
-        self.tabelaDisc.column('alMatricula', minwidth=0, width=50)
-        self.tabelaDisc.column('alNome', minwidth=0, width=125)
-        self.tabelaDisc.column('alCurso', minwidth=0, width=80)
-        self.tabelaDisc.heading('#0', text='', anchor=W)
-        self.tabelaDisc.heading('curso', text='CURSO')
-        self.tabelaDisc.heading('grade', text='GRADE')
-        self.tabelaDisc.heading('alMatricula', text='MATRIC ALUNO')
-        self.tabelaDisc.heading('alNome', text='NOME ALUNO')
-        self.tabelaDisc.heading('alCurso', text='CURSO DO ALUNO')
-        self.tabelaDisc.place(relx=0.01, rely=0.1, relwidth=0.95, relheight=0.85)
+        self.tabelaAl = ttk.Treeview(self.frame2)
+        self.tabelaAl['columns'] = ('curso', 'grade', 'alMatricula', 'alNome', 'alCurso')  
+        self.tabelaAl.column('#0', minwidth=0, width=5)
+        self.tabelaAl.column('curso', minwidth=0, width=80)
+        self.tabelaAl.column('grade', minwidth=0, width=60)
+        self.tabelaAl.column('alMatricula', minwidth=0, width=50)
+        self.tabelaAl.column('alNome', minwidth=0, width=125)
+        self.tabelaAl.column('alCurso', minwidth=0, width=80)
+        self.tabelaAl.heading('#0', text='', anchor=W)
+        self.tabelaAl.heading('curso', text='CURSO')
+        self.tabelaAl.heading('grade', text='GRADE')
+        self.tabelaAl.heading('alMatricula', text='MATRIC ALUNO')
+        self.tabelaAl.heading('alNome', text='NOME ALUNO')
+        self.tabelaAl.heading('alCurso', text='CURSO DO ALUNO')
+        self.tabelaAl.place(relx=0.01, rely=0.1, relwidth=0.95, relheight=0.85)
 
         contChild=0
         contParent=0
         for curso in listaCursos:
-            self.tabelaDisc.insert(parent='', index='end', iid=contParent, values=(curso.nome, curso.grade.anoCurso))
+            self.tabelaAl.insert(parent='', index='end', iid=contParent, values=(curso.nome, curso.grade.anoCurso))
             for aluno in curso.alunos:
                 contChild += 1
-                self.tabelaDisc.insert(parent='', index='end', iid=contChild, values=('', aluno['matricula'], aluno['nome'], aluno['curso']))
-                self.tabelaDisc.move(f'{contChild}', f'{contParent}', f'{contParent}')
+                self.tabelaAl.insert(parent='', index='end', iid=contChild, values=('', '', aluno['matricula'], aluno['nome'], aluno['curso']))
+                self.tabelaAl.move(f'{contChild}', f'{contParent}', f'{contParent}')
             contParent = contChild+1
             contChild = contParent
 
         self.scroolLista = Scrollbar(self.frame2, orient='vertical')
-        self.tabelaDisc.configure(yscroll=self.scroolLista.set)
+        self.tabelaAl.configure(yscroll=self.scroolLista.set)
         self.scroolLista.place(relx=0.96, rely=0.1, relwidth=0.04, relheight=0.85)
-        self.tabelaDisc.bind('<Double-1>', self.OnDoubleClick)
+        self.tabelaAl.bind('<Double-1>', self.OnDoubleClick)
 
     def limpaCurso(self):
         self.comboboxCurso.delete(0, 'end')
@@ -186,10 +187,10 @@ class LimiteAlteraCurso():
 
     def OnDoubleClick(self, event):
         self.limpaCurso()
-        self.tabelaDisc.selection()
+        self.tabelaAl.selection()
 
-        for n in self.tabelaDisc.selection():
-            col1 = self.tabelaDisc.item(n, 'values')
+        for n in self.tabelaAl.selection():
+            col1 = self.tabelaAl.item(n, 'values')
             self.comboboxCurso.insert(END, col1)
     
     def getListaCursoMatricAluno(self, nomeCurso):
