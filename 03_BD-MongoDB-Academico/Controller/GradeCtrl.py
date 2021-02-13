@@ -99,19 +99,12 @@ class CtrlGrade():
                 listaAnoCurso.append(grade.anoCurso)
             return listaAnoCurso
 
-    def getDiscGrade(self, anoCurso, codDisc):
-        listaGrades = self.getListaGrades()
-        try:
-            if listaGrades == False: raise ConexaoBD()
-        except ConexaoBD():
-            return None
-        else:
-            for grade in listaGrades:
-                if anoCurso == grade.anoCurso:
-                    for disc in grade.disciplinas:
-                        if disc['codigo'] == codDisc:
-                            return disc
-            return None 
+    def getDiscGrade(self, codDisc):
+        listaDiscGrade = self.limiteAltera.listaGradeDisc
+        for disc in listaDiscGrade:
+            if disc['codigo'] == codDisc:
+                return disc
+        return None 
 
 
     # Funções de CRUD dos buttons ------------------------------------------------
@@ -231,7 +224,7 @@ class CtrlGrade():
         except PreencherCampos:
             self.limiteAltera.mostraMessagebox('ALERTA', 'Todos os campos devem ser preenchidos', True)
         else:
-            disciplina = self.getDiscGrade(anoCurso, discSel)
+            disciplina = self.getDiscGrade(discSel)
             try:
                 if disciplina == None: raise ErroRequisicao()
             except ErroRequisicao:

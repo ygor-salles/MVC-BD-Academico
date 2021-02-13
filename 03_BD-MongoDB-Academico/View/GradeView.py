@@ -220,6 +220,7 @@ class LimiteAlteraGrade():
     
     def popular(self, event):
         #para os listBox's
+        self.limparListBox()
         comboAnoCurso = self.escolhaGrade.get()
         listaGradeCodDisc = self.getListaGradeCodDisc(comboAnoCurso)
         self.listaGradeDisc = self.getListaGradeDisc(comboAnoCurso)
