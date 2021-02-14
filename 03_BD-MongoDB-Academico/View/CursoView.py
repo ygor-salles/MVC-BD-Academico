@@ -105,7 +105,6 @@ class LimiteAlteraCurso():
     def __init__(self, controle, frame1, frame2, listaNomeCurso, listaCursos, listaAlunos):
         self.frame1 = frame1
         self.frame2 = frame2
-        self.listaNomeCurso = listaNomeCurso
         self.listaCurso = listaCursos
         self.listaAlunos = listaAlunos
         self.testePopula = False
@@ -120,7 +119,7 @@ class LimiteAlteraCurso():
         self.comboboxCurso = ttk.Combobox(self.frame1, textvariable=self.escolhaCurso)
         self.comboboxCurso['values'] = listaNomeCurso
         self.comboboxCurso.bind('<<ComboboxSelected>>', self.popular)
-        self.comboboxCurso.place(relx=0.20, rely=0.25, relwidth=0.2)
+        self.comboboxCurso.place(relx=0.20, rely=0.25, relwidth=0.25)
 
         self.labelAdd = Label(self.frame1, text='Add alunos',  bg= '#dfe3ee', fg = '#107db2')
         self.labelAdd.place(relx=0.70, rely=0.20)
@@ -176,6 +175,10 @@ class LimiteAlteraCurso():
         self.scroolLista.place(relx=0.96, rely=0.1, relwidth=0.04, relheight=0.85)
         self.tabelaAl.bind('<Double-1>', self.OnDoubleClick)
 
+    def fechaJanela(self):
+        self.frame1.destroy()
+        self.frame2.destroy()
+    
     def limpaCurso(self):
         self.comboboxCurso.delete(0, 'end')
 

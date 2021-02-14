@@ -28,8 +28,13 @@ class CtrlCurso():
     def exibirTelaCurso(self, frame1, frame2):
         listaNomeCurso = self.getListaNomeCurso()
         listaCursos = self.getListaCursos()
-        listaMatricAluno = self.ctrlPrincipal.ctrlAluno.getListaMatricAluno()
-        self.limiteAltera = LimiteAlteraCurso(self, frame1, frame2, listaNomeCurso, listaCursos, listaMatricAluno)
+
+        listaAlunos = self.ctrlPrincipal.ctrlAluno.getListaMatricAluno()
+        #Para inserir no listbox apenas alunos que não estão matriculados em outro curso
+        listaMatricExclusiva = []
+        for matric in listaAlunos:
+            listaMatricExclusiva.append(self.verificaAluno(matric))
+        self.limiteAltera = LimiteAlteraCurso(self, frame1, frame2, listaNomeCurso, listaCursos, listaMatricExclusiva)
     
     def exibirTela(self, frame1, frame2):
         self.listaAlunoCurso = []
@@ -228,7 +233,7 @@ class CtrlCurso():
                     'nome': aluno.nome,
                     'curso': aluno.curso
                 })
-                self.limiteAltera.mostraMessagebox('SUCESSO', 'Aluno inserida na lista', False)
+                self.limiteAltera.mostraMessagebox('SUCESSO', 'Aluno inserido na lista', False)
                 self.limiteAltera.listboxAdd.delete(ACTIVE)
                 self.limiteAltera.listboxRemove.insert(END, alunoSel)
 
@@ -248,7 +253,7 @@ class CtrlCurso():
                 self.limite.mostraMessagebox('ERROR', 'Houve erro na requisição', True)
             else:
                 self.limiteAltera.listaCursoAl.remove(aluno)
-                self.limiteAltera.mostraMessagebox('SUCESSO', 'Aluno removida da lista', False)
+                self.limiteAltera.mostraMessagebox('SUCESSO', 'Aluno removido da lista', False)
                 self.limiteAltera.listboxRemove.delete(ACTIVE)
                 status = self.ctrlPrincipal.ctrlAluno.getAlunoByCode(alunoSel)
                 if status != None:
@@ -263,7 +268,7 @@ class CtrlCurso():
         except PreencherCampoId:
             self.limiteAltera.mostraMessagebox('ALERTA', 'Campo Ano/Curso deve ser preenchido', True)
         except CursoSemAluno:
-            self.limiteAltera.mostraMessagebox('ATENÇÃO', 'A curso deve ter no mínimo uma aluno', True)
+            self.limiteAltera.mostraMessagebox('ATENÇÃO', 'O curso deve ter no mínimo um aluno', True)
         else:
             status = ManipulaBanco.atualizaCurso(nomeCurso, alunos)
             try:
@@ -271,5 +276,5 @@ class CtrlCurso():
             except ConexaoBD:
                 self.limiteAltera.mostraMessagebox('ERROR', 'Falha de conexão com o Banco de Dados', True)
             else:
-                self.limiteAltera.mostraMessagebox('SUCESSO', f'Curso {nomeCurso} atualizada com sucesso', False)
-                self.reloadTabelaAltera()
+                self.limiteAltera.mostraMessagebox('SUCESSO', f'Curso {nomeCurso} atualizado com sucesso', False)
+                self.limiteAltera.fechaJanela()
