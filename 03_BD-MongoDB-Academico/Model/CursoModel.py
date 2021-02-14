@@ -27,9 +27,9 @@ class ManipulaBanco():
         except:
             return False
 
-    def atualizaCurso(nomeCurso, listaAlunos):
+    def atualizaCurso(nomeCurso, listaAlunos, grade):
         try:
-            DAOCrud.atualizaCurso(nomeCurso, listaAlunos)
+            DAOCrud.atualizaCurso(nomeCurso, listaAlunos, grade)
             return True
         except:
             return False

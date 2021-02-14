@@ -102,7 +102,7 @@ class LimiteCurso():
             self.inputCurso.config(state=DISABLED)
 
 class LimiteAlteraCurso():
-    def __init__(self, controle, frame1, frame2, listaNomeCurso, listaCursos, listaAlunos):
+    def __init__(self, controle, frame1, frame2, listaNomeCurso, listaCursos, listaAlunos, listaGrades):
         self.frame1 = frame1
         self.frame2 = frame2
         self.listaCurso = listaCursos
@@ -119,6 +119,13 @@ class LimiteAlteraCurso():
         self.comboboxCurso['values'] = listaNomeCurso
         self.comboboxCurso.bind('<<ComboboxSelected>>', self.popular)
         self.comboboxCurso.place(relx=0.20, rely=0.25, relwidth=0.25)
+
+        self.labelGrade = Label(self.frame1, text='GRADE: ', bg= '#dfe3ee', fg = '#107db2')
+        self.labelGrade.place(relx=0.05, rely=0.40)
+        self.escolhaGrade = StringVar()
+        self.comboboxGrade = ttk.Combobox(self.frame1, textvariable=self.escolhaGrade)
+        self.comboboxGrade['values'] = listaGrades
+        self.comboboxGrade.place(relx=0.20, rely=0.40)
 
         self.labelAdd = Label(self.frame1, text='Add alunos',  bg= '#dfe3ee', fg = '#107db2')
         self.labelAdd.place(relx=0.70, rely=0.20)
@@ -226,7 +233,16 @@ class LimiteAlteraCurso():
                 self.listboxAdd.insert(END, todos)
         return True
     
+    def setarCombobox(self):
+        for curso in self.listaCurso:
+            if curso.nome == self.comboboxCurso.get():
+                self.comboboxGrade.set(curso.grade.anoCurso)
+                return None
+    
     def popular(self, event):
+        #para o combobox
+        self.setarCombobox()
+        
         #para os listBox's
         self.limparListBox()
         comboNomeCurso = self.escolhaCurso.get()

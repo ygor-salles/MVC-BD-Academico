@@ -28,13 +28,14 @@ class CtrlCurso():
     def exibirTelaCurso(self, frame1, frame2):
         listaNomeCurso = self.getListaNomeCurso()
         listaCursos = self.getListaCursos()
+        listaGrades = self.ctrlPrincipal.ctrlGrade.getListaAnoCurso()
 
         listaAlunos = self.ctrlPrincipal.ctrlAluno.getListaMatricAluno()
         #Para inserir no listbox apenas alunos que não estão matriculados em outro curso
         listaMatricExclusiva = []
         for matric in listaAlunos:
             listaMatricExclusiva.append(self.verificaAluno(matric))
-        self.limiteAltera = LimiteAlteraCurso(self, frame1, frame2, listaNomeCurso, listaCursos, listaMatricExclusiva)
+        self.limiteAltera = LimiteAlteraCurso(self, frame1, frame2, listaNomeCurso, listaCursos, listaMatricExclusiva, listaGrades)
     
     def exibirTela(self, frame1, frame2):
         self.listaAlunoCurso = []
@@ -262,15 +263,17 @@ class CtrlCurso():
     def atualizaCurso(self):
         nomeCurso = self.limiteAltera.escolhaCurso.get()
         alunos = self.limiteAltera.listaCursoAl
+        anoCurso = self.limiteAltera.escolhaGrade.get()
         try:
-            if len(nomeCurso)==0: raise PreencherCampoId()
+            if len(nomeCurso)==0 or len(anoCurso)==0: raise PreencherCampos()
             if len(alunos)==0: raise CursoSemAluno()
-        except PreencherCampoId:
-            self.limiteAltera.mostraMessagebox('ALERTA', 'Campo Ano/Curso deve ser preenchido', True)
+        except PreencherCampos:
+            self.limiteAltera.mostraMessagebox('ALERTA', 'Os campos curso e grade devem ser preenchidos', True)
         except CursoSemAluno:
             self.limiteAltera.mostraMessagebox('ATENÇÃO', 'O curso deve ter no mínimo um aluno', True)
         else:
-            status = ManipulaBanco.atualizaCurso(nomeCurso, alunos)
+            grade = self.ctrlPrincipal.ctrlGrade.getObjGrade(anoCurso)
+            status = ManipulaBanco.atualizaCurso(nomeCurso, alunos, grade)
             try:
                 if status == False: raise ConexaoBD()
             except ConexaoBD:

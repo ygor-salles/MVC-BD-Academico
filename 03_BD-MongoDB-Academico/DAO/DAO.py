@@ -55,5 +55,5 @@ class DAOCrud():
     def removeCurso(nomeCurso):
         Curso.objects(nome=nomeCurso).delete()
 
-    def atualizaCurso(nomeCurso, listaAlunos):
-        Curso.objects(nome=nomeCurso).update(alunos=listaAlunos)
+    def atualizaCurso(nomeCurso, listaAlunos, grade):
+        Curso.objects(nome=nomeCurso).update(alunos=listaAlunos, grade=grade)
