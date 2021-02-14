@@ -107,7 +107,6 @@ class LimiteAlteraCurso():
         self.frame2 = frame2
         self.listaCurso = listaCursos
         self.listaAlunos = listaAlunos
-        self.testePopula = False
         self.listaCursoAl = []
 
         self.labelTitulo = Label(self.frame1, text='ATUALIZAR CURSO', bg='#dfe3ee', font=('Heveltica Bold', 14))
@@ -233,11 +232,6 @@ class LimiteAlteraCurso():
         comboNomeCurso = self.escolhaCurso.get()
         listaCursoMatricAluno = self.getListaCursoMatricAluno(comboNomeCurso)
         self.listaCursoAl = self.getListaCursoAluno(comboNomeCurso)
-        if self.testePopula == False:
-            self.testePopula = self.IsPopularListbox(listaCursoMatricAluno)
-            self.IsPopularListboxTodas(self.listaAlunos ,listaCursoMatricAluno)
-        else:
-            self.limparListBox()
-            self.IsPopularListbox(listaCursoMatricAluno)
-            self.IsPopularListboxTodas(self.listaAlunos ,listaCursoMatricAluno)
+        self.IsPopularListbox(listaCursoMatricAluno)
+        self.IsPopularListboxTodas(self.listaAlunos ,listaCursoMatricAluno)
 
