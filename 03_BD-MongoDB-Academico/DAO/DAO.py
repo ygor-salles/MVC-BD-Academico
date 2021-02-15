@@ -29,8 +29,8 @@ class DAOCrud():
     def removeAluno(matricula):
         Aluno.objects(matricula=matricula).delete()
 
-    def atualizaAluno(matricula, nome, curso):
-        Aluno.objects(matricula=matricula).update(nome=nome, curso=curso)
+    def atualizaAluno(matricula, nome):
+        Aluno.objects(matricula=matricula).update(nome=nome)
 
     # Métodos cursos ---------------------------------------
     def listaGrades():

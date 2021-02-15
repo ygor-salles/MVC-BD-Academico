@@ -66,7 +66,7 @@ class CtrlCurso():
             for aluno in curso.alunos:
                 try:
                     contChild += 1
-                    self.limite.tabelaAl.insert(parent='', index='end', iid=contChild, values=('', '', aluno.matricula, aluno.nome, aluno.curso))
+                    self.limite.tabelaAl.insert(parent='', index='end', iid=contChild, values=('', '', aluno.matricula, aluno.nome))
                     self.limite.tabelaAl.move(f'{contChild}', f'{contParent}', f'{contParent}')
                 except AttributeError: pass
             contParent = contChild+1
@@ -82,7 +82,7 @@ class CtrlCurso():
         for aluno in curso.alunos:
             try:
                 cont += 1
-                self.limite.tabelaAl.insert(parent='', index='end', iid=cont, values=('', '', aluno.matricula, aluno.nome, aluno.curso))
+                self.limite.tabelaAl.insert(parent='', index='end', iid=cont, values=('', '', aluno.matricula, aluno.nome))
                 self.limite.tabelaAl.move(f'{cont}', '0', '0')
             except AttributeError: pass
 
@@ -98,7 +98,7 @@ class CtrlCurso():
             for aluno in curso.alunos:
                 try:
                     contChild += 1
-                    self.limiteAltera.tabelaAl.insert(parent='', index='end', iid=contChild, values=('', '', aluno.matricula, aluno.nome, aluno.curso))
+                    self.limiteAltera.tabelaAl.insert(parent='', index='end', iid=contChild, values=('', '', aluno.matricula, aluno.nome))
                     self.limiteAltera.tabelaAl.move(f'{contChild}', f'{contParent}', f'{contParent}')
                 except AttributeError: pass
             contParent = contChild+1

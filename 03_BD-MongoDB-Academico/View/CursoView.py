@@ -50,19 +50,17 @@ class LimiteCurso():
         self.buttonCadastrar.place(relx=0.86, rely=0.80, relwidth=0.12, relheight=0.15)
 
         self.tabelaAl = ttk.Treeview(self.frame2)
-        self.tabelaAl['columns'] = ('curso', 'grade', 'alMatricula', 'alNome', 'alCurso')  
+        self.tabelaAl['columns'] = ('curso', 'grade', 'alMatricula', 'alNome')  
         self.tabelaAl.column('#0', minwidth=0, width=5)
-        self.tabelaAl.column('curso', minwidth=0, width=80)
-        self.tabelaAl.column('grade', minwidth=0, width=60)
+        self.tabelaAl.column('curso', minwidth=0, width=140)
+        self.tabelaAl.column('grade', minwidth=0, width=50)
         self.tabelaAl.column('alMatricula', minwidth=0, width=50)
-        self.tabelaAl.column('alNome', minwidth=0, width=125)
-        self.tabelaAl.column('alCurso', minwidth=0, width=80)
+        self.tabelaAl.column('alNome', minwidth=0, width=155)
         self.tabelaAl.heading('#0', text='', anchor=W)
         self.tabelaAl.heading('curso', text='CURSO')
         self.tabelaAl.heading('grade', text='GRADE')
         self.tabelaAl.heading('alMatricula', text='MATRIC ALUNO')
         self.tabelaAl.heading('alNome', text='NOME ALUNO')
-        self.tabelaAl.heading('alCurso', text='CURSO DO ALUNO')
         self.tabelaAl.place(relx=0.01, rely=0.1, relwidth=0.95, relheight=0.85)
 
         contChild=0
@@ -75,7 +73,7 @@ class LimiteCurso():
             for aluno in curso.alunos:
                 try:
                     contChild += 1
-                    self.tabelaAl.insert(parent='', index='end', iid=contChild, values=('', '', aluno.matricula, aluno.nome, aluno.curso))
+                    self.tabelaAl.insert(parent='', index='end', iid=contChild, values=('', '', aluno.matricula, aluno.nome))
                     self.tabelaAl.move(f'{contChild}', f'{contParent}', f'{contParent}')
                 except AttributeError: pass
             contParent = contChild+1
@@ -156,19 +154,17 @@ class LimiteAlteraCurso():
         self.buttonAtualizar.place(relx=0.05, rely=0.82, relwidth=0.12, relheight=0.15)
 
         self.tabelaAl = ttk.Treeview(self.frame2)
-        self.tabelaAl['columns'] = ('curso', 'grade', 'alMatricula', 'alNome', 'alCurso')  
+        self.tabelaAl['columns'] = ('curso', 'grade', 'alMatricula', 'alNome')  
         self.tabelaAl.column('#0', minwidth=0, width=5)
-        self.tabelaAl.column('curso', minwidth=0, width=80)
-        self.tabelaAl.column('grade', minwidth=0, width=60)
+        self.tabelaAl.column('curso', minwidth=0, width=140)
+        self.tabelaAl.column('grade', minwidth=0, width=50)
         self.tabelaAl.column('alMatricula', minwidth=0, width=50)
-        self.tabelaAl.column('alNome', minwidth=0, width=125)
-        self.tabelaAl.column('alCurso', minwidth=0, width=80)
+        self.tabelaAl.column('alNome', minwidth=0, width=155)
         self.tabelaAl.heading('#0', text='', anchor=W)
         self.tabelaAl.heading('curso', text='CURSO')
         self.tabelaAl.heading('grade', text='GRADE')
         self.tabelaAl.heading('alMatricula', text='MATRIC ALUNO')
         self.tabelaAl.heading('alNome', text='NOME ALUNO')
-        self.tabelaAl.heading('alCurso', text='CURSO DO ALUNO')
         self.tabelaAl.place(relx=0.01, rely=0.1, relwidth=0.95, relheight=0.85)
 
         contChild=0
@@ -181,7 +177,7 @@ class LimiteAlteraCurso():
             for aluno in curso.alunos:
                 try:
                     contChild += 1
-                    self.tabelaAl.insert(parent='', index='end', iid=contChild, values=('', '', aluno.matricula, aluno.nome, aluno.curso))
+                    self.tabelaAl.insert(parent='', index='end', iid=contChild, values=('', '', aluno.matricula, aluno.nome))
                     self.tabelaAl.move(f'{contChild}', f'{contParent}', f'{contParent}')
                 except AttributeError: pass
             contParent = contChild+1

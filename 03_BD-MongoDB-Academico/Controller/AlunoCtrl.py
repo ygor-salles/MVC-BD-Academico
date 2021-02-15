@@ -30,7 +30,7 @@ class CtrlAluno():
     def reloadTabela(self):
         self.limite.tabelaDisc.delete(*self.limite.tabelaDisc.get_children())
         for aluno in self.getListaAlunos():
-            self.limite.tabelaDisc.insert('', 'end', values=(aluno.matricula, aluno.nome, aluno.curso))
+            self.limite.tabelaDisc.insert('', 'end', values=(aluno.matricula, aluno.nome))
 
     # Funções auxiliares e de amarrações de classes -------------------------------
 
@@ -76,25 +76,23 @@ class CtrlAluno():
                 except AlunoNaoCadastrado: self.limite.mostraMessagebox('ERROR', f'Aluno {matricula} não cadastrado', True)
                 else:
                     self.limite.tabelaDisc.delete(*self.limite.tabelaDisc.get_children())
-                    self.limite.tabelaDisc.insert('', 'end', values=(aluno.matricula, aluno.nome, aluno.curso))
+                    self.limite.tabelaDisc.insert('', 'end', values=(aluno.matricula, aluno.nome))
                 finally:
                     self.limite.limpaAluno()
 
     def insereAluno(self):
         matricula = self.limite.inputMatric.get()
         nome = self.limite.inputNome.get()
-        curso = self.limite.inputCurso.get()
         try:
-            if len(matricula)==0 or len(nome)==0 or len(curso)==0:
+            if len(matricula)==0 or len(nome)==0:
                 raise PreencherCampos()
         except PreencherCampos:
             self.limite.mostraMessagebox('ALERTA', 'Atenção todos os campos devem ser preenchidos para inserção', True)
         else:
-            aluno = Aluno(matricula=int(matricula), nome=nome, curso=curso)
+            aluno = Aluno(matricula=int(matricula), nome=nome)
             status = ManipulaBanco.cadastraAluno(aluno)
             try:
-                if status == False:
-                    raise ErroRequisicao()
+                if status == False: raise ErroRequisicao()
             except ErroRequisicao:
                 self.limite.mostraMessagebox('ERROR', 'Houve erro na requisição ou matrícula já existente', True)
             else:
@@ -105,14 +103,13 @@ class CtrlAluno():
     def alteraAluno(self):
         matricula = self.limite.inputMatric.get()
         nome = self.limite.inputNome.get()
-        curso = self.limite.inputCurso.get()
         try:
-            if len(matricula)==0 or len(nome)==0 or len(curso)==0:
+            if len(matricula)==0 or len(nome)==0:
                 raise PreencherCampoId()
         except PreencherCampoId:
             self.limite.mostraMessagebox('ALERTA', 'Selecionar o aluno que deseja alterar', True)
         else:
-            status = ManipulaBanco.atualizaAluno(int(matricula), nome, curso)
+            status = ManipulaBanco.atualizaAluno(int(matricula), nome)
             try:
                 if status == False: raise ConexaoBD()
             except ConexaoBD: self.limite.mostraMessagebox('ERROR', 'Falha de conexão com o banco de dados', True)

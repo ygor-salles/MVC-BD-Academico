@@ -16,10 +16,9 @@ class Disciplina(Document):
 class Aluno(Document):
     matricula = IntField(unique=True)
     nome = StringField()
-    curso = StringField()
 
     def __repr__(self):
-        return f'Disciplina(matricula{self.matricula}, nome={self.nome}, curso={self.curso})'
+        return f'Disciplina(matricula{self.matricula}, nome={self.nome})'
 
 class Grade(Document):
     anoCurso = StringField(unique=True)

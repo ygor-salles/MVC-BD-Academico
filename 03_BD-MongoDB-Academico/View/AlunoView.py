@@ -18,11 +18,6 @@ class LimiteAluno():
         self.labelMatric.place(relx=0.05, rely=0.35)
         self.inputMatric = Entry(self.frame1)
         self.inputMatric.place(relx=0.05, rely=0.45, relwidth=0.4)
-
-        self.labelCurso = Label(self.frame1, text='Curso', bg= '#dfe3ee', fg = '#107db2')
-        self.labelCurso.place(relx=0.5, rely=0.35)
-        self.inputCurso = Entry(self.frame1)
-        self.inputCurso.place(relx=0.5, rely=0.45, relwidth=0.4)
         
         self.buttonBuscar = Button(self.frame1, text='Buscar', bd=2, bg = '#107db2',fg = 'white'
                                 , font = ('verdana', 8, 'bold'), command = controle.buscaAluno)
@@ -44,17 +39,15 @@ class LimiteAluno():
                                 , font = ('verdana', 8, 'bold'), command=controle.deletaAluno)
         self.buttonDeletar.place(relx=0.8, rely=0.7, relwidth=0.1, relheight=0.15)
 
-        self.tabelaDisc = ttk.Treeview(self.frame2, column=('matricula', 'nome', 'curso'), show='headings')
-        self.tabelaDisc.column('matricula', minwidth=0, width=100, anchor=CENTER)
-        self.tabelaDisc.column('nome', minwidth=0, width=150)
-        self.tabelaDisc.column('curso', minwidth=0, width=150, anchor=CENTER)
+        self.tabelaDisc = ttk.Treeview(self.frame2, column=('matricula', 'nome'), show='headings')
+        self.tabelaDisc.column('matricula', minwidth=0, width=150, anchor=CENTER)
+        self.tabelaDisc.column('nome', minwidth=0, width=250, anchor=CENTER)
         self.tabelaDisc.heading('matricula', text='MATRÍCULA')
         self.tabelaDisc.heading('nome', text='NOME')
-        self.tabelaDisc.heading('curso', text='CURSO')
         self.tabelaDisc.place(relx=0.01, rely=0.1, relwidth=0.95, relheight=0.85)
 
         for aluno in listaAlunos:
-            self.tabelaDisc.insert('', 'end', values=(aluno.matricula, aluno.nome, aluno.curso))
+            self.tabelaDisc.insert('', 'end', values=(aluno.matricula, aluno.nome))
 
         self.scroolLista = Scrollbar(self.frame2, orient='vertical')
         self.tabelaDisc.configure(yscroll=self.scroolLista.set)
@@ -65,7 +58,6 @@ class LimiteAluno():
         self.inputMatric.config(state=NORMAL)
         self.inputMatric.delete(0, 'end')
         self.inputNome.delete(0, 'end')
-        self.inputCurso.delete(0, 'end')
 
     def mostraMessagebox(self, titulo, msg, erro):
         if erro == False:
@@ -79,9 +71,8 @@ class LimiteAluno():
         self.tabelaDisc.selection()
 
         for n in self.tabelaDisc.selection():
-            col1, col2, col3 = self.tabelaDisc.item(n, 'values')
+            col1, col2 = self.tabelaDisc.item(n, 'values')
             self.inputMatric.insert(END, col1)
             self.inputMatric.config(state=DISABLED)
             self.inputNome.insert(END, col2)
-            self.inputCurso.insert(END, col3)
         
