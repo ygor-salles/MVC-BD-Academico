@@ -31,7 +31,7 @@ class Grade(Document):
 class Curso(Document):
     nome = StringField(unique=True)
     grade = ReferenceField(Grade)
-    alunos = ListField()
+    alunos = ListField(ReferenceField(Aluno))
 
     def __repr__(self):
         return f'Curso(nome={self.nome}, grade=(anoCurso={self.grade.ano}), alunos={self.alunos})'

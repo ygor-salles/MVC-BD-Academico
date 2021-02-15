@@ -64,9 +64,11 @@ class CtrlCurso():
             except DoesNotExist:
                 self.limite.tabelaAl.insert(parent='', index='end', iid=contParent, values=(curso.nome, 'SEM GRADE'))
             for aluno in curso.alunos:
-                contChild += 1
-                self.limite.tabelaAl.insert(parent='', index='end', iid=contChild, values=('', '', aluno['matricula'], aluno['nome'], aluno['curso']))
-                self.limite.tabelaAl.move(f'{contChild}', f'{contParent}', f'{contParent}')
+                try:
+                    contChild += 1
+                    self.limite.tabelaAl.insert(parent='', index='end', iid=contChild, values=('', '', aluno.matricula, aluno.nome, aluno.curso))
+                    self.limite.tabelaAl.move(f'{contChild}', f'{contParent}', f'{contParent}')
+                except AttributeError: pass
             contParent = contChild+1
             contChild = contParent
 
@@ -78,35 +80,31 @@ class CtrlCurso():
         except DoesNotExist:
             self.limite.tabelaAl.insert(parent='', index='end', iid=0, values=(curso.nome, 'SEM GRADE'))
         for aluno in curso.alunos:
-            cont += 1
-            self.limite.tabelaAl.insert(parent='', index='end', iid=cont, values=('', '', aluno['matricula'], aluno['nome'], aluno['curso']))
-            self.limite.tabelaAl.move(f'{cont}', '0', '0')
+            try:
+                cont += 1
+                self.limite.tabelaAl.insert(parent='', index='end', iid=cont, values=('', '', aluno.matricula, aluno.nome, aluno.curso))
+                self.limite.tabelaAl.move(f'{cont}', '0', '0')
+            except AttributeError: pass
 
     def reloadTabelaAltera(self):
         self.limiteAltera.tabelaAl.delete(*self.limiteAltera.tabelaAl.get_children())
         contChild=0
         contParent=0
         for curso in self.getListaCursos():
-            self.limiteAltera.tabelaAl.insert(parent='', index='end', iid=contParent, values=(curso.nome, curso.grade.anoCurso))
+            try:
+                self.limiteAltera.tabelaAl.insert(parent='', index='end', iid=contParent, values=(curso.nome, curso.grade.anoCurso))
+            except DoesNotExist:
+                self.limiteAltera.tabelaAl.insert(parent='', index='end', iid=0, values=(curso.nome, 'SEM GRADE'))
             for aluno in curso.alunos:
-                contChild += 1
-                self.limiteAltera.tabelaAl.insert(parent='', index='end', iid=contChild, values=('', '', aluno['matricula'], aluno['nome'], aluno['curso']))
-                self.limiteAltera.tabelaAl.move(f'{contChild}', f'{contParent}', f'{contParent}')
+                try:
+                    contChild += 1
+                    self.limiteAltera.tabelaAl.insert(parent='', index='end', iid=contChild, values=('', '', aluno.matricula, aluno.nome, aluno.curso))
+                    self.limiteAltera.tabelaAl.move(f'{contChild}', f'{contParent}', f'{contParent}')
+                except AttributeError: pass
             contParent = contChild+1
             contChild = contParent
 
     # Funções auxiliares e de amarrações de classes ------------------------------------
-
-    def converteDict(self, listaAlunoCurso):
-        listaDict = []
-        for i in listaAlunoCurso:
-            listaDict.append({
-                '_id': i.id,
-                'matricula': i.matricula,
-                'nome': i.nome,
-                'curso': i.curso
-            })
-        return listaDict
 
     def getListaNomeCurso(self):
         listaNomeCurso = []
@@ -123,7 +121,7 @@ class CtrlCurso():
     def getAlunoCurso(self, matricula):
         listaAlunoCurso = self.limiteAltera.listaCursoAl
         for aluno in listaAlunoCurso:
-            if aluno['matricula'] == matricula:
+            if aluno.matricula == matricula:
                 return aluno
         return None 
 
@@ -135,8 +133,10 @@ class CtrlCurso():
         else:
             for curso in listaCursos:
                 for aluno in curso.alunos:
-                    if aluno['matricula'] == matricula:
-                        return None
+                    try:
+                        if aluno.matricula == matricula:
+                            return None
+                    except AttributeError: pass
             return matricula
 
     # Funções de CRUD dos buttons ------------------------------------------------
@@ -189,9 +189,8 @@ class CtrlCurso():
         except PreencherCampos:
             self.limite.mostraMessagebox('ALERTA', 'Atenção todos os campos devem ser preenchidos para inserção', True)
         else:
-            listaDict = self.converteDict(self.listaAlunoCurso)
             grade = self.ctrlPrincipal.ctrlGrade.getObjGrade(anoCurso)
-            curso = Curso(nome=nomeCurso, alunos=listaDict, grade=grade)
+            curso = Curso(nome=nomeCurso, alunos=self.listaAlunoCurso, grade=grade)
             status = ManipulaBanco.cadastraCurso(curso)
             try:
                 if status == False: raise ConexaoBD()
@@ -200,7 +199,8 @@ class CtrlCurso():
             else:
                 self.limite.mostraMessagebox('SUCESSO', 'Curso cadastrado com sucesso', False)
                 self.limite.limpaCurso()
-                self.reloadTabela() 
+                self.reloadTabela()
+                self.listaAlunoCurso = [] 
 
     def deletaCurso(self):
         nomeCurso = self.limite.inputCurso.get()
@@ -236,12 +236,7 @@ class CtrlCurso():
             except ErroRequisicao:
                 self.limite.mostraMessagebox('ERROR', 'Houve erro na requisição', True)
             else:
-                self.limiteAltera.listaCursoAl.append({
-                    '_id': aluno.id,
-                    'matricula': aluno.matricula,
-                    'nome': aluno.nome,
-                    'curso': aluno.curso
-                })
+                self.limiteAltera.listaCursoAl.append(aluno)
                 self.limiteAltera.mostraMessagebox('SUCESSO', 'Aluno inserido na lista', False)
                 self.limiteAltera.listboxAdd.delete(ACTIVE)
                 self.limiteAltera.listboxRemove.insert(END, alunoSel)

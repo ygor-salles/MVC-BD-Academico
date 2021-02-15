@@ -73,9 +73,11 @@ class LimiteCurso():
             except DoesNotExist:
                 self.tabelaAl.insert(parent='', index='end', iid=contParent, values=(curso.nome, 'SEM GRADE'))
             for aluno in curso.alunos:
-                contChild += 1
-                self.tabelaAl.insert(parent='', index='end', iid=contChild, values=('', '', aluno['matricula'], aluno['nome'], aluno['curso']))
-                self.tabelaAl.move(f'{contChild}', f'{contParent}', f'{contParent}')
+                try:
+                    contChild += 1
+                    self.tabelaAl.insert(parent='', index='end', iid=contChild, values=('', '', aluno.matricula, aluno.nome, aluno.curso))
+                    self.tabelaAl.move(f'{contChild}', f'{contParent}', f'{contParent}')
+                except AttributeError: pass
             contParent = contChild+1
             contChild = contParent
 
@@ -172,11 +174,16 @@ class LimiteAlteraCurso():
         contChild=0
         contParent=0
         for curso in listaCursos:
-            self.tabelaAl.insert(parent='', index='end', iid=contParent, values=(curso.nome, curso.grade.anoCurso))
+            try:
+                self.tabelaAl.insert(parent='', index='end', iid=contParent, values=(curso.nome, curso.grade.anoCurso))
+            except DoesNotExist:
+                self.tabelaAl.insert(parent='', index='end', iid=contParent, values=(curso.nome, 'SEM GRADE'))
             for aluno in curso.alunos:
-                contChild += 1
-                self.tabelaAl.insert(parent='', index='end', iid=contChild, values=('', '', aluno['matricula'], aluno['nome'], aluno['curso']))
-                self.tabelaAl.move(f'{contChild}', f'{contParent}', f'{contParent}')
+                try:
+                    contChild += 1
+                    self.tabelaAl.insert(parent='', index='end', iid=contChild, values=('', '', aluno.matricula, aluno.nome, aluno.curso))
+                    self.tabelaAl.move(f'{contChild}', f'{contParent}', f'{contParent}')
+                except AttributeError: pass
             contParent = contChild+1
             contChild = contParent
 
@@ -211,7 +218,9 @@ class LimiteAlteraCurso():
         for curso in self.listaCurso:
             if nomeCurso == curso.nome:
                 for aluno in curso.alunos:
-                    listaCursoMatricAluno.append(aluno['matricula'])
+                    try:
+                        listaCursoMatricAluno.append(aluno.matricula)
+                    except AttributeError: pass
                 return listaCursoMatricAluno
 
     def getListaCursoAluno(self, nomeCurso):
@@ -219,7 +228,9 @@ class LimiteAlteraCurso():
         for curso in self.listaCurso:
             if nomeCurso == curso.nome:
                 for aluno in curso.alunos:
-                    listaCursoAl.append(aluno)
+                    try:
+                        listaCursoAl.append(aluno)
+                    except AttributeError: pass
                 return listaCursoAl
     
     def limparListBox(self):
@@ -240,8 +251,13 @@ class LimiteAlteraCurso():
     def setarCombobox(self):
         for curso in self.listaCurso:
             if curso.nome == self.comboboxCurso.get():
-                self.comboboxGrade.set(curso.grade.anoCurso)
-                return None
+                try:
+                    self.comboboxGrade.set(curso.grade.anoCurso)
+                    return None
+                except DoesNotExist:
+                    self.comboboxGrade.set('SEM GRADE')
+                    return None
+        
     
     def popular(self, event):
         #para o combobox
