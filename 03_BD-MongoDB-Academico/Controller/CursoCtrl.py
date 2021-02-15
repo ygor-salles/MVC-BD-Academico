@@ -1,4 +1,6 @@
 from tkinter.constants import ACTIVE, END
+
+from mongoengine.errors import DoesNotExist
 from Model.CursoModel import ManipulaBanco
 from DAO.Mapeamento import Curso
 from View.CursoView import LimiteAlteraCurso, LimiteCurso
@@ -57,7 +59,10 @@ class CtrlCurso():
         contChild=0
         contParent=0
         for curso in self.getListaCursos():
-            self.limite.tabelaAl.insert(parent='', index='end', iid=contParent, values=(curso.nome, curso.grade.anoCurso))
+            try:
+                self.limite.tabelaAl.insert(parent='', index='end', iid=contParent, values=(curso.nome, curso.grade.anoCurso))
+            except DoesNotExist:
+                self.limite.tabelaAl.insert(parent='', index='end', iid=contParent, values=(curso.nome, 'SEM GRADE'))
             for aluno in curso.alunos:
                 contChild += 1
                 self.limite.tabelaAl.insert(parent='', index='end', iid=contChild, values=('', '', aluno['matricula'], aluno['nome'], aluno['curso']))
@@ -68,7 +73,10 @@ class CtrlCurso():
     def reloadOneElement(self, curso):
         self.limite.tabelaAl.delete(*self.limite.tabelaAl.get_children())
         cont = 0
-        self.limite.tabelaAl.insert(parent='', index='end', iid=0, values=(curso.nome, curso.grade.anoCurso))
+        try:
+            self.limite.tabelaAl.insert(parent='', index='end', iid=0, values=(curso.nome, curso.grade.anoCurso))
+        except DoesNotExist:
+            self.limite.tabelaAl.insert(parent='', index='end', iid=0, values=(curso.nome, 'SEM GRADE'))
         for aluno in curso.alunos:
             cont += 1
             self.limite.tabelaAl.insert(parent='', index='end', iid=cont, values=('', '', aluno['matricula'], aluno['nome'], aluno['curso']))

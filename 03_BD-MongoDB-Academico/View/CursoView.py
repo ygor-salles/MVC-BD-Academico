@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk, messagebox
+from mongoengine.errors import DoesNotExist
 
 class LimiteCurso():
     def __init__(self, controle, frame1, frame2, listaCursos, listaAlunos, listaGrades):
@@ -67,7 +68,10 @@ class LimiteCurso():
         contChild=0
         contParent=0
         for curso in listaCursos:
-            self.tabelaAl.insert(parent='', index='end', iid=contParent, values=(curso.nome, curso.grade.anoCurso))
+            try:
+                self.tabelaAl.insert(parent='', index='end', iid=contParent, values=(curso.nome, curso.grade.anoCurso))
+            except DoesNotExist:
+                self.tabelaAl.insert(parent='', index='end', iid=contParent, values=(curso.nome, 'SEM GRADE'))
             for aluno in curso.alunos:
                 contChild += 1
                 self.tabelaAl.insert(parent='', index='end', iid=contChild, values=('', '', aluno['matricula'], aluno['nome'], aluno['curso']))
@@ -98,7 +102,7 @@ class LimiteCurso():
 
         for n in self.tabelaAl.selection():
             col1 = self.tabelaAl.item(n, 'values')
-            self.inputCurso.insert(END, col1)
+            self.inputCurso.insert(END, col1[0])
             self.inputCurso.config(state=DISABLED)
 
 class LimiteAlteraCurso():
