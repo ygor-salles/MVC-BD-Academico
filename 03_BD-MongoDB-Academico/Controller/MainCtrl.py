@@ -23,15 +23,24 @@ class ControlePrincipal():
         self.frame_1.place()
         self.frame_2 = Frame(self.root)
         self.frame_2.place()
+        # self.frameHistorico = Frame(self.root)
+        # self.frameHistorico.place()
 
         self.root.title('Sistema Academico YS')
         self.root.mainloop()
 
-    def newFrame1(self):
-        self.frame_1.destroy()
-        self.frame_1 = Frame(self.root, bd=4, bg='#dfe3ee', highlightbackground='#759fe6', highlightthickness=3)
-        self.frame_1.place(relx= 0.02, rely=0.02, relwidth= 0.96, relheight= 0.46)
-        return self.frame_1
+    def newFrame1(self, umFrame):
+        if not umFrame:
+            self.frame_1.destroy()
+            self.frame_1 = Frame(self.root, bd=4, bg='#dfe3ee', highlightbackground='#759fe6', highlightthickness=3)
+            self.frame_1.place(relx= 0.02, rely=0.02, relwidth= 0.96, relheight= 0.46)
+            return self.frame_1
+        else:
+            self.frame_1.destroy()
+            self.frame_2.destroy()
+            self.frame_1 = Frame(self.root, bd=4, bg='#dfe3ee', highlightbackground='#759fe6', highlightthickness=3)
+            self.frame_1.place(relx= 0.02, rely=0.02, relwidth= 0.96, relheight= 0.96)
+            return self.frame_1
 
     def newFrame2(self):
         self.frame_2.destroy()
@@ -39,24 +48,33 @@ class ControlePrincipal():
         self.frame_2.place(relx=0.02, rely=0.5, relwidth=0.96, relheight=0.46)
         return self.frame_2
 
+    # def newFrameHistorico(self):
+    #     self.frame_1.destroy()
+    #     self.frame_2.destroy()
+    #     self.frameHistorico = Frame(self.root, bd=4, bg='#dfe3ee', highlightbackground='#759fe6', highlightthickness=3)
+    #     self.frameHistorico.place(relx=0.02, rely=0.02, relwidth=0.96, relheight=92)
+
     def sair(self):
         self.root.destroy()
 
     ###############################################
     def limiteDisiciplina(self):
-        self.ctrlDisciplina.exibirTela(self.newFrame1(), self.newFrame2())
+        self.ctrlDisciplina.exibirTela(self.newFrame1(False), self.newFrame2())
 
     def limiteAluno(self):
-        self.ctrlAluno.exibirTela(self.newFrame1(), self.newFrame2())
+        self.ctrlAluno.exibirTela(self.newFrame1(False), self.newFrame2())
 
     def limiteGrade(self):
-        self.ctrlGrade.exibirTela(self.newFrame1(), self.newFrame2())
+        self.ctrlGrade.exibirTela(self.newFrame1(False), self.newFrame2())
 
     def limiteAlteraGrade(self):
-        self.ctrlGrade.exibirTelaGrade(self.newFrame1(), self.newFrame2())
+        self.ctrlGrade.exibirTelaGrade(self.newFrame1(False), self.newFrame2())
 
     def limiteCurso(self):
-        self.ctrlCurso.exibirTela(self.newFrame1(), self.newFrame2())
+        self.ctrlCurso.exibirTela(self.newFrame1(False), self.newFrame2())
 
     def limiteAlteraCurso(self):
-        self.ctrlCurso.exibirTelaCurso(self.newFrame1(), self.newFrame2())
+        self.ctrlCurso.exibirTelaCurso(self.newFrame1(False), self.newFrame2())
+
+    def limiteHistorico(self):
+        self.ctrlHistorico.exibirTela(self.newFrame1(True))
