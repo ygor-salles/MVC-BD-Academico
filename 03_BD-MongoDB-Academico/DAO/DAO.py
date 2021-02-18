@@ -59,8 +59,8 @@ class DAOCrud():
         Curso.objects(nome=nomeCurso).update(alunos=listaAlunos, grade=grade)
 
     # Métodos historicos ------------------------------------
-    def buscaHistorico(matricula):
-        return Historico.objects(matricula=matricula)
+    def buscaHistorico(aluno):
+        return Historico.objects(aluno=aluno)
 
-    def removeHistorico(matricula):
-        Historico.objects(matricula=matricula).delete()
+    def removeHistorico(aluno):
+        Historico.objects(aluno=aluno).delete()

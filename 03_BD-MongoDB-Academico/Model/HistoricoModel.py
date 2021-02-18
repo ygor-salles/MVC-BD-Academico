@@ -8,15 +8,15 @@ class ManipulaBanco():
         except:
             return False
 
-    def consultaHistorico(matricula):
+    def consultaHistorico(aluno):
         try:
-            return DAOCrud.buscaHistorico(matricula)
+            return DAOCrud.buscaHistorico(aluno)
         except:
             return False
 
-    def deletaHistorico(matricula):
+    def deletaHistorico(aluno):
         try:
-            DAOCrud.removeHistorico(matricula)
+            DAOCrud.removeHistorico(aluno)
             return True
         except:
             return False

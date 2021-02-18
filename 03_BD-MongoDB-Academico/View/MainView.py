@@ -42,11 +42,12 @@ class LimitePrincipal():
         self.gradeMenu.add_command(label="Alterar grade", command=self.controle.limiteAlteraGrade)
         self.menubar.add_cascade(label="Grade", menu=self.gradeMenu)
 
-        self.cursoMenu.add_command(label="CRUD CURSO", command=self.controle.limiteCurso)
+        self.cursoMenu.add_command(label="Crud Curso", command=self.controle.limiteCurso)
         self.cursoMenu.add_command(label="Alterar curso", command=self.controle.limiteAlteraCurso)
         self.menubar.add_cascade(label="Curso", menu=self.cursoMenu)
         
         self.historicoMenu.add_command(label="Cadastrar Historico", command=self.controle.limiteHistorico)
+        self.historicoMenu.add_command(label="Consultar/Deletar Historico", command=self.controle.limiteConsultaHistorico)
         self.menubar.add_cascade(label="Histórico", menu=self.historicoMenu)
         
         # self.menubar.add_cascade(label="Sair", menu=self.sairMenu)

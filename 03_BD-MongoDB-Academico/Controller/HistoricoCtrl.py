@@ -1,6 +1,6 @@
 from DAO.Mapeamento import Historico
 from tkinter.constants import ACTIVE
-from View.HistoricoView import LimiteHistorico
+from View.HistoricoView import LimiteConsultaHistorico, LimiteHistorico, LimiterRelatorioHistorico
 from Model.HistoricoModel import ManipulaBanco
 
 class ErroRequisicao(Exception): pass
@@ -9,13 +9,21 @@ class ConexaoBD(Exception): pass
 
 class PreencherCampos(Exception): pass
 
+class PreencherCampoId(Exception): pass
+
 class ErroRequisicao(Exception): pass
+
+class HistoricoNaoCadastrado(Exception): pass
+
+class AlunoInexistente(Exception): pass
 
 class CtrlHistorico():
     def __init__(self, controlePrincipal):
         self.ctrlPrincipal = controlePrincipal
         self.listaDiscNota = []
 
+    # Função que serão chamadas da main, mostrar tela ------------------------------------
+    
     def exibirTela(self, frame):
         listaDisciplinas = self.ctrlPrincipal.ctrlDisciplina.getListaDisciplinas()
         listaMatricAlunos = self.ctrlPrincipal.ctrlAluno.getListaMatricAluno()
@@ -25,6 +33,16 @@ class CtrlHistorico():
             self.limite.mostraMessagebox('ERROR', 'Houve erro na requisição', True)
         else:
             self.limite = LimiteHistorico(self, frame, listaMatricAlunos, listaDisciplinas)
+
+    def exibirTelaConsulta(self, frame):
+        listaMatricAlunos = self.ctrlPrincipal.ctrlAluno.getListaMatricAluno()
+        try:
+            if listaMatricAlunos==None: raise ErroRequisicao()
+        except ErroRequisicao: self.limite.mostraMessagebox('ERROR', 'Houve erro na requisição', True)
+        else:
+            self.limiteConsulta = LimiteConsultaHistorico(self, frame, listaMatricAlunos)
+
+    # Funções auxiliares -----------------------------------------------------------------
 
     def buscaGradeDoAluno(self, matric):
         todosCursos = self.ctrlPrincipal.ctrlCurso.getListaCursos()
@@ -37,6 +55,8 @@ class CtrlHistorico():
                     if aluno.matricula == int(matric):
                         return curso.grade
             return None
+
+    # Funções de CRUD dos buttons ----------------------------------------------------------
     
     def inserirHistorico(self):
         matric = self.limite.escolhaMatric.get()
@@ -61,7 +81,6 @@ class CtrlHistorico():
                     obrigatorio=True
                     break
             disciplina = self.limite.getDisciplinaByCode(codDisc)
-            # self.listaDiscNota.append((disciplina.codigo, disciplina.nome, disciplina.cargaHoraria, nota, status, obrigatorio))
             self.listaDiscNota.append({
                 'codigoDisciplina': disciplina.codigo,
                 'nomeDisciplina': disciplina.nome,
@@ -94,3 +113,46 @@ class CtrlHistorico():
                 except ConexaoBD(): self.limite.mostraMessagebox('ERROR', 'Falha de conexão com o Banco de Dados', True)
                 else:
                     self.limite.mostraMessagebox('SUCESSO', f'Historico de {aluno.nome} cadastrado com sucesso', False)
+
+    def consultaHistorico(self, event, frame):
+        try:
+            matric = int(self.limiteConsulta.escolhaMatric.get())
+            if matric==None: raise PreencherCampoId()
+        except PreencherCampoId: self.limiteConsulta.mostraMessagebox('ALERTA', 'Campo matrícula deve ser preenchido', True)
+        except ValueError: self.limiteConsulta.mostraMessagebox('ALERTA', 'A matrícula deve ser somente um dado número inteiro', True)
+        else:
+            aluno = self.ctrlPrincipal.ctrlAluno.getAlunoByCode(int(matric))
+            historicosAluno = ManipulaBanco.consultaHistorico(aluno)
+            try:
+                if historicosAluno == False: raise ConexaoBD()
+                if historicosAluno == None: raise HistoricoNaoCadastrado()
+                if aluno == None: raise ErroRequisicao()
+            except ConexaoBD: self.limiteConsulta.mostraMessagebox('ERROR', 'Falha de conexão com o Banco de Dados', True)
+            except HistoricoNaoCadastrado: self.limiteConsulta.mostraMessagebox('ALERTA', 'Historico não cadastrada', True)
+            except ErroRequisicao: self.limiteConsulta.mostraMessagebox('ERROR', 'Houve erro na requisição ou aluno inexitente', True)
+            else:
+                grade = self.buscaGradeDoAluno(matric)
+                try:
+                    if grade == None: raise AlunoInexistente()
+                except AlunoInexistente: self.limiteConsulta.mostraMessagebox('ERROR', 'Aluno Inexistente', True)
+                else:
+                    LimiterRelatorioHistorico(frame, matric, aluno.nome, grade, historicosAluno)
+            finally:
+                self.limiteConsulta.limparConsulta()
+
+    def deletarHistorico(self):
+        try:
+            matric = int(self.limiteConsulta.escolhaMatric.get())
+            if matric==None: raise PreencherCampoId()
+        except PreencherCampoId: self.limiteConsulta.mostraMessagebox('ALERTA', 'Campo matrícula deve ser preenchido', True)
+        except ValueError: self.limiteConsulta.mostraMessagebox('ALERTA', 'A matrícula deve ser somente um dado número inteiro', True)
+        else:
+            aluno = self.ctrlPrincipal.ctrlAluno.getAlunoByCode(int(matric))
+            status = ManipulaBanco.deletaHistorico(aluno)
+            try:
+                if status==False: raise ConexaoBD()
+            except ConexaoBD: self.limiteConsulta.mostraMessagebox('ERROR', 'Falha de conexão com o banco de dados', True)
+            else:
+                self.limiteConsulta.mostraMessagebox('SUCESSO', f'Histórico do aluno {aluno.nome} removido com sucesso', False)
+            finally:
+                self.limiteConsulta.limparConsulta()

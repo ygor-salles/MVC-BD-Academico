@@ -56,6 +56,17 @@ class CtrlAluno():
                     return aluno
             return None
 
+    def getNomeAluno(self, matricula):
+        listaAlunos = self.getListaAlunos()
+        try: 
+            if listaAlunos == False: raise ConexaoBD()
+        except ConexaoBD: return None
+        else:
+            for aluno in listaAlunos:
+                if matricula == aluno.matricula:
+                    return aluno.nome
+            return None
+
     # Funções de CRUD dos buttons ------------------------------------------------
 
     def buscaAluno(self):

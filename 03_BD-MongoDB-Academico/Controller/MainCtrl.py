@@ -78,3 +78,6 @@ class ControlePrincipal():
 
     def limiteHistorico(self):
         self.ctrlHistorico.exibirTela(self.newFrame1(True))
+
+    def limiteConsultaHistorico(self):
+        self.ctrlHistorico.exibirTelaConsulta(self.newFrame1(True))
