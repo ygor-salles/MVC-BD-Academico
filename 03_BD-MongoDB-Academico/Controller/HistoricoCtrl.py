@@ -25,6 +25,7 @@ class CtrlHistorico():
     # Função que serão chamadas da main, mostrar tela ------------------------------------
     
     def exibirTela(self, frame):
+        self.listaDiscNota = []
         listaDisciplinas = self.ctrlPrincipal.ctrlDisciplina.getListaDisciplinas()
         listaMatricAlunos = self.ctrlPrincipal.ctrlAluno.getListaMatricAluno()
         try:
@@ -35,6 +36,7 @@ class CtrlHistorico():
             self.limite = LimiteHistorico(self, frame, listaMatricAlunos, listaDisciplinas)
 
     def exibirTelaConsulta(self, frame):
+        self.listaDiscNota = []
         listaMatricAlunos = self.ctrlPrincipal.ctrlAluno.getListaMatricAluno()
         try:
             if listaMatricAlunos==None: raise ErroRequisicao()
@@ -113,6 +115,7 @@ class CtrlHistorico():
                 except ConexaoBD(): self.limite.mostraMessagebox('ERROR', 'Falha de conexão com o Banco de Dados', True)
                 else:
                     self.limite.mostraMessagebox('SUCESSO', f'Historico de {aluno.nome} cadastrado com sucesso', False)
+                    self.listaDiscNota = []
 
     def consultaHistorico(self, event, frame):
         try:
