@@ -1,0 +1,2 @@
+É necessário ter o mongoDB rodando na máquina para que os dados seja persistidos.
+Caso o banco não rode será necessário criar no mongo um banco com nome: academico
