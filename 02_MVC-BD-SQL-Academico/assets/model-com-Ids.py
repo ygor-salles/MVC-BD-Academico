@@ -69,7 +69,7 @@ class Student(Base):
     matriculation = Column(Integer, nullable=False, unique=True)
     name = Column(String, nullable=False)
     created_at = Column(DateTime, nullable=False, server_default=text("now()"))
-    course_id = Column(ForeignKey('courses.id', ondelete='SET NULL', onupdate='CASCADE'))
+    course_id = Column(ForeignKey('courses.id', ondelete='SET NULL', onupdate='CASCADE'), nullable=True)
 
     def __repr__(self):
         return f'Student(matriculation={self.matriculation}, name={self.name})'
